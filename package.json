@@ -1,6 +1,6 @@
 {
   "name": "elit",
-  "version": "3.6.8",
+  "version": "3.6.9",
   "description": "Optimized lightweight library for creating DOM elements with reactive state",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

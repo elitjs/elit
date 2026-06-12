@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.6.9] - 2026-06-12
+
+### Added
+- **`blockFiles` config for dev and preview** - `dev.blockFiles` and `preview.blockFiles` accept glob patterns to block sensitive files from being served over HTTP
+  - Default patterns block `.env`, `.env.*`, `*.pem`, `*.key`, `*.p12`, `*.pfx`, `.git/**`, `.htaccess`, `docker-compose.yml`, `docker-compose.yaml`, and `Dockerfile`
+  - Requests matching a blocked pattern receive a `403 Forbidden` response
+  - Set to an empty array to disable blocking; override with custom patterns to change the default list
+- **`elit/config` subpath export** - added missing `./config` entry to the package exports map so `import { defineConfig } from 'elit/config'` resolves correctly
+
+### Changed
+- **Version metadata refresh** - release-facing version references across `package.json`, `Cargo.toml`, docs, examples, and `create-elit` templates now track `v3.6.9`
+
+### Fixed
+- **SSRF protection for PM proxy controller** (#88) - the PM proxy now validates all upstream targets to prevent server-side request forgery attacks
+  - Blocked IP ranges: loopback (`127.x`, `::1`), private (`10.x`, `172.16–31.x`, `192.168.x`), link-local (`169.254.x`), carrier-grade NAT (`100.64–127.x`), multicast, and reserved addresses
+  - DNS resolution validation prevents rebinding attacks by verifying the resolved IP is not a blocked address
+  - Only `http:` and `https:` protocols are permitted as proxy targets
+  - Request URL paths are sanitized to prevent `@`-based host smuggling and credential injection
+  - Target URLs are validated on both `setTarget`/`setTargets` calls and at request time for continuous enforcement
+
 ## [3.6.8] - 2026-06-12
 
 ### Added
@@ -27,10 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Rolling reload** - `elit pm reload <name|all>` performs a stop/start cycle across instances, waiting for each replacement to become `online` before continuing
   - When proxy is enabled, reload can hand off a single-instance HTTP app without dropping the public endpoint
 - **Agent skills and project documentation** - added `.agents/skills/` and `.github/skills/` directories with structured checklists, architecture references, and command cheatsheets for server/CLI, mobile/WAPK, and native-renderer workflows
-- **`blockFiles` config for dev and preview** - `dev.blockFiles` and `preview.blockFiles` accept glob patterns to block sensitive files from being served over HTTP
-  - Default patterns block `.env`, `.env.*`, `*.pem`, `*.key`, `*.p12`, `*.pfx`, `.git/**`, `.htaccess`, `docker-compose.yml`, `docker-compose.yaml`, and `Dockerfile`
-  - Requests matching a blocked pattern receive a `403 Forbidden` response
-  - Set to an empty array to disable blocking; override with custom patterns to change the default list
 
 ### Changed
 - **Version metadata refresh** - release-facing version references across `package.json`, `Cargo.toml`, docs, examples, and `create-elit` templates now track `v3.6.8`
