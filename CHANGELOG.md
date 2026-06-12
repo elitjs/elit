@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.6.8] - 2026-06-12
+
+### Added
+- **Multi-instance process groups** - `elit pm start` now accepts `--instances <count>` to launch and manage multiple copies of the same app as a single group
+  - `elit pm scale <name> <count>` dynamically adjusts the number of running instances
+  - `elit pm reset <name|all>` and `elit pm send-signal <signal> <name|all>` operate across all instances in a group
+- **Readiness checks** - `--wait-ready` keeps processes in a `starting` state until their health endpoint responds; `--listen-timeout <ms>` caps the startup window
+- **Memory management** - `--max-memory <bytes|size>` monitors process RSS and triggers a configurable `--memory-action restart|stop` when the threshold is exceeded
+- **Scheduled restarts** - `--cron-restart <expr>` supports 5-field cron expressions and `@every` syntax for periodic restarts
+- **Exponential backoff for unstable restarts** - `--exp-backoff-restart-delay <ms>` doubles the restart delay on repeated crashes; `--exp-backoff-restart-max-delay <ms>` caps the ceiling
+- **Restart window** - `--restart-window <ms>` resets stale restart counters before they accumulate toward `maxRestarts`
+- **Kill timeout** - `--kill-timeout <ms>` gives managed processes a configurable grace period between `SIGTERM` and `SIGKILL`
+- **Proxy management** - `--proxy-port`, `--proxy-strategy proxy|inherit`, `--proxy-host`, `--proxy-target-host`, and `--proxy-env` let PM own the public port and forward traffic to child processes
+  - `proxy` strategy routes HTTP and WebSocket upgrades through an in-process proxy (supports multi-instance groups)
+  - `inherit` strategy shares the public listener file descriptor directly with a single Node child via IPC bootstrap
+- **PM JSON output and live metrics** - `elit pm list --json` and `elit pm describe <name> --json` return machine-readable records with live `cpu`, `memory`, and `uptime` fields for running processes
+  - `elit pm list` now includes live CPU, memory, and uptime columns in the table output
+- **Rolling reload** - `elit pm reload <name|all>` performs a stop/start cycle across instances, waiting for each replacement to become `online` before continuing
+  - When proxy is enabled, reload can hand off a single-instance HTTP app without dropping the public endpoint
+- **Agent skills and project documentation** - added `.agents/skills/` and `.github/skills/` directories with structured checklists, architecture references, and command cheatsheets for server/CLI, mobile/WAPK, and native-renderer workflows
+- **`blockFiles` config for dev and preview** - `dev.blockFiles` and `preview.blockFiles` accept glob patterns to block sensitive files from being served over HTTP
+  - Default patterns block `.env`, `.env.*`, `*.pem`, `*.key`, `*.p12`, `*.pfx`, `.git/**`, `.htaccess`, `docker-compose.yml`, `docker-compose.yaml`, and `Dockerfile`
+  - Requests matching a blocked pattern receive a `403 Forbidden` response
+  - Set to an empty array to disable blocking; override with custom patterns to change the default list
+
+### Changed
+- **Version metadata refresh** - release-facing version references across `package.json`, `Cargo.toml`, docs, examples, and `create-elit` templates now track `v3.6.8`
+
+### Tests
+- **PM regression coverage** - expanded test suite with coverage for multi-instance scaling, readiness monitors, memory thresholds, cron restarts, exponential backoff, kill timeout, proxy configuration, shared listener inheritance, and JSON output format
+
 ## [3.6.7] - 2026-04-17
 
 ### Added

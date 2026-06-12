@@ -8,6 +8,62 @@ import type { DevServerOptions, WebSocketEndpointConfig } from '../types';
 
 import type { ServerRouter } from './router';
 
+function globToRegex(pattern: string): RegExp {
+  const escaped = pattern
+    .replace(/\*\*/g, '{{GLOBSTAR}}')
+    .replace(/\*/g, '{{STAR}}')
+    .replace(/\?/g, '{{QMARK}}');
+
+  const regexStr = escaped
+    .split('{{GLOBSTAR}}')
+    .map((segment) =>
+      segment
+        .split('{{STAR}}')
+        .map((s) => s.split('{{QMARK}}').join('[^/]').replace(/[/\\]/g, '[/\\\\]'))
+        .join('[^/\\\\]*'),
+    )
+    .join('.*');
+
+  return new RegExp(`(?:^|[/\\\\])${regexStr}$`, 'i');
+}
+
+const defaultBlockPatterns = [
+  '.env',
+  '.env.*',
+  '*.pem',
+  '*.key',
+  '*.p12',
+  '*.pfx',
+  '.git/**',
+  '.htaccess',
+  'docker-compose.yml',
+  'docker-compose.yaml',
+  'Dockerfile',
+  'elit.config.*',
+];
+
+export function shouldBlockFile(normalizedUrlPath: string, blockFiles: string[] | undefined): boolean {
+  const patterns = blockFiles ?? defaultBlockPatterns;
+  const cleanPath = normalizedUrlPath.replace(/^[/\\]+/, '').replace(/\\/g, '/');
+  const fileName = cleanPath.split('/').pop() || cleanPath;
+
+  for (const pattern of patterns) {
+    if (!pattern.includes('*') && !pattern.includes('?')) {
+      if (pattern.includes('/')) {
+        const regex = globToRegex(pattern);
+        if (regex.test(cleanPath)) return true;
+      } else {
+        if (cleanPath === pattern || fileName === pattern) return true;
+      }
+    } else {
+      const regex = globToRegex(pattern);
+      if (regex.test(cleanPath)) return true;
+    }
+  }
+
+  return false;
+}
+
 export interface ImportMapEntry {
   [importName: string]: string;
 }
@@ -46,6 +102,7 @@ export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' 
   outFile: 'index.js',
   watch: ['**/*.ts', '**/*.js', '**/*.html', '**/*.css'],
   ignore: ['node_modules/**', 'dist/**', '.git/**', '**/*.d.ts'],
+  blockFiles: ['.env', '.env.*', '*.pem', '*.key', '*.p12', '*.pfx', '.git/**', '.htaccess', 'docker-compose.yml', 'docker-compose.yaml', 'Dockerfile'],
   logging: true,
   worker: [],
   mode: 'dev',

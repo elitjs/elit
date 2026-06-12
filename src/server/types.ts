@@ -70,6 +70,8 @@ export interface DevServerOptions {
     ignore?: string[];
     worker?: WorkerConfig[];
     logging?: boolean;
+    /** Glob patterns for files that must never be served (e.g. ".env", ".env.*", "*.key"). Default blocks .env, .env.*, .git/**, and common secret files. */
+    blockFiles?: string[];
     api?: Router;
     ws?: WebSocketEndpointConfig[];
     smtp?: ElitSMTPServerConfig | ElitSMTPServerConfig[];
@@ -109,6 +111,8 @@ export interface PreviewOptions {
     https?: boolean;
     open?: boolean;
     logging?: boolean;
+    /** Glob patterns for files that must never be served (e.g. ".env", ".env.*", "*.key"). Default blocks .env, .env.*, .git/**, and common secret files. */
+    blockFiles?: string[];
     api?: Router;
     ws?: WebSocketEndpointConfig[];
     smtp?: ElitSMTPServerConfig | ElitSMTPServerConfig[];

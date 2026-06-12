@@ -38,6 +38,7 @@ import {
   resolveClientPathFromBaseDir,
   rewriteRelativePaths,
   shouldUseClientFallbackRoot,
+  shouldBlockFile,
   toBuffer,
   type NormalizedClient,
   type TransformCacheEntry,
@@ -225,6 +226,11 @@ export function createDevServer(options: DevServerOptions): DevServer {
 
     if (normalizedPath.includes('..')) {
       if (config.logging) console.log(`[403] Path traversal attempt: ${filePath}`);
+      return send403(res, '403 Forbidden');
+    }
+
+    if (shouldBlockFile(normalizedPath, config.blockFiles)) {
+      if (config.logging) console.log(`[403] Blocked file: ${filePath}`);
       return send403(res, '403 Forbidden');
     }
 

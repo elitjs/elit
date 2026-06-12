@@ -65,8 +65,42 @@ interface ElitConfig {
 - `worker` for worker script registration
 - `ssr` for string or VNode server rendering
 - `env` for environment injection
+- `blockFiles` for blocking sensitive files from being served
 
 `preview` is not a static-file-only mode in Elit. It supports `clients`, `api`, `ws`, `proxy`, `worker`, and `ssr` in the same shape as `dev`.
+
+### Block Files
+
+`blockFiles` prevents sensitive files from being served over HTTP. When `root` points to the project root (e.g. `.`), dotfiles like `.env` would otherwise be accessible at `http://localhost:<port>/.env`.
+
+Default patterns (applied when `blockFiles` is not explicitly set):
+
+```text
+.env, .env.*, *.pem, *.key, *.p12, *.pfx, .git/**, .htaccess, docker-compose.yml, docker-compose.yaml, Dockerfile
+```
+
+Override with your own list:
+
+```typescript
+export default defineConfig({
+  dev: {
+    root: '.',
+    blockFiles: ['.env', '.env.*', '*.key', 'secrets/**'],
+  },
+  preview: {
+    root: 'dist',
+    blockFiles: ['.env', '.env.*'],
+  },
+});
+```
+
+Set to an empty array to disable blocking:
+
+```typescript
+blockFiles: [],
+```
+
+Patterns support `*` (any non-slash characters), `**` (any path depth), and `?` (single character). Requests matching a blocked pattern receive a `403 Forbidden` response.
 
 ### WebSocket Endpoint Shape
 

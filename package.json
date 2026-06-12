@@ -155,6 +155,11 @@
       "import": "./dist/database.mjs",
       "require": "./dist/database.cjs"
     },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.mjs",
+      "require": "./dist/config.cjs"
+    },
     "./test": {
       "types": "./dist/test.d.ts",
       "browser": "./dist/test.js",
