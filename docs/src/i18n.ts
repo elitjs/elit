@@ -16,6 +16,15 @@ const translations: Record<Lang, Record<string, string>> = {
     'nav.wapk': 'WAPK',
     'nav.api': 'API',
     'nav.blog': 'Blog',
+    'nav.roadmap': 'Roadmap',
+
+    // Roadmap
+    'roadmap.title': 'Roadmap',
+    'roadmap.subtitle': 'Where Elit is heading next.',
+    'roadmap.status.done': 'Done',
+    'roadmap.status.in-progress': 'In progress',
+    'roadmap.status.planned': 'Planned',
+    'roadmap.status.at-risk': 'At risk',
 
     // Hero
     'hero.title': 'Elit',
@@ -306,6 +315,15 @@ const translations: Record<Lang, Record<string, string>> = {
     'nav.wapk': 'WAPK',
     'nav.api': 'API',
     'nav.blog': 'บล็อก',
+    'nav.roadmap': 'แผนพัฒนา',
+
+    // Roadmap
+    'roadmap.title': 'แผนพัฒนา',
+    'roadmap.subtitle': 'ทิศทางถัดไปของ Elit',
+    'roadmap.status.done': 'เสร็จแล้ว',
+    'roadmap.status.in-progress': 'กำลังทำ',
+    'roadmap.status.planned': 'วางแผนไว้',
+    'roadmap.status.at-risk': 'มีความเสี่ยง',
 
     // Hero
     'hero.title': 'Elit',

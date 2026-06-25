@@ -66,6 +66,12 @@ export const Header = (router: Router) => {
             className: isActive('/blog', state.currentPath) ? 'active' : ''
           }, t('nav.blog'))
         ),
+        reactive(navState, (state) =>
+          routerLink(router, {
+            to: '/roadmap',
+            className: isActive('/roadmap', state.currentPath) ? 'active' : ''
+          }, t('nav.roadmap'))
+        ),
         a({ href: 'https://github.com/d-osc/elit', target: '_blank' }, 'GitHub'),
         button({
           className: 'btn-theme',

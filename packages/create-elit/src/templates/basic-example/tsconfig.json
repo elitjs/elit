@@ -14,8 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "types": [
-      "node",
-      "elit/test-globals"
+      "node"
     ]
   },
   "include": [

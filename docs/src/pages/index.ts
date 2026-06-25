@@ -5,3 +5,4 @@ export { BlogPage } from './BlogPage';
 export { BlogDetailPage } from './BlogDetailPage';
 export { ExamplesListPage } from './ExamplesListPage';
 export { ExampleDetailPage } from './ExampleDetailPage';
+export { RoadmapPage } from './RoadmapPage';

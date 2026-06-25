@@ -685,6 +685,78 @@ styles.addPseudoClass('hover', {
   boxShadow: `0 8px 24px rgba(99, 102, 241, 0.15)`
 }, '.blog-card');
 
+// Roadmap Styles
+styles.addClass('roadmap-page', { paddingBottom: '4rem' });
+
+styles.addClass('roadmap-phase', { marginBottom: '3rem' });
+
+styles.descendant('.roadmap-phase--now', '.phase-title', { color: styles.var(primary) });
+
+styles.addClass('phase-title', {
+  fontSize: '1.75rem',
+  fontWeight: 700,
+  marginBottom: '0.25rem'
+});
+
+styles.addClass('phase-subtitle', {
+  color: styles.var(textMuted),
+  fontSize: '0.95rem',
+  marginBottom: '1.5rem'
+});
+
+styles.addClass('roadmap-grid', {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+  gap: '1.5rem'
+});
+
+styles.addClass('roadmap-item', {
+  background: styles.var(bgCard),
+  border: `1px solid ${styles.var(border)}`,
+  borderRadius: '12px',
+  padding: '1.5rem',
+  display: 'flex',
+  flexDirection: 'column'
+});
+
+styles.addClass('roadmap-badge', {
+  display: 'inline-block',
+  alignSelf: 'flex-start',
+  fontSize: '0.75rem',
+  fontWeight: 600,
+  padding: '0.25rem 0.65rem',
+  borderRadius: '999px',
+  marginBottom: '0.75rem'
+});
+
+styles.addClass('roadmap-badge--done', { background: '#dcfce7', color: '#166534' });
+styles.addClass('roadmap-badge--in-progress', { background: '#fef3c7', color: '#92400e' });
+styles.addClass('roadmap-badge--planned', { background: '#dbeafe', color: '#1e40af' });
+styles.addClass('roadmap-badge--at-risk', { background: '#fee2e2', color: '#991b1b' });
+
+styles.addClass('roadmap-item-title', {
+  fontSize: '1.15rem',
+  fontWeight: 600,
+  marginBottom: '0.5rem'
+});
+
+styles.addClass('roadmap-item-desc', {
+  color: styles.var(textMuted),
+  fontSize: '0.9rem',
+  lineHeight: 1.55,
+  marginBottom: '0.75rem'
+});
+
+styles.addClass('roadmap-eta', {
+  marginTop: 'auto',
+  fontSize: '0.8rem',
+  opacity: 0.7
+});
+
+styles.mediaMaxWidth('768px', {
+  '.roadmap-grid': { gridTemplateColumns: '1fr' }
+});
+
 styles.addClass('blog-card-header', { marginBottom: '1rem' });
 
 styles.addClass('blog-card-title', {
@@ -974,21 +1046,19 @@ styles.add({
 });
 
 // Responsive design for comparison table
-styles.add({
-  '@media (max-width: 768px)': {
-    '.comparison-row': {
-      gridTemplateColumns: '1fr',
-      gap: '0.5rem'
-    },
-    '.comparison-cell': {
-      padding: '0.75rem 0.5rem'
-    },
-    '.comparison-row.table-header .comparison-cell:first-child': {
-      display: 'none'
-    },
-    '.comparison-table': {
-      padding: '1rem'
-    }
+styles.mediaMaxWidth('768px', {
+  '.comparison-row': {
+    gridTemplateColumns: '1fr',
+    gap: '0.5rem'
+  },
+  '.comparison-cell': {
+    padding: '0.75rem 0.5rem'
+  },
+  '.comparison-row.table-header .comparison-cell:first-child': {
+    display: 'none'
+  },
+  '.comparison-table': {
+    padding: '1rem'
   }
 });
 
@@ -1184,40 +1254,36 @@ styles.add({
 });
 
 // Responsive design for Framework Comparison
-styles.add({
-  '@media (max-width: 1200px)': {
-    '.frameworks-table': {
-      minWidth: '700px',
-      fontSize: '0.85rem'
-    },
-    '.frameworks-cell': {
-      padding: '0.875rem'
-    },
-    '.frameworks-cell:first-child': {
-      paddingLeft: '1rem'
-    }
+styles.mediaMaxWidth('1200px', {
+  '.frameworks-table': {
+    minWidth: '700px',
+    fontSize: '0.85rem'
+  },
+  '.frameworks-cell': {
+    padding: '0.875rem'
+  },
+  '.frameworks-cell:first-child': {
+    paddingLeft: '1rem'
   }
 });
 
-styles.add({
-  '@media (max-width: 768px)': {
-    '.pros-cons-grid': {
-      gridTemplateColumns: '1fr',
-      gap: '1.5rem'
-    },
-    '.frameworks-table': {
-      minWidth: '600px',
-      fontSize: '0.8rem'
-    },
-    '.frameworks-cell': {
-      padding: '0.75rem 0.5rem'
-    },
-    '.frameworks-cell:first-child': {
-      paddingLeft: '0.75rem'
-    },
-    '.frameworks-row': {
-      gridTemplateColumns: '1.5fr repeat(5, 1fr)'
-    }
+styles.mediaMaxWidth('768px', {
+  '.pros-cons-grid': {
+    gridTemplateColumns: '1fr',
+    gap: '1.5rem'
+  },
+  '.frameworks-table': {
+    minWidth: '600px',
+    fontSize: '0.8rem'
+  },
+  '.frameworks-cell': {
+    padding: '0.75rem 0.5rem'
+  },
+  '.frameworks-cell:first-child': {
+    paddingLeft: '0.75rem'
+  },
+  '.frameworks-row': {
+    gridTemplateColumns: '1.5fr repeat(5, 1fr)'
   }
 });
 
@@ -1566,56 +1632,50 @@ styles.addClass('benchmark-note', {
 });
 
 // Responsive design for Benchmark
-styles.add({
-  '@media (max-width: 1200px)': {
-    '.benchmark-content-multi': {
-      gridTemplateColumns: '1fr',
-      gap: '1.5rem'
-    },
-    '.benchmark-footer': {
-      gridTemplateColumns: '1fr',
-      gap: '2rem'
-    }
+styles.mediaMaxWidth('1200px', {
+  '.benchmark-content-multi': {
+    gridTemplateColumns: '1fr',
+    gap: '1.5rem'
+  },
+  '.benchmark-footer': {
+    gridTemplateColumns: '1fr',
+    gap: '2rem'
   }
 });
 
-styles.add({
-  '@media (max-width: 1024px)': {
-    '.reasons-grid': {
-      gridTemplateColumns: '1fr'
-    },
-    '.config-grid': {
-      gridTemplateColumns: '1fr'
-    }
+styles.mediaMaxWidth('1024px', {
+  '.reasons-grid': {
+    gridTemplateColumns: '1fr'
+  },
+  '.config-grid': {
+    gridTemplateColumns: '1fr'
   }
 });
 
-styles.add({
-  '@media (max-width: 768px)': {
-    '.performance-benchmark': {
-      padding: '3rem 0'
-    },
-    '.chart-bar-container': {
-      height: '35px'
-    },
-    '.chart-label': {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      gap: '0.25rem'
-    },
-    '.framework-name': {
-      fontSize: '0.95rem'
-    },
-    '.chart-value': {
-      fontSize: '0.85rem'
-    },
-    '.runtime-header': {
-      flexDirection: 'column',
-      alignItems: 'flex-start'
-    },
-    '.runtime-badge': {
-      alignSelf: 'flex-start'
-    }
+styles.mediaMaxWidth('768px', {
+  '.performance-benchmark': {
+    padding: '3rem 0'
+  },
+  '.chart-bar-container': {
+    height: '35px'
+  },
+  '.chart-label': {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '0.25rem'
+  },
+  '.framework-name': {
+    fontSize: '0.95rem'
+  },
+  '.chart-value': {
+    fontSize: '0.85rem'
+  },
+  '.runtime-header': {
+    flexDirection: 'column',
+    alignItems: 'flex-start'
+  },
+  '.runtime-badge': {
+    alignSelf: 'flex-start'
   }
 });
 

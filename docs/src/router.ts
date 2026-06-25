@@ -1,5 +1,5 @@
 import { createRouter, createRouterView, type RouteParams } from 'elit';
-import { HomePage, ExamplesListPage, ExampleDetailPage, DocsPage, ApiPage, BlogPage, BlogDetailPage } from './pages/index.ts';
+import { HomePage, ExamplesListPage, ExampleDetailPage, DocsPage, ApiPage, BlogPage, BlogDetailPage, RoadmapPage } from './pages/index.ts';
 
 // Define routes
 const routes = [
@@ -9,7 +9,8 @@ const routes = [
   { path: '/docs', component: () => DocsPage() },
   { path: '/api', component: () => ApiPage() },
   { path: '/blog', component: () => BlogPage(router) },
-  { path: '/blog/:id', component: (params: RouteParams) => BlogDetailPage(router, params.id) }
+  { path: '/blog/:id', component: (params: RouteParams) => BlogDetailPage(router, params.id) },
+  { path: '/roadmap', component: () => RoadmapPage(router) }
 ];
 
 // Initialize router
