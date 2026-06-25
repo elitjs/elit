@@ -1,0 +1,19 @@
+{
+  "name": "example-block-files",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "elit dev",
+    "preview": "elit preview",
+    "build": "elit build",
+    "test:blocking": "node test-blocking.mjs",
+    "test:blocking:preview": "node test-blocking.mjs preview"
+  },
+  "dependencies": {
+    "elit": "file:../.."
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
