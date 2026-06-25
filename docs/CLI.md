@@ -40,8 +40,7 @@ Common flags:
 - `--root`, `-r`
 - `--no-open`
 - `--silent`
-
-`dev` can load:
+- `--no-server-watch` — disable server-side HMR (auto-restart on server-source edits). Default is on; see `dev.serverWatch` in config for finer control.
 
 - single-root apps
 - `clients[]` multi-app setups
@@ -351,6 +350,7 @@ The CLI gets more useful when you store defaults in `elit.config.*`.
 
 ```bash
 elit dev --port 8080 --host 0.0.0.0 --no-open
+elit dev --no-server-watch          # disable server-side HMR
 elit build --entry ./src/main.ts --out-dir dist --format esm --sourcemap
 elit preview --root dist --base-path /app
 elit test --coverage --coverage-reporter text,html

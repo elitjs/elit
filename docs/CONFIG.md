@@ -69,6 +69,7 @@ interface ElitConfig {
 - `ssr` for string or VNode server rendering
 - `env` for environment injection
 - `blockFiles` for blocking sensitive files from being served
+- `serverWatch` for server-side HMR (auto-restart on server-source edits)
 
 `preview` is not a static-file-only mode in Elit. It supports `clients`, `api`, `ws`, `proxy`, `worker`, and `ssr` in the same shape as `dev`.
 
@@ -104,6 +105,39 @@ blockFiles: [],
 ```
 
 Patterns support `*` (any non-slash characters), `**` (any path depth), and `?` (single character). Requests matching a blocked pattern receive a `403 Forbidden` response.
+
+### Server-side HMR (`serverWatch`)
+
+When you edit server-source files (API routes, SSR handlers, anything imported by `elit.config.ts`), Elit restarts the dev server automatically so changes take effect without manually Ctrl+C-ing. The browser reconnects on its own via the existing client HMR socket.
+
+Behavior modes:
+
+- `true` (default): Elit walks the dependency graph from server entries discovered in `elit.config.ts` and watches every transitively-imported local source file. Alias-aware (`resolve.alias` is honored).
+- `false`: disable server-side HMR entirely.
+- `string[]`: explicit glob patterns to watch — skips dep-graph discovery. Use when you want to override the heuristic.
+
+```typescript
+export default defineConfig({
+  dev: {
+    // Default: walk dep graph from elit.config.ts
+    serverWatch: true,
+
+    // Or watch explicit patterns only
+    // serverWatch: ['src/server/**/*', 'src/shared/**/*'],
+
+    // Or disable entirely
+    // serverWatch: false,
+  },
+});
+```
+
+Notes:
+
+- Static `import` and `require()` are followed; dynamic `import()` is not.
+- CSS, JSON, and asset imports are skipped — only `.ts/.tsx/.js/.jsx/.mjs/.cjs` are watched.
+- The graph is capped (default 5000 files) to bound work on huge projects.
+- The client HMR socket may still fire on server-file changes (harmless — the browser reconnects after restart).
+- Equivalent CLI flag: `elit dev --no-server-watch` to disable.
 
 ### Resolve Alias
 
