@@ -272,7 +272,7 @@
   "homepage": "https://d-osc.github.io/elit/",
   "dependencies": {
     "acorn": "^8.14.0",
-    "esbuild": "^0.27.3",
+    "esbuild": "^0.28.1",
     "esbuild-obfuscator-plugin": "^0.0.5",
     "magic-string": "^0.30.17",
     "open": "^11.0.0",
@@ -291,6 +291,9 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   },
   "files": [
     "dist/*.cjs",
