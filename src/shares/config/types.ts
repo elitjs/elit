@@ -1,4 +1,5 @@
 import type { DevServerOptions, BuildOptions, PreviewOptions, TestOptions } from '../types';
+import type { ResolveConfig } from '../../build/contracts';
 
 export interface ElitConfig {
     /** Development server configuration */
@@ -17,6 +18,12 @@ export interface ElitConfig {
     pm?: PmConfig;
     /** WAPK packaging configuration */
     wapk?: WapkConfig;
+    /**
+     * Shared import-specifier alias map used as a default by `build`, `dev`,
+     * and `preview` when they do not declare their own `resolve.alias`.
+     * Example: `{ alias: { '@': './src' } }`.
+     */
+    resolve?: ResolveConfig;
 }
 
 export type MobileMode = 'native' | 'hybrid';

@@ -1,6 +1,8 @@
 import { ELIT_CONFIG_FILES, loadConfig, loadEnv, mergeConfig } from '../../shares/config';
 import { createDevServer } from '../../server/server';
 import type { DevServerOptions, PreviewOptions } from '../../server/types';
+import type { ElitConfig } from '../../shares/config/types';
+import type { ResolveConfig } from '../../build/contracts';
 
 import { parseArgs, setupShutdownHandlers, type ArgHandler } from './shared';
 
@@ -13,6 +15,16 @@ type PreviewCliOptions = {
     logging: boolean;
 };
 
+function mergeResolve(
+    elitConfig: ElitConfig | null | undefined,
+    targetResolve: ResolveConfig | undefined,
+): ResolveConfig | undefined {
+    const topAlias = elitConfig?.resolve?.alias;
+    const targetAlias = targetResolve?.alias;
+    if (!topAlias && !targetAlias) return undefined;
+    return { alias: { ...(topAlias || {}), ...(targetAlias || {}) } };
+}
+
 export async function runDev(args: string[]): Promise<void> {
     const cliOptions = parseDevArgs(args);
     const cwd = process.cwd();
@@ -22,9 +34,12 @@ export async function runDev(args: string[]): Promise<void> {
 
     async function start(): Promise<void> {
         const config = await loadConfig();
-        const options = config?.dev
+        const devConfig = config?.dev
             ? mergeConfig(config.dev, cliOptions) as DevServerOptions
             : cliOptions as DevServerOptions;
+        const options: DevServerOptions = { ...devConfig };
+        const mergedResolve = mergeResolve(config, devConfig.resolve);
+        if (mergedResolve) options.resolve = mergedResolve;
         const mode = process.env.MODE || 'development';
 
         options.env = { ...options.env, ...loadEnv(mode) };
@@ -137,6 +152,13 @@ export async function runPreview(args: string[]): Promise<void> {
     if (mergedOptions.ssr) {
         options.ssr = mergedOptions.ssr;
     }
+
+    if (mergedOptions.blockFiles) {
+        options.blockFiles = mergedOptions.blockFiles;
+    }
+
+    const mergedResolve = mergeResolve(config, mergedOptions.resolve);
+    if (mergedResolve) options.resolve = mergedResolve;
 
     const mode = process.env.MODE || 'production';
     options.env = { ...mergedOptions.env, ...loadEnv(mode) };

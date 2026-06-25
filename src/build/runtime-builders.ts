@@ -42,7 +42,7 @@ async function buildWithNode(context: RuntimeBuildContext): Promise<RuntimeBuild
     };
 
     if (config.resolve?.alias) {
-        esbuildOptions.resolve = { alias: config.resolve.alias };
+        esbuildOptions.alias = config.resolve.alias;
     }
 
     const result = await esbuild(esbuildOptions);

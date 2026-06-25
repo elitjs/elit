@@ -1,6 +1,7 @@
 import { loadConfig, loadEnv, mergeConfig, resolveConfigPath } from '../../shares/config';
 import type { BuildOptions, BuildResult } from '../../build/contracts';
 import type { DevServerOptions, PreviewOptions } from '../../server/types';
+import type { ElitConfig } from '../../shares/config/types';
 import { build } from '../../build';
 import { buildStandaloneDevServer } from '../../dev-build';
 import { buildStandalonePreviewServer } from '../../preview-build';
@@ -8,6 +9,13 @@ import { buildStandalonePreviewServer } from '../../preview-build';
 import { parseArgs, type ArgHandler } from './shared';
 
 type StandaloneBuildFlag = '--standalone-dev' | '--standalone-preview';
+
+function withMergedResolve(elitConfig: ElitConfig | null | undefined, buildOptions: BuildOptions): BuildOptions {
+    const topAlias = elitConfig?.resolve?.alias;
+    if (!topAlias) return buildOptions;
+    const mergedAlias = { ...topAlias, ...(buildOptions.resolve?.alias || {}) };
+    return { ...buildOptions, resolve: { ...(buildOptions.resolve || {}), alias: mergedAlias } };
+}
 
 export async function runBuild(args: string[]): Promise<void> {
     const cliOptions = parseBuildArgs(args);
@@ -27,7 +35,7 @@ export async function runBuild(args: string[]): Promise<void> {
         }
 
         if (Object.keys(cliOptions).length > 0) {
-            const options = mergeConfig(primaryBuild, cliOptions) as BuildOptions;
+            const options = withMergedResolve(config, mergeConfig(primaryBuild, cliOptions) as BuildOptions);
 
             ensureEnv(options, env);
             validateEntry(options.entry);
@@ -55,7 +63,7 @@ export async function runBuild(args: string[]): Promise<void> {
         console.log(`Building ${builds.length} ${builds.length === 1 ? 'entry' : 'entries'}...\n`);
 
         for (let index = 0; index < builds.length; index++) {
-            const buildConfig = builds[index];
+            const buildConfig = withMergedResolve(config, builds[index]);
 
             ensureEnv(buildConfig, env);
             validateEntry(buildConfig.entry, index);

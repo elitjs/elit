@@ -48,8 +48,11 @@ interface ElitConfig {
   mobile?: MobileConfig;
   pm?: PmConfig;
   wapk?: WapkConfig;
+  resolve?: { alias?: Record<string, string> };
 }
 ```
+
+`resolve.alias` at the top level is inherited by `dev`, `preview`, and `build` as a default alias map. Per-target `resolve.alias` extends (and overrides) it.
 
 ## Dev And Preview
 
@@ -101,6 +104,44 @@ blockFiles: [],
 ```
 
 Patterns support `*` (any non-slash characters), `**` (any path depth), and `?` (single character). Requests matching a blocked pattern receive a `403 Forbidden` response.
+
+### Resolve Alias
+
+`resolve.alias` rewrites import specifiers that start with a configured key. It works in `dev`, `preview`, and `build`. The top-level `resolve.alias` is inherited by all three; per-target `resolve.alias` overrides extend it (target wins on conflicting keys).
+
+```typescript
+import { defineConfig } from 'elit/config';
+import path from 'node:path';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+});
+```
+
+With the above, `import { Counter } from '@/components/Counter'` resolves to `./src/components/Counter.ts` in dev, preview, and build.
+
+Behavior notes:
+
+- Alias keys match at the **start** of a specifier, and only when followed by `/` or when the alias equals the whole specifier. So `{ '@': './src' }` matches `@/foo` but not `@app/foo`.
+- When multiple aliases could match, the longest key wins (`@app` is checked before `@`).
+- In dev and preview, rewritten paths are made relative to the importing file; specifiers without an extension get `.js` so the dev server's `.js → .ts` fallback resolves the underlying TypeScript file.
+- Bare `node_modules` imports pass through untouched.
+- In build, the alias map is forwarded directly to esbuild's native `alias` option.
+
+Per-target override pattern:
+
+```typescript
+export default defineConfig({
+  resolve: { alias: { '@': './src' } },          // shared default
+  build: {
+    resolve: { alias: { '@shared': './shared' } },  // adds @shared for build only
+  },
+});
+```
 
 ### WebSocket Endpoint Shape
 

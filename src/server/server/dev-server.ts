@@ -36,6 +36,7 @@ import {
   parseRequestQuery,
   requestAcceptsGzip,
   resolveClientPathFromBaseDir,
+  rewriteAliasSpecifiers,
   rewriteRelativePaths,
   shouldUseClientFallbackRoot,
   shouldBlockFile,
@@ -415,6 +416,12 @@ export default css;
                 });
               }
 
+              transpiled = rewriteAliasSpecifiers(
+                transpiled,
+                resolvedPath,
+                rootDir,
+                config.resolve?.alias,
+              );
               transpiled = transpiled.replace(/from\s+["']([^"']+)\.ts(x?)["']/g, (_, importPath, tsx) => `from "${importPath}.js${tsx}"`);
               transpiled = transpiled.replace(/import\s+["']([^"']+)\.ts(x?)["']/g, (_, importPath, tsx) => `import "${importPath}.js${tsx}"`);
               transpiled = transpiled.replace(/import\s+["']([^"']+\.css)["']/g, (_, importPath) => `import "${importPath}?inline"`);

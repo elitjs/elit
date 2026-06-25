@@ -1,5 +1,5 @@
 import { existsSync, realpath, stat } from '../fs';
-import { join, resolve, sep } from '../path';
+import { dirname, extname, isAbsolute, join, relative, resolve, sep } from '../path';
 import { normalizeSmtpServerConfigs } from '../smtp-server';
 import type { IncomingMessage, ServerResponse } from '../http';
 import type { ResolvedElitSMTPServerConfig } from '../smtp-server';
@@ -64,6 +64,55 @@ export function shouldBlockFile(normalizedUrlPath: string, blockFiles: string[] 
   return false;
 }
 
+/**
+ * Rewrite import specifiers that begin with a configured alias key to a
+ * filesystem-relative path. Used by the dev/preview server to make
+ * `resolve.alias` (e.g. `{ '@': './src' }`) work in served source files.
+ *
+ * - Alias keys are matched at the start of the specifier, longest first, so
+ *   `@app` wins over `@` when both could match.
+ * - An alias only matches when followed by `/` or when it equals the whole
+ *   specifier, so `@` does not accidentally capture `@app/...`.
+ * - The rewritten path is relative to the importing file and gets a `.js`
+ *   extension when no extension is present, so the dev server's `.js → .ts`
+ *   fallback can resolve the underlying TypeScript file.
+ */
+export function rewriteAliasSpecifiers(
+  source: string,
+  importerPath: string,
+  clientRoot: string,
+  alias: Record<string, string> | undefined,
+): string {
+  if (!alias) return source;
+
+  const entries = Object.entries(alias).filter(([key]) => typeof key === 'string' && key.length > 0);
+  if (entries.length === 0) return source;
+
+  entries.sort((a, b) => b[0].length - a[0].length);
+
+  const importerDir = dirname(importerPath);
+
+  return source.replace(
+    /(\bfrom\s*|\bimport\s*)(["'])([^"']+)\2/g,
+    (match, kind: string, quote: string, specifier: string) => {
+      for (const [aliasKey, aliasTarget] of entries) {
+        const isExact = specifier === aliasKey;
+        const isPrefix = specifier.startsWith(aliasKey + '/');
+        if (!isExact && !isPrefix) continue;
+
+        const rest = isExact ? '' : specifier.slice(aliasKey.length).replace(/^\/+/, '');
+        const targetAbs = isAbsolute(aliasTarget) ? aliasTarget : resolve(clientRoot, aliasTarget);
+        const targetFile = rest ? join(targetAbs, rest) : targetAbs;
+        let rel = relative(importerDir, targetFile).replace(/\\/g, '/');
+        if (!rel.startsWith('.')) rel = './' + rel;
+        if (!extname(rel)) rel += '.js';
+        return `${kind}${quote}${rel}${quote}`;
+      }
+      return match;
+    },
+  );
+}
+
 export interface ImportMapEntry {
   [importName: string]: string;
 }
@@ -92,7 +141,7 @@ export interface NormalizedClient {
   mode: 'dev' | 'preview';
 }
 
-export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' | 'root' | 'fallbackRoot' | 'basePath' | 'ssr' | 'proxy' | 'index' | 'env' | 'domain' | 'ws' | 'smtp'> = {
+export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' | 'root' | 'fallbackRoot' | 'basePath' | 'ssr' | 'proxy' | 'index' | 'env' | 'domain' | 'ws' | 'smtp' | 'resolve'> = {
   port: 3000,
   host: 'localhost',
   https: false,

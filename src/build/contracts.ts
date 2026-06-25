@@ -1,3 +1,13 @@
+export interface ResolveConfig {
+    /**
+     * Map import specifiers to alternative targets. Keys are matched at the
+     * start of an import specifier; values are filesystem paths (relative to
+     * the project root, or absolute). Example: `{ '@': './src' }` rewrites
+     * `import x from '@/components/foo'` to `./src/components/foo`.
+     */
+    alias?: Record<string, string>;
+}
+
 export interface BuildOptions {
     entry: string;
     outDir?: string;
@@ -10,9 +20,7 @@ export interface BuildOptions {
     platform?: 'browser' | 'node' | 'neutral';
     basePath?: string;
     external?: string[];
-    resolve?: {
-        alias?: Record<string, string>;
-    };
+    resolve?: ResolveConfig;
     treeshake?: boolean;
     logging?: boolean;
     env?: Record<string, string>;

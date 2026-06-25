@@ -1,0 +1,19 @@
+{
+  "name": "example-alias",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "elit dev",
+    "preview": "elit preview",
+    "build": "elit build",
+    "test:alias": "node test-alias.mjs",
+    "test:alias:preview": "node test-alias.mjs preview"
+  },
+  "dependencies": {
+    "elit": "file:../.."
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
