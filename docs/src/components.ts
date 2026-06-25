@@ -598,7 +598,7 @@ export const Stats = () =>
           span({ className: 'stat-label' }, t('stats.deps'))
         ),
         div({ className: 'stat' },
-          span({ className: 'stat-number' }, 'v3.6.9'),
+          span({ className: 'stat-number' }, 'v3.7.0'),
           span({ className: 'stat-label' }, t('stats.version'))
         ),
         div({ className: 'stat' },
@@ -1049,7 +1049,7 @@ export const Footer = () =>
           t('footer.license'), ' | ',
           a({ href: 'https://github.com/d-osc/elit' }, 'GitHub'),
           ' | ', a({ href: 'pdpa.html' }, currentLang.value === 'th' ? 'PDPA / ความเป็นส่วนตัว' : 'PDPA / Privacy'),
-          ' | ', t('footer.builtWith'), ' v3.6.9 | ',
+          ' | ', t('footer.builtWith'), ' v3.7.0 | ',
           'Created by ', a({ href: 'https://github.com/n-devs', target: '_blank' }, 'n-devs')
         )
       )

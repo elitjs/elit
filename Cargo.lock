@@ -1211,7 +1211,7 @@ dependencies = [
 
 [[package]]
 name = "elit-desktop"
-version = "3.6.9"
+version = "3.7.0"
 dependencies = [
  "eframe",
  "http",
