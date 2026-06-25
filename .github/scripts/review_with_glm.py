@@ -8,6 +8,7 @@ ZHIPU_API_KEY = os.environ.get("ZHIPU_API_KEY")
 GH_PAT = os.environ.get("GH_PAT")
 PR_NUMBER = os.environ.get("PR_NUMBER")
 REPO = os.environ.get("REPO") # format: owner/repo
+GLM_MODEL = os.environ.get("GLM_MODEL", "glm-4.6")
 
 # 1. ดึงไฟล์ที่ถูกเปลี่ยนแปลง (Diff) จาก GitHub API
 def get_pr_diff():
@@ -49,10 +50,10 @@ def ask_glm(diff_text):
     }
     
     payload = {
-        "model": "glm-4-flash",
+        "model": GLM_MODEL,
         "messages": [
             {
-                "role": "user", 
+                "role": "user",
                 "content": f"คุณเป็น Code Reviewer ที่เก่งที่สุด กรุณาตรวจสอบโค้ดด้านล่างนี้ (Diff) และแนะนำการปรับปรุง พร้อมทั้งชี้ช่องโหว่ความปลอดภัยหากมี ตอบเป็นภาษาไทย:\n\n{diff_text}"
             }
         ]
