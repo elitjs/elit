@@ -155,6 +155,7 @@ export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' 
   logging: true,
   worker: [],
   mode: 'dev',
+  serverWatch: true,
 };
 
 export const ELIT_INTERNAL_WS_PATH = '/__elit_ws';

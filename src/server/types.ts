@@ -69,6 +69,11 @@ export interface DevServerOptions {
     open?: boolean;
     watch?: string[];
     ignore?: string[];
+    /** Server-side HMR: restart dev server when server-source files change.
+     *  - `true` (default): walk dependency graph from server entries discovered in elit.config.ts
+     *  - `false`: disable server-side HMR entirely
+     *  - `string[]`: explicit glob patterns to watch (skips dep graph discovery) */
+    serverWatch?: boolean | string[];
     worker?: WorkerConfig[];
     logging?: boolean;
     /** Glob patterns for files that must never be served (e.g. ".env", ".env.*", "*.key"). Default blocks .env, .env.*, .git/**, and common secret files. */

@@ -3,6 +3,7 @@ import { lookup } from '../../shares/mime-types';
 import { isBun, isDeno } from '../../shares/runtime';
 import type { VNode } from '../../core/types';
 import type { DevServer, DevServerOptions, HMRMessage } from '../types';
+import packageJson from '../../../package.json';
 
 import { watch } from '../chokidar';
 import { readFile, realpath, stat } from '../fs';
@@ -45,6 +46,8 @@ import {
   type NormalizedClient,
   type TransformCacheEntry,
 } from './utils';
+
+const ELIT_VERSION_META = `<meta name="generator" content="Elit ${packageJson.version}">`;
 
 export function createDevServer(options: DevServerOptions): DevServer {
   const config = { ...defaultOptions, ...options };
@@ -498,7 +501,7 @@ export default css;
 
         const elitImportMap = await createElitImportMap(client.root, basePath, client.mode);
         const modeScript = config.mode === 'preview' ? '<script>window.__ELIT_MODE__=\'preview\';</script>' : '';
-        const headInjection = `${modeScript}${ssrStyles ? `\n${ssrStyles}` : ''}\n${elitImportMap}`;
+        const headInjection = `${ELIT_VERSION_META}\n${modeScript}${ssrStyles ? `\n${ssrStyles}` : ''}\n${elitImportMap}`;
         html = html.includes('</head>') ? html.replace('</head>', `${headInjection}</head>`) : html;
         html = html.includes('</body>') ? html.replace('</body>', `${hmrScript}</body>`) : html + hmrScript;
         content = Buffer.from(html);
@@ -571,7 +574,7 @@ export default css;
       const hmrScript = config.mode !== 'preview' ? createHMRScript(config.port) : '';
       const elitImportMap = await createElitImportMap(client.root, basePath, client.mode);
       const modeScript = config.mode === 'preview' ? '<script>window.__ELIT_MODE__=\'preview\';</script>\n' : '';
-      html = html.includes('</head>') ? html.replace('</head>', `${modeScript}${elitImportMap}</head>`) : html;
+      html = html.includes('</head>') ? html.replace('</head>', `${ELIT_VERSION_META}\n${modeScript}${elitImportMap}</head>`) : html;
       html = html.includes('</body>') ? html.replace('</body>', `${hmrScript}</body>`) : html + hmrScript;
 
       res.writeHead(200, {

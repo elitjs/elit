@@ -1,9 +1,13 @@
-import { ELIT_CONFIG_FILES, loadConfig, loadEnv, mergeConfig } from '../../shares/config';
+import { resolve } from 'node:path';
+
+import { ELIT_CONFIG_FILES, loadConfig, loadEnv, mergeConfig, resolveConfigPath } from '../../shares/config';
 import { createDevServer } from '../../server/server';
 import type { DevServerOptions, PreviewOptions } from '../../server/types';
 import type { ElitConfig } from '../../shares/config/types';
 import type { ResolveConfig } from '../../build/contracts';
 
+import { buildServerDependencyGraph, discoverServerEntries } from './server-deps';
+import { createServerWatcher, type ServerWatcher } from './server-watcher';
 import { parseArgs, setupShutdownHandlers, type ArgHandler } from './shared';
 
 type PreviewCliOptions = {
@@ -30,7 +34,9 @@ export async function runDev(args: string[]): Promise<void> {
     const cwd = process.cwd();
 
     let devServer: Awaited<ReturnType<typeof createDevServer>> | null = null;
+    let serverWatcher: ServerWatcher | null = null;
     let restarting = false;
+    let lastLoadedAlias: Record<string, string> | undefined = undefined;
 
     async function start(): Promise<void> {
         const config = await loadConfig();
@@ -40,6 +46,7 @@ export async function runDev(args: string[]): Promise<void> {
         const options: DevServerOptions = { ...devConfig };
         const mergedResolve = mergeResolve(config, devConfig.resolve);
         if (mergedResolve) options.resolve = mergedResolve;
+        lastLoadedAlias = mergedResolve?.alias;
         const mode = process.env.MODE || 'development';
 
         options.env = { ...options.env, ...loadEnv(mode) };
@@ -52,25 +59,91 @@ export async function runDev(args: string[]): Promise<void> {
         devServer = createDevServer(options);
     }
 
-    async function restart(): Promise<void> {
+    async function restart(reason: 'config' | 'server' = 'config', changedPath?: string): Promise<void> {
         if (restarting) {
             return;
         }
 
         restarting = true;
-        console.log('\n[Config] Config changed, restarting...');
+        if (reason === 'server') {
+            const detail = changedPath ? ` (${changedPath})` : '';
+            console.log(`\n[Server HMR] Server source changed${detail}, restarting...`);
+        } else {
+            console.log('\n[Config] Config changed, restarting...');
+        }
 
         try {
+            if (serverWatcher) {
+                await serverWatcher.close();
+                serverWatcher = null;
+            }
             if (devServer) {
                 await devServer.close();
             }
             await start();
+            await startServerWatcher();
         } finally {
             restarting = false;
         }
     }
 
+    async function startServerWatcher(): Promise<void> {
+        if (serverWatcher) return;
+
+        const serverWatchOption = cliOptions.serverWatch;
+        if (serverWatchOption === false) {
+            return;
+        }
+
+        const configPath = resolveConfigPath(cwd);
+        if (!configPath) {
+            return;
+        }
+
+        let filesToWatch: string[];
+
+        if (Array.isArray(serverWatchOption)) {
+            filesToWatch = serverWatchOption.map((pattern) =>
+                pattern.startsWith('.') || pattern.startsWith('/')
+                    ? resolve(cwd, pattern)
+                    : pattern
+            );
+        } else {
+            const entries = discoverServerEntries(configPath, {
+                clientRoot: cwd,
+                alias: lastLoadedAlias,
+            });
+            if (entries.length === 0) {
+                return;
+            }
+            const graph = buildServerDependencyGraph(entries, {
+                clientRoot: cwd,
+                alias: lastLoadedAlias,
+                onParseError: (file) => {
+                    console.warn(`[Server HMR] Could not parse ${file}, skipping its imports`);
+                },
+            });
+            filesToWatch = Array.from(graph);
+        }
+
+        if (filesToWatch.length === 0) {
+            return;
+        }
+
+        console.log(`[Server HMR] Watching ${filesToWatch.length} server source file${filesToWatch.length === 1 ? '' : 's'}`);
+
+        serverWatcher = createServerWatcher({
+            files: filesToWatch,
+            onChange: (path) => {
+                void restart('server', path).catch((error) => {
+                    console.error('[Server HMR] Restart failed:', error);
+                });
+            },
+        });
+    }
+
     await start();
+    await startServerWatcher();
 
     const { watch } = await import('node:fs');
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -83,11 +156,18 @@ export async function runDev(args: string[]): Promise<void> {
             clearTimeout(debounceTimer);
         }
 
-        debounceTimer = setTimeout(restart, 300);
+        debounceTimer = setTimeout(() => {
+            void restart('config').catch((error) => {
+                console.error('[Config] Restart failed:', error);
+            });
+        }, 300);
     });
 
     setupShutdownHandlers(async () => {
         configWatcher.close();
+        if (serverWatcher) {
+            await serverWatcher.close();
+        }
         if (devServer) {
             await devServer.close();
         }
@@ -200,6 +280,9 @@ function parseDevArgs(args: string[]): Partial<DevServerOptions> {
         },
         '--silent': (current) => {
             current.logging = false;
+        },
+        '--no-server-watch': (current) => {
+            current.serverWatch = false;
         },
     };
 
