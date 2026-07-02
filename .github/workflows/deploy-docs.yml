@@ -33,7 +33,7 @@ jobs:
 
       - name: Install dependencies (docs)
         working-directory: docs
-        run: npm install
+        run: npm install --force
 
       - name: Build docs
         working-directory: docs
