@@ -1,0 +1,29 @@
+name: AI Code Review Action
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+  models: read
+
+jobs:
+  ai-code-review:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Run AI Code Review
+        uses: n-devs/ai-code-review@v1.0.0
+        with:
+          gh_pat: ${{ secrets.GITHUB_TOKEN }}
+          repo: ${{ github.repository }}
+          pr_number: ${{ github.event.pull_request.number }}
+          api_key: ${{ secrets.ZHIPU_API_KEY }}
+          provider: zai
+          api_type: chat
+          model: glm-5.2
+          language: Thai
+          max_tokens: 10000
+          max_diff_chars: 80000

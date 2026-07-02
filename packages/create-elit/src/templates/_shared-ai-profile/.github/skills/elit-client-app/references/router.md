@@ -182,7 +182,7 @@ const stopGuard = router.beforeEach((to, from) => {
 ## Hash Mode vs History Mode
 
 - **`hash` (default)** — URLs look like `/#/about`. Works without server config. Use for static hosting.
-- **`history`** — URLs look like `/about`. Cleaner, but the dev server (or production host) must serve `index.html` for all paths. Elit's dev server does this automatically; for production see the build `copy[].transform` examples in `elit-runtime-app/references/build.md`.
+- **`history`** — URLs look like `/about`. Cleaner, but the dev server (or production host) must serve `index.html` for all paths. Elit's dev server does this automatically for navigation requests (`GET` with `Accept: text/html`); set `historyApiFallback: false` in `createDevServer` if you need strict 404s. For production see the build `copy[].transform` examples in `elit-runtime-app/references/build.md`.
 
 ## 404 Handling
 

@@ -32,6 +32,7 @@ import {
   getClientBaseDirs,
   getRequestPath,
   getValidTransformCacheEntry,
+  isHistoryNavigationRequest,
   isPathWithinRoot,
   normalizeBasePath,
   normalizeWebSocketEndpoints,
@@ -63,7 +64,7 @@ export function createDevServer(options: DevServerOptions): DevServer {
   const clientsToNormalize = usesClientArray
     ? config.clients!
     : config.root
-      ? [{ root: config.root, fallbackRoot: config.fallbackRoot, basePath: config.basePath || '', index: config.index, ssr: config.ssr, api: config.api, proxy: config.proxy, ws: config.ws, mode: config.mode }]
+      ? [{ root: config.root, fallbackRoot: config.fallbackRoot, basePath: config.basePath || '', index: config.index, historyApiFallback: config.historyApiFallback, ssr: config.ssr, api: config.api, proxy: config.proxy, ws: config.ws, mode: config.mode }]
       : null;
 
   if (!clientsToNormalize) {
@@ -94,6 +95,7 @@ export function createDevServer(options: DevServerOptions): DevServer {
       fallbackRoot: useFallbackRoot ? undefined : client.fallbackRoot,
       basePath,
       index: useFallbackRoot ? undefined : indexPath,
+      historyApiFallback: client.historyApiFallback ?? config.historyApiFallback ?? true,
       ssr: useFallbackRoot ? undefined : client.ssr,
       api: client.api,
       ws: normalizeWebSocketEndpoints(client.ws, basePath),
@@ -256,6 +258,18 @@ export function createDevServer(options: DevServerOptions): DevServer {
       if (!res.headersSent) {
         if (filePath === '/index.html' && matchedClient.ssr) {
           return await serveSSR(res, matchedClient);
+        }
+        if (matchedClient.historyApiFallback && isHistoryNavigationRequest(req, filePath)) {
+          if (matchedClient.ssr) {
+            return await serveSSR(res, matchedClient);
+          }
+          const indexPath = matchedClient.index || '/index.html';
+          for (const baseDir of baseDirs) {
+            const indexFull = await resolveClientPathFromBaseDir(baseDir, indexPath);
+            if (indexFull) {
+              return await serveFile(indexFull, req, res, matchedClient, false);
+            }
+          }
         }
         if (config.logging) console.log(`[404] ${filePath}`);
         return send404(res, '404 Not Found');

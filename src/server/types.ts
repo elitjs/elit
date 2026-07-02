@@ -30,6 +30,8 @@ export interface ClientConfig {
     fallbackRoot?: string;
     basePath: string;
     index?: string;
+    /** When `true` (default), navigation requests for non-existent paths serve `index.html` (or SSR output) so client-side history-mode routing works on reload. Set to `false` to return strict 404s. */
+    historyApiFallback?: boolean;
     ssr?: () => Child | string;
     watch?: string[];
     ignore?: string[];
@@ -90,6 +92,8 @@ export interface DevServerOptions {
     standalone?: boolean;
     outDir?: string;
     outFile?: string;
+    /** When `true` (default), navigation requests (`GET` with `Accept: text/html`) for non-existent paths serve `index.html` (or SSR output) so client-side history-mode routing works on reload. Set to `false` to return strict 404s. */
+    historyApiFallback?: boolean;
 }
 
 export interface DevServer {

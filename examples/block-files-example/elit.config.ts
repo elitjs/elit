@@ -1,5 +1,5 @@
-// This config demonstrates the `elit/config` subpath export (added in 3.6.9)
-// and the `blockFiles` option for `dev` and `preview` (also added in 3.6.9).
+// This config demonstrates the `elit/config` subpath export (added in 3.7.1)
+// and the `blockFiles` option for `dev` and `preview` (also added in 3.7.1).
 //
 // `defineConfig` is imported from the `elit/config` subpath. If this resolves,
 // it proves the new subpath export is wired up correctly.

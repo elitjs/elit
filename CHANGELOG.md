@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.1] - 2026-07-02
+
+### Added
+- **SPA history-mode fallback** - the dev server now serves `index.html` (or SSR output) for navigation requests that don't match a file on disk, so client-side `createRouter({ mode: 'history' })` routes like `/about` survive a hard reload instead of returning 404
+  - Detects navigation requests using the same convention as Vite / `connect-history-api-fallback`: `GET` method with `Accept: text/html` and a path with no file extension (or a `.html` extension)
+  - Asset requests (`/missing.js`), XHR/fetch calls (`Accept: */*`), and non-GET methods still return 404 as before
+  - When `ssr` is configured, deep-linked paths fall back to the SSR handler so rendered HTML is returned for every route
+  - Multi-client setups honor `basePath` — a request to `/app/about` resolves the index of the matching client
+- **`historyApiFallback` option** - new field on both `DevServerOptions` and `ClientConfig` to control the behavior
+  - Defaults to `true` (matches the previously-documented intent)
+  - Set `historyApiFallback: false` globally or per-client to restore strict 404s
+
+### Fixed
+- **Dev server router-history reload 404** - the client-app skill docs had long claimed "Elit's dev server does this automatically" for history mode, but the implementation was missing. The fallback is now wired into the request handler at the file-not-found branch and the docs are accurate.
+
+### Tests
+- **History-fallback coverage** - new `testing/unit/server-history-fallback.test.ts` covers navigation fallback, asset-extension exclusion, non-HTML Accept exclusion, SSR priority, opt-out via `historyApiFallback: false`, multi-client `basePath`, and `.html` extension routes
+
 ## [3.7.0] - 2026-06-26
 
 ### Added

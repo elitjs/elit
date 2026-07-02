@@ -134,11 +134,20 @@ export interface NormalizedClient {
   fallbackRoot?: string;
   basePath: string;
   index?: string;
+  historyApiFallback: boolean;
   ssr?: () => Child | string;
   api?: ServerRouter;
   ws: NormalizedWebSocketEndpoint[];
   proxyHandler?: (req: IncomingMessage, res: ServerResponse) => Promise<boolean>;
   mode: 'dev' | 'preview';
+}
+
+export function isHistoryNavigationRequest(req: IncomingMessage, filePath: string): boolean {
+  if (req.method !== 'GET') return false;
+  const accept = req.headers.accept;
+  if (typeof accept !== 'string' || !accept.includes('text/html')) return false;
+  const ext = extname(filePath).toLowerCase();
+  return ext === '' || ext === '.html';
 }
 
 export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' | 'root' | 'fallbackRoot' | 'basePath' | 'ssr' | 'proxy' | 'index' | 'env' | 'domain' | 'ws' | 'smtp' | 'resolve'> = {
@@ -156,6 +165,7 @@ export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' 
   worker: [],
   mode: 'dev',
   serverWatch: true,
+  historyApiFallback: true,
 };
 
 export const ELIT_INTERNAL_WS_PATH = '/__elit_ws';

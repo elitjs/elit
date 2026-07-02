@@ -291,6 +291,29 @@ export default {
 
 Preview mode uses the same shape — `preview.api` runs the production server.
 
+## SPA History-Mode Fallback (`historyApiFallback`)
+
+When a client uses history-mode routing (`createRouter({ mode: 'history' })`), deep-linked reloads like `/about` would otherwise 404 because no file matches that path. The dev server falls back to `index.html` (or SSR output) for navigation requests — `GET` with `Accept: text/html` — by default. Asset requests (`/missing.js`, XHR with `Accept: */*`) still 404 normally.
+
+```ts
+export default {
+  dev: { port: 3003, api: server }              // historyApiFallback defaults to true
+};
+```
+
+Disable per-client or globally:
+```ts
+export default {
+  dev: {
+    port: 3003,
+    historyApiFallback: false,                   // global
+    clients: [
+      { root: '.', basePath: '/app', historyApiFallback: false }  // per-client overrides
+    ]
+  }
+};
+```
+
 ## Gotchas
 
 - **Forgetting `return res...`** in async handlers — request hangs. Make it a habit: every async handler returns `res`.
