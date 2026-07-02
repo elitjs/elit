@@ -1,6 +1,6 @@
-# blockFiles Example (3.6.9)
+# blockFiles Example (3.7.1)
 
-Demonstrates two things added in Elit `3.6.9`:
+Demonstrates two things added in Elit `3.7.1`:
 
 1. **`dev.blockFiles` / `preview.blockFiles`** — glob patterns for files that must never be served over HTTP. Default patterns block `.env`, `*.key`, `*.pem`, `.git/**`, etc. Requests matching a blocked pattern get `403 Forbidden`.
 2. **`elit/config` subpath export** — `import { defineConfig } from 'elit/config'` now resolves via the package exports map.
@@ -100,7 +100,7 @@ Verified output on this repo:
  5/6 checks passed, 1 known preview bug(s)
 ```
 
-## Known issue — `preview.blockFiles` is not forwarded (3.6.9)
+## Known issue — `preview.blockFiles` is not forwarded (3.7.1)
 
 In `src/cli/cli/dev-preview.ts`, `runPreview()` builds a fresh `DevServerOptions` object and copies fields out of `previewConfig` one by one. It forwards `proxy`, `worker`, `api`, `ws`, `https`, and `ssr`, but **never forwards `blockFiles`**:
 
