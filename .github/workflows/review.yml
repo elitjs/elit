@@ -1,4 +1,4 @@
-name: Test AI Code Review Action
+name: AI Code Review Action
 
 on:
   pull_request:
@@ -13,11 +13,6 @@ jobs:
   ai-code-review:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build action
-        run: npm ci && npm run build
 
       - name: Run AI Code Review
         uses: n-devs/ai-code-review@v1.0.0
