@@ -16,7 +16,7 @@
  * Falls back to `npm install` automatically for any package missing a
  * package-lock.json, since `npm ci` requires one.
  */
-import { readdir, readFile, stat } from 'node:fs/promises';
+import { readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
