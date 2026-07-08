@@ -22,6 +22,7 @@ on:
 permissions:
   contents: read
   packages: write  # สำหรับ publish package
+  id-token: write
 
 jobs:
 
