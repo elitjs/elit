@@ -7,11 +7,32 @@ on:
 
 permissions:
   contents: read
-  id-token: write  # จำเป็นสำหรับ --provenance (ดึง OIDC token จาก GitHub)
 
 jobs:
-  publish:
+  generate-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read libs.json and set matrix
+        id: set-matrix
+        run: |
+          libs=$(jq -c '.libs | map({lib: .})' .github/config/packages.json)
+          echo "matrix=$libs" >> $GITHUB_OUTPUT
+
+  build-libs:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # จำเป็นสำหรับ --provenance (ดึง OIDC token จาก GitHub)
+
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+
     if: github.repository == 'elitjs/elit' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
@@ -20,11 +41,28 @@ jobs:
         with:
           fetch-depth: 0  # เพื่อให้เข้าถึง tag ได้
 
-      - name: Compute version and dist-tag
-        run: |
-          PACKAGE_VERSION=${GITHUB_REF#refs/tags/}
-          echo "TAG_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+      - name: Get tag version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'  # เขียน NODE_AUTH_TOKEN ลง .npmrc ให้ publish ได้
+
+      - name: Install dependencies ${{ matrix.lib }}@${{ env.TAG_VERSION }}
+        run: npm run install:ci
+
+      - name: Build ${{ matrix.lib }}@${{ env.TAG_VERSION }}
+        run: npm run build
+
+      - name: Publish ${{ matrix.lib }}@${{ env.TAG_VERSION }}
+        run: |
+          OWNER=${GITHUB_REPOSITORY%/*}
+          PACKAGE_NAME=${{ matrix.lib }}
+          PACKAGE_VERSION=${{ env.TAG_VERSION }}
+
+          # ดึง dist-tag จาก prerelease เช่น v1.0.0-beta -> beta, v1.0.0 -> release
           VERSION_NO_V="${PACKAGE_VERSION#v}"
           VERSION_NO_BUILD="${VERSION_NO_V%%+*}"
           if [[ "$VERSION_NO_BUILD" == *"-"* ]]; then
@@ -33,19 +71,10 @@ jobs:
           else
             DIST_TAG="latest"
           fi
-          echo "DIST_TAG=$DIST_TAG" >> $GITHUB_ENV
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: 'https://registry.npmjs.org'  # เขียน NODE_AUTH_TOKEN ลง .npmrc ให้ publish ได้
-          cache: npm
-          cache-dependency-path: package-lock.json
+          echo "Publishing $PACKAGE_NAME@$PACKAGE_VERSION (tag: $DIST_TAG)"
 
-      - name: Publish all packages (topological order)
-        run: |
-          echo "Publishing all packages at ${{ env.TAG_VERSION }} (tag: ${{ env.DIST_TAG }})"
-          node scripts/publish-all.mjs "${{ env.TAG_VERSION }}" "${{ env.DIST_TAG }}"
+          npm version $PACKAGE_VERSION --prefix ./packages/$PACKAGE_NAME --no-git-tag-version
+          npm publish ./packages/$PACKAGE_NAME --provenance --access public --tag "$DIST_TAG"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
