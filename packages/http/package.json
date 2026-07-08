@@ -37,6 +37,7 @@
     "@elitjs/runtime": "file:../runtime"
   },
   "devDependencies": {
+    "@types/node": "^25.0.10",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0"
   }

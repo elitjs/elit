@@ -1,4 +1,4 @@
-name: Publish @elitjs/wss to NPM
+name: Publish @elitjs/* packages
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF#refs/tags/}
           echo "version=$TAG" >> $GITHUB_OUTPUT
-          echo "Publishing @elitjs/wss version: $TAG"
+          echo "Publishing version: $TAG"
 
       - name: Determine npm tag
         id: npm_tag
@@ -43,24 +43,7 @@ jobs:
           fi
           echo "NPM tag: $(cat $GITHUB_OUTPUT | grep tag= | cut -d= -f2)"
 
-      - name: Install dependencies
-        working-directory: ./packages/wss
-        run: npm ci
-
-      - name: Build
-        working-directory: ./packages/wss
-        run: npm run build
-
-      - name: Wait for @elitjs/* deps
-        working-directory: ./packages/wss
-        run: node ../../scripts/wait-for-deps.mjs ${{ steps.version.outputs.version }}
-
-      - name: "Normalize file: deps"
-        working-directory: ./packages/wss
-        run: node ../../scripts/normalize-deps.mjs ${{ steps.version.outputs.version }}
-
-      - name: Publish to NPM
-        working-directory: ./packages/wss
-        run: npm publish --provenance --access public --tag ${{ steps.npm_tag.outputs.tag }}
+      - name: Build and publish all packages (topological order)
+        run: node scripts/publish-all.mjs ${{ steps.version.outputs.version }} ${{ steps.npm_tag.outputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
