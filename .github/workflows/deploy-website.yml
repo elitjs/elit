@@ -38,7 +38,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./website
-        run: npm install
+        run: npm i -f
 
       - name: Build
         working-directory: ./website
