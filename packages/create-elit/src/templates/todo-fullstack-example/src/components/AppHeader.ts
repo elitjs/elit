@@ -1,6 +1,6 @@
-import { div, h1, header, p, span } from 'elit/el';
-import { routerLink } from 'elit/router';
-import type { Router } from 'elit';
+import { div, h1, header, p, span } from '@elitjs/el';
+import { routerLink } from '@elitjs/router';
+import type { Router } from '@elitjs/router';
 
 export function AppHeader(router: Router) {
   return header({ className: 'app-header' },

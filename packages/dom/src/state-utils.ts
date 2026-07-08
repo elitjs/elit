@@ -1,5 +1,13 @@
-import type { State, StateOptions, VirtualListController, VNode } from '../../core/types';
+import type { State, StateOptions, VirtualListController, VNode } from '@elitjs/core';
 import { renderToDOM } from './dom-render';
+
+type StateCreatedHook = (state: State<any>) => void;
+
+let stateCreatedHook: StateCreatedHook | null = null;
+
+export function setStateCreatedHook(hook: StateCreatedHook | null): void {
+    stateCreatedHook = hook;
+}
 
 export function createState<T>(initialValue: T, options: StateOptions = {}): State<T> {
     let value = initialValue;
@@ -22,7 +30,7 @@ export function createState<T>(initialValue: T, options: StateOptions = {}): Sta
         }
     };
 
-    return {
+    const state: State<T> = {
         get value() {
             return value;
         },
@@ -44,6 +52,9 @@ export function createState<T>(initialValue: T, options: StateOptions = {}): Sta
             }
         },
     };
+
+    stateCreatedHook?.(state);
+    return state;
 }
 
 export function computed<T extends any[], R>(states: { [K in keyof T]: State<T[K]> }, computeFn: (...values: T) => R): State<R> {

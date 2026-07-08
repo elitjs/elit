@@ -46,7 +46,7 @@ if ! grep -Fq 'ElitImagePlaceholder(' "$GENERATED_SCREEN_PATH"; then
   echo "[universal-test] FAILED: generated mobile Compose output is missing ElitImagePlaceholder("
   exit 1
 fi
-if ! grep -Fq 'openUri("https://github.com/d-osc/elit")' "$GENERATED_SCREEN_PATH"; then
+if ! grep -Fq 'openUri("https://github.com/elitjs/elit")' "$GENERATED_SCREEN_PATH"; then
   echo "[universal-test] FAILED: generated mobile Compose output is missing openUri(...)"
   exit 1
 fi

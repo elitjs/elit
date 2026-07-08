@@ -45,7 +45,7 @@ Use `wc -l` or your editor's line count.
 
 ```ts
 // src/main.ts (target shape — ≤10 lines)
-import { dom } from 'elit/dom';
+import { dom } from '@elitjs/dom';
 import { injectGlobalStyles } from './styles';
 import { App } from './components/App/App';
 
@@ -55,8 +55,8 @@ dom.render('#app', App());
 
 ```ts
 // src/components/App/App.ts
-import { div } from 'elit/el';
-import { reactive } from 'elit/state';
+import { div } from '@elitjs/el';
+import { reactive } from '@elitjs/state';
 import { router } from '../../router';
 import { RouterView } from '../../router';
 import { Header } from '../Header/Header';
@@ -78,7 +78,7 @@ export const App = () =>
 
 ```ts
 // src/client-head.ts
-import { title, link, meta, script } from 'elit/el';
+import { title, link, meta, script } from '@elitjs/el';
 
 export const headNodes = () => [
   title('App Name'),
@@ -93,7 +93,7 @@ export const bodyScripts = () => [
 
 ```ts
 // src/client.ts (target shape — ≤15 lines)
-import { html, head, body, div } from 'elit/el';
+import { html, head, body, div } from '@elitjs/el';
 import { headNodes, bodyScripts } from './client-head';
 
 export const client = () =>
@@ -126,7 +126,7 @@ export const authRoutes: RouteEntry[] = [
 
 ```ts
 // src/router.ts (target shape — ≤30 lines)
-import { createRouter, createRouterView } from 'elit/router';
+import { createRouter, createRouterView } from '@elitjs/router';
 import { HomePage } from './pages/HomePage';
 import { authRoutes } from './pages/auth/authRoutes';
 import { profileRoutes } from './pages/profile/profileRoutes';
@@ -221,7 +221,7 @@ router.post('/api/chat/send', async (req, res) => {
 
 ```ts
 // src/server/_shared/db-helpers.ts
-import type { Database } from 'elit/database';
+import type { Database } from '@elitjs/database';
 
 export const extractRows = <T>(result: unknown): T[] => {
   const rows = (result as any)?.logs?.[0]?.args?.[0];

@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import type { NativeNode, NativePropValue } from '../types';
 import { parseBoxShadowList, resolveBackdropBlurRadius, resolveStyleCurrentColor } from '../color';
 import { getNativeStyleResolveOptions, toDpLiteral, toScaledUnitNumber } from '../units';

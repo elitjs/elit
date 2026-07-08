@@ -18,7 +18,7 @@ export const screen = () => div(
         input({ type: 'checkbox', checked: false }),
         span(' Second toggle verifies multiple remember state bindings.')
     ),
-    a({ href: 'https://github.com/d-osc/elit' }, 'Open Elit repository'),
+    a({ href: 'https://github.com/elitjs/elit' }, 'Open Elit repository'),
     ul(
         li('Shared Elit syntax'),
         li('Generated Compose text inputs'),

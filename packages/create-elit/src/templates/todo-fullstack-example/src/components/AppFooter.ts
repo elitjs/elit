@@ -1,4 +1,4 @@
-import { a, div, footer, p } from 'elit/el';
+import { a, div, footer, p } from '@elitjs/el';
 
 export function AppFooter() {
   return footer({ className: 'app-footer' },
@@ -8,7 +8,7 @@ export function AppFooter() {
       ),
       div({ className: 'footer-links' },
         a({ href: 'https://d-osc.github.io/elit/#/docs', target: '_blank', className: 'footer-link' }, 'Documentation'),
-        a({ href: 'https://github.com/d-osc/elit', target: '_blank', className: 'footer-link' }, 'GitHub'),
+        a({ href: 'https://github.com/elitjs/elit', target: '_blank', className: 'footer-link' }, 'GitHub'),
         a({ href: '#', className: 'footer-link' }, 'databases/todo.ts')
       )
     )

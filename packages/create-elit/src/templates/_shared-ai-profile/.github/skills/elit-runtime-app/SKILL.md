@@ -33,7 +33,7 @@ Config files are loaded in this order (first match wins): `elit.config.ts`, `.mt
 
 ```ts
 // elit.config.ts
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 import { server } from './src/server';
 import { client } from './src/client';
 
@@ -363,8 +363,8 @@ Read these before writing code in unfamiliar areas — they have signatures, exa
 - Mobile workflow (`mobile init`, `doctor`, `sync`, `run`, `build`): https://d-osc.github.io/elit/CONFIG.md#mobile
 - Desktop workflow (`desktop run`, `build`, `wapk`): https://d-osc.github.io/elit/CONFIG.md#desktop
 - WAPK packaging (`wapk build`, `run`, online/Google Drive sync): https://d-osc.github.io/elit/CONFIG.md#wapk
-- GitHub repo (browse `src/cli/`, `src/build/`): https://github.com/d-osc/elit
-- Release notes (breaking changes between versions): https://github.com/d-osc/elit/releases
+- GitHub repo (browse `src/cli/`, `src/build/`): https://github.com/elitjs/elit
+- Release notes (breaking changes between versions): https://github.com/elitjs/elit/releases
 
 **Related skills:**
 - `elit-client-app` — when config touches the browser side (`build[].entry`, `dev.ssr`, `dev.clients[].ssr`, `resolve.alias` for browser imports)

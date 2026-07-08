@@ -3,7 +3,7 @@ import type { Child, State } from '../../../src/types';
 
 export const APP_NAME = 'Elit Universal Example';
 export const APP_TAGLINE = 'One repo validating browser, desktop, and Android mobile workflows.';
-export const APP_LINK = 'https://github.com/d-osc/elit';
+export const APP_LINK = 'https://github.com/elitjs/elit';
 
 export const INITIAL_VALIDATION_COUNT = 3;
 export const INITIAL_VALIDATION_TARGET = 'web + desktop + mobile';

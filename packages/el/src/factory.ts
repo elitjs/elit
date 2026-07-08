@@ -1,4 +1,4 @@
-import type { Child, ElementFactory, Props, VNode } from '../../core/types';
+import type { Child, ElementFactory, Props, VNode } from '@elitjs/core';
 import { flattenChildren, isStateLike, isVNodeLike } from './helpers';
 
 export const createElementFactory = (tag: string): ElementFactory => {

@@ -2,12 +2,12 @@
  * Elit - DomNode Core Class
  */
 
-import type { VNode, Child, Children, Props, State, StateOptions, VirtualListController, JsonNode, VNodeJson } from '../../core/types';
+import type { VNode, Child, Children, Props, State, StateOptions, VirtualListController, JsonNode, VNodeJson } from '@elitjs/core';
 import { addLink, addMeta, addStyle, batchRender, cleanupUnusedElements, render as renderDom, renderChunked, renderToDOM, renderToHead, setTitle } from './dom-render';
 import { jsonToVNode, renderJson, renderJsonToString, renderVNode, renderVNodeToString, vNodeJsonToVNode } from './json';
 import type { ReactiveNodes } from './reactive';
 import { renderToHTMLDocument, renderToString as renderToStringDom } from './string-render';
-import { computed, createState, createVirtualList, effect, lazy } from './state-utils';
+import { computed, createState, createVirtualList, effect, lazy, setStateCreatedHook } from './state-utils';
 
 export class DomNode {
     private elementCache = new WeakMap<Element, boolean>();
@@ -149,3 +149,4 @@ export const dom = new DomNode();
 export const render = dom.render.bind(dom);
 export const renderToString = dom.renderToString.bind(dom);
 export const mount = render; // alias for render
+export { setStateCreatedHook };

@@ -1,4 +1,4 @@
-﻿import { type NativeStyleResolveOptions } from '../client/style';
+﻿import { type NativeStyleResolveOptions } from '@elitjs/style';
 
 export type NativePlatform = 'generic' | 'android' | 'ios';
 

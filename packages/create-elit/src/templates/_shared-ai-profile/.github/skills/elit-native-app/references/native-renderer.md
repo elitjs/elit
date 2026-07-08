@@ -11,8 +11,8 @@ Plus helpers for debugging and CLI integration.
 ## `renderNativeTree(input, options?)`
 
 ```ts
-import { renderNativeTree } from 'elit/native';
-import { div, h1, button } from 'elit/el';
+import { renderNativeTree } from '@elitjs/native';
+import { div, h1, button } from '@elitjs/el';
 
 const tree = renderNativeTree(
   div({ class: 'container' },
@@ -45,8 +45,8 @@ interface NativeTransformOptions {
 Same as `renderNativeTree` but returns a pretty JSON string. Use for debugging — see exactly what the codegen will receive.
 
 ```ts
-import { renderNativeJson } from 'elit/native';
-import { div } from 'elit/el';
+import { renderNativeJson } from '@elitjs/native';
+import { div } from '@elitjs/el';
 
 console.log(renderNativeJson(div({ class: 'card' }, 'Hi'), { platform: 'ios' }));
 /*
@@ -61,7 +61,7 @@ console.log(renderNativeJson(div({ class: 'card' }, 'Hi'), { platform: 'ios' }))
 ## `renderAndroidCompose(input, options?)`
 
 ```ts
-import { renderAndroidCompose } from 'elit/native';
+import { renderAndroidCompose } from '@elitjs/native';
 
 const kotlin = renderAndroidCompose(
   irOrVNode,
@@ -116,7 +116,7 @@ fun HomeScreenPreview() = HomeScreen()
 ## `renderSwiftUI(input, options?)`
 
 ```ts
-import { renderSwiftUI } from 'elit/native';
+import { renderSwiftUI } from '@elitjs/native';
 
 const swift = renderSwiftUI(
   irOrVNode,
@@ -240,8 +240,8 @@ Flags:
 ### Render from a VNode directly (no intermediate IR)
 
 ```ts
-import { div, h1 } from 'elit/el';
-import { renderAndroidCompose } from 'elit/native';
+import { div, h1 } from '@elitjs/el';
+import { renderAndroidCompose } from '@elitjs/native';
 
 const kotlin = renderAndroidCompose(
   div(h1('Hi')),
@@ -254,7 +254,7 @@ Both `renderAndroidCompose` and `renderSwiftUI` accept either input — they aut
 ### Inspect IR before codegen
 
 ```ts
-import { renderNativeTree, renderAndroidCompose } from 'elit/native';
+import { renderNativeTree, renderAndroidCompose } from '@elitjs/native';
 
 const ir = renderNativeTree(tree, { platform: 'android' });
 
@@ -267,7 +267,7 @@ const kotlin = renderAndroidCompose(ir, { packageName: 'com.app' });
 ### Generate for multiple platforms from one tree
 
 ```ts
-import { renderNativeTree, renderAndroidCompose, renderSwiftUI } from 'elit/native';
+import { renderNativeTree, renderAndroidCompose, renderSwiftUI } from '@elitjs/native';
 
 const tree = renderNativeTree(vnode, { platform: 'generic' });
 

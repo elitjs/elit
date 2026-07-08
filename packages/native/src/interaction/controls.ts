@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import { prependComposeModifierCall } from '../canvas';
 import { parseCssColor, toComposeColorLiteral } from '../color';
 import { buildComposeTextStyleLiteralFromStyle } from '../typography';

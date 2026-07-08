@@ -1,4 +1,4 @@
-import type { Props, State } from '../../core/types';
+import type { Props, State } from '@elitjs/core';
 
 export type NativeBindingKind = 'value' | 'checked';
 

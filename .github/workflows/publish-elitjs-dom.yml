@@ -1,0 +1,66 @@
+name: Publish @elitjs/dom to NPM
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "version=$TAG" >> $GITHUB_OUTPUT
+          echo "Publishing @elitjs/dom version: $TAG"
+
+      - name: Determine npm tag
+        id: npm_tag
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if [[ $VERSION == *"beta"* ]]; then
+            echo "tag=beta" >> $GITHUB_OUTPUT
+          elif [[ $VERSION == *"alpha"* ]]; then
+            echo "tag=alpha" >> $GITHUB_OUTPUT
+          elif [[ $VERSION == *"rc"* ]]; then
+            echo "tag=rc" >> $GITHUB_OUTPUT
+          elif [[ $VERSION == *"next"* ]]; then
+            echo "tag=next" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+          echo "NPM tag: $(cat $GITHUB_OUTPUT | grep tag= | cut -d= -f2)"
+
+      - name: Install dependencies
+        working-directory: ./packages/dom
+        run: npm ci
+
+      - name: Build
+        working-directory: ./packages/dom
+        run: npm run build
+
+      - name: Wait for @elitjs/* deps
+        working-directory: ./packages/dom
+        run: node ../../scripts/wait-for-deps.mjs ${{ steps.version.outputs.version }}
+
+      - name: "Normalize file: deps"
+        working-directory: ./packages/dom
+        run: node ../../scripts/normalize-deps.mjs ${{ steps.version.outputs.version }}
+
+      - name: Publish to NPM
+        working-directory: ./packages/dom
+        run: npm publish --provenance --access public --tag ${{ steps.npm_tag.outputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

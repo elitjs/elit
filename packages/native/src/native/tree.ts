@@ -1,5 +1,5 @@
-import { ELIT_NATIVE_BINDING, type NativeBindingMetadata } from '../../client/state';
-import type { Child, Props, VNode } from '../../core/types';
+import { ELIT_NATIVE_BINDING, type NativeBindingMetadata } from '@elitjs/state';
+import type { Child, Props, VNode } from '@elitjs/core';
 import type {
     NativeBindingReference,
     NativeElementNode,
@@ -509,7 +509,7 @@ function toNativeNodes(
 
     if (!child.tagName) {
         const fragmentChildren: NativeNode[] = [];
-        for (const item of child.children) {
+        for (const item of child.children ?? []) {
             const converted = toNativeNodes(item, options, parentComponent, stateContext);
             for (const node of converted) {
                 fragmentChildren.push(wrapTextNodeIfNeeded(node, parentComponent, options));
@@ -520,7 +520,7 @@ function toNativeNodes(
 
     if (TRANSPARENT_NATIVE_TAGS.has(child.tagName)) {
         const transparentChildren: NativeNode[] = [];
-        for (const item of child.children) {
+        for (const item of child.children ?? []) {
             const converted = toNativeNodes(item, options, parentComponent, stateContext);
             for (const node of converted) {
                 transparentChildren.push(wrapTextNodeIfNeeded(node, parentComponent, options));
@@ -539,11 +539,11 @@ function toNativeNodes(
 
     const component = resolveComponent(child.tagName, options);
     const childNodes: NativeNode[] = [];
-    for (const item of child.children) {
+    for (const item of child.children ?? []) {
         childNodes.push(...toNativeNodes(item, options, component, stateContext));
     }
 
-    const { props, events } = normalizeProps(component, child.props, stateContext);
+    const { props, events } = normalizeProps(component, child.props ?? {}, stateContext);
     const resolvedComponent = isCheckboxInput(child.tagName, props)
         ? 'Toggle'
         : isRangeInput(child.tagName, props)

@@ -1,4 +1,4 @@
-import type { Child, Children, JsonNode, Props, State, VNode, VNodeJson } from '../../core/types';
+import type { Child, Children, JsonNode, Props, State, VNode, VNodeJson } from '@elitjs/core';
 import { isPrimitiveJson, isState } from './helpers';
 import type { ReactiveNodes } from './reactive';
 import { createReactiveChild } from './reactive';

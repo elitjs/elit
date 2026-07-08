@@ -1,6 +1,6 @@
-import { div, h2, h3, p, button, span, input } from 'elit/el';
-import { createState, reactive } from 'elit/state';
-import type { Router } from 'elit';
+import { div, h2, h3, p, button, span, input } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
+import type { Router } from '@elitjs/router';
 
 interface User {
   id: string;

@@ -47,7 +47,7 @@ if (-not $generatedScreen.Contains('Checkbox(')) {
 if (-not $generatedScreen.Contains('ElitImagePlaceholder(')) {
     throw '[universal-test] FAILED: generated mobile Compose output is missing ElitImagePlaceholder('
 }
-if (-not $generatedScreen.Contains('openUri("https://github.com/d-osc/elit")')) {
+if (-not $generatedScreen.Contains('openUri("https://github.com/elitjs/elit")')) {
     throw '[universal-test] FAILED: generated mobile Compose output is missing openUri(...)'
 }
 

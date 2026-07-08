@@ -62,4 +62,4 @@ Generated Android native files land at:
 - `mobile init` currently creates both Android and iOS scaffold folders; this example disables native iOS generation in config so Android stays the focus.
 - The smoke scripts treat `mobile doctor --json` as informational because some machines may not have a full Android toolchain installed yet.
 - The auto-run helper prefers emulator ids like `emulator-5554` before falling back to a physical device.
-- The smoke scripts fail if the generated Kotlin file is missing two `OutlinedTextField(` blocks, two `Checkbox(` blocks, `ElitImagePlaceholder(`, or `openUri("https://github.com/d-osc/elit")`.
+- The smoke scripts fail if the generated Kotlin file is missing two `OutlinedTextField(` blocks, two `Checkbox(` blocks, `ElitImagePlaceholder(`, or `openUri("https://github.com/elitjs/elit")`.

@@ -100,7 +100,7 @@ Run with: `npm run test:coverage` → `elit test --coverage`.
 
 ```ts
 // src/utils/format.test.ts
-import { describe, it, expect } from 'elit/test';
+import { describe, it, expect } from '@elitjs/test';
 
 describe('format', () => {
   it('formats currency', () => {
@@ -127,7 +127,7 @@ describe('format', () => {
 ## Async Tests
 
 ```ts
-import { describe, it, expect } from 'elit/test';
+import { describe, it, expect } from '@elitjs/test';
 
 describe('user API', () => {
   it('fetches a user', async () => {
@@ -153,7 +153,7 @@ test: {
 
 ```ts
 // test/setup.ts
-import { beforeAll, afterAll } from 'elit/test';
+import { beforeAll, afterAll } from '@elitjs/test';
 import { startTestServer } from './testServer';
 
 beforeAll(async () => {

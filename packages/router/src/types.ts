@@ -1,4 +1,4 @@
-import type { Child, Props, State, VNode } from '../../core/types';
+import type { Child, Props, State, VNode } from '@elitjs/core';
 
 export interface Route {
     path: string;

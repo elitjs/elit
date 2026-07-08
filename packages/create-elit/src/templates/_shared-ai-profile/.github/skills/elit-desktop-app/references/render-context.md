@@ -8,7 +8,7 @@ The render-context subsystem decides which renderer runs (browser DOM vs native)
 Returns the current runtime target — `'web'`, `'desktop'`, `'mobile'`, or `'unknown'`.
 
 ```ts
-import { detectRenderRuntimeTarget } from 'elit/desktop';
+import { detectRenderRuntimeTarget } from '@elitjs/desktop';
 
 const target = detectRenderRuntimeTarget();
 
@@ -28,7 +28,7 @@ if (target === 'desktop') {
 Force-set the target. Returns the previous target (or `undefined`). Affects subsequent `detectRenderRuntimeTarget()` calls.
 
 ```ts
-import { setRenderRuntimeTarget, detectRenderRuntimeTarget } from 'elit/desktop';
+import { setRenderRuntimeTarget, detectRenderRuntimeTarget } from '@elitjs/desktop';
 
 const previous = setRenderRuntimeTarget('desktop');
 // ... code that runs differently based on target
@@ -54,7 +54,7 @@ The auto-render pipeline captures the VNode tree that `dom.render()` produced, s
 Stores the rendered VNode + target in a global slot. Called by the framework — app code rarely needs this.
 
 ```ts
-import { captureRenderedVNode } from 'elit/desktop';
+import { captureRenderedVNode } from '@elitjs/desktop';
 
 captureRenderedVNode('#app', vNode, 'desktop');
 ```
@@ -66,7 +66,7 @@ captureRenderedVNode('#app', vNode, 'desktop');
 Returns the captured state, or `undefined`.
 
 ```ts
-import { getCapturedRenderedVNode } from 'elit/desktop';
+import { getCapturedRenderedVNode } from '@elitjs/desktop';
 
 const captured = getCapturedRenderedVNode();
 if (captured?.target === 'desktop') {
@@ -94,7 +94,7 @@ Configure the window that auto-render will create.
 Merges with existing options. Stored in `globalThis.__ELIT_DESKTOP_RENDER_OPTIONS__`.
 
 ```ts
-import { setDesktopRenderOptions } from 'elit/desktop';
+import { setDesktopRenderOptions } from '@elitjs/desktop';
 
 setDesktopRenderOptions({
   title: 'My App',
@@ -133,7 +133,7 @@ Clears the stored options. Use when re-initializing between sessions.
 Final step of the auto-render pipeline. Generates HTML from the captured VNode, installs the message handler, and calls `createWindow()`.
 
 ```ts
-import { completeDesktopAutoRender } from 'elit/desktop';
+import { completeDesktopAutoRender } from '@elitjs/desktop';
 
 completeDesktopAutoRender({
   title: 'My App',
@@ -148,7 +148,7 @@ Called by the framework after `dom.render()` completes. You don't invoke this di
 Wraps `createWindow` to detect when a window is created. Sets `__ELIT_DESKTOP_WINDOW_CREATED__` flag. Useful in tests to assert a window was opened.
 
 ```ts
-import { installDesktopRenderTracking } from 'elit/desktop';
+import { installDesktopRenderTracking } from '@elitjs/desktop';
 
 installDesktopRenderTracking();
 // ... trigger render ...
@@ -175,7 +175,7 @@ Read these for diagnostics — don't write to them directly.
 ### Conditional desktop features
 
 ```ts
-import { detectRenderRuntimeTarget } from 'elit/desktop';
+import { detectRenderRuntimeTarget } from '@elitjs/desktop';
 
 const isDesktop = detectRenderRuntimeTarget() === 'desktop';
 
@@ -190,8 +190,8 @@ const App = () =>
 
 ```ts
 // src/main.ts
-import { setDesktopRenderOptions, detectRenderRuntimeTarget } from 'elit/desktop';
-import { dom } from 'elit/dom';
+import { setDesktopRenderOptions, detectRenderRuntimeTarget } from '@elitjs/desktop';
+import { dom } from '@elitjs/dom';
 
 if (detectRenderRuntimeTarget() === 'desktop') {
   setDesktopRenderOptions({
@@ -212,7 +212,7 @@ import {
   setRenderRuntimeTarget,
   installDesktopRenderTracking,
   detectRenderRuntimeTarget
-} from 'elit/desktop';
+} from '@elitjs/desktop';
 
 test('creates window in desktop mode', () => {
   setRenderRuntimeTarget('desktop');

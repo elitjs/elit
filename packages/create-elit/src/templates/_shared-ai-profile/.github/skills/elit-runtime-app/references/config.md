@@ -18,7 +18,7 @@ Elit looks for these files in the project root, first match wins:
 A no-op type helper that returns its input. Use it for IDE autocomplete.
 
 ```ts
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 import { server } from './src/server';
 import { client } from './src/client';
 

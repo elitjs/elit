@@ -552,10 +552,10 @@ const server = require('./src/server');
 
 ## Learn More
 
-- [Elit Documentation](https://github.com/d-osc/elit)
-- [ServerRouter API](https://github.com/d-osc/elit#serverrouter)
-- [SSR Guide](https://github.com/d-osc/elit#server-side-rendering)
-- [Configuration Options](https://github.com/d-osc/elit#configuration)
+- [Elit Documentation](https://github.com/elitjs/elit)
+- [ServerRouter API](https://github.com/elitjs/elit#serverrouter)
+- [SSR Guide](https://github.com/elitjs/elit#server-side-rendering)
+- [Configuration Options](https://github.com/elitjs/elit#configuration)
 
 ---
 

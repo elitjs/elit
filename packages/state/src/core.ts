@@ -1,5 +1,5 @@
-import type { State, StateOptions, VNode, VirtualListController } from '../../core/types';
-import { dom } from '../dom';
+import type { State, StateOptions, VNode, VirtualListController } from '@elitjs/core';
+import { dom } from '@elitjs/dom';
 
 export const createState = <T>(initial: T, options?: StateOptions): State<T> =>
     dom.createState(initial, options);

@@ -30,7 +30,7 @@ if (!user) {
 
 ```ts
 // src/server/_shared/auth-middleware.ts
-import { ElitRequest, ElitResponse } from 'elit/server';
+import { ElitRequest, ElitResponse } from '@elitjs/server';
 import { parseBearerToken } from './bearer';
 import { verifyToken } from '../auth/tokens';
 import { sendUnauthorized } from './response-helpers';
@@ -57,7 +57,7 @@ export const requireAuth = (req: ElitRequest, res: ElitResponse): AuthContext | 
 
 ```ts
 // src/server/_shared/bearer.ts
-import { ElitRequest } from 'elit/server';
+import { ElitRequest } from '@elitjs/server';
 
 export const parseBearerToken = (req: ElitRequest): string | null => {
   const header = req.headers.authorization;
@@ -192,7 +192,7 @@ res.end(JSON.stringify({ error: 'Bad request' }));
 
 ```ts
 // src/server/_shared/response-helpers.ts
-import { ElitResponse } from 'elit/server';
+import { ElitResponse } from '@elitjs/server';
 
 export const json = (res: ElitResponse, status: number, body: unknown): void => {
   res.statusCode = status;
@@ -299,7 +299,7 @@ addClass('card', { backgroundColor: '#ffffff', padding: '16px', borderColor: '#e
 
 ```ts
 // src/styles/tokens.ts
-import { createStyles } from 'elit/style';
+import { createStyles } from '@elitjs/style';
 
 export const tokens = createStyles();
 tokens.addVar('color-bg', '#ffffff');
@@ -317,7 +317,7 @@ tokens.addVar('radius-md', '8px');
 
 ```ts
 // src/components/Button/Button.styles.ts
-import { createStyles } from 'elit/style';
+import { createStyles } from '@elitjs/style';
 import { tokens } from '../../styles/tokens';
 
 export const buttonStyles = createStyles(tokens);
@@ -460,7 +460,7 @@ router.get('/api/chat/events', (req, res) => {
 
 ```ts
 // src/server/_shared/sse-channels.ts
-import { ElitRequest, ElitResponse } from 'elit/server';
+import { ElitRequest, ElitResponse } from '@elitjs/server';
 
 type Client = ElitResponse & { _id?: string };
 

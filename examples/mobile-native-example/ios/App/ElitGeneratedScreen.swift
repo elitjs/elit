@@ -13,7 +13,7 @@ struct ElitGeneratedScreen: View {
             Toggle("", isOn: $toggleValue0)
                 .labelsHidden()
             Button(action: {
-                if let destination = URL(string: "https://github.com/d-osc/elit") {
+                if let destination = URL(string: "https://github.com/elitjs/elit") {
                     openURL(destination)
                 }
             }) {

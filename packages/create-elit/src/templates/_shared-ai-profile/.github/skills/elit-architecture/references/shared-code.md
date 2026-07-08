@@ -119,7 +119,7 @@ export const toPublicUser = (user: User): PublicUser => {
 ```ts
 // src/pages/profile/ProfilePage.ts
 import type { PublicUser } from '../../../shared/types/user';
-import { createState } from 'elit/state';
+import { createState } from '@elitjs/state';
 import { fetchJson } from '../../../shared/utils/fetch';
 
 export const ProfilePage = () => {
@@ -161,7 +161,7 @@ export const validatePassword = (value: string): string | null =>
 
 ```ts
 import { validateEmail } from '../../../shared/utils/validation';
-import { computed } from 'elit/state';
+import { computed } from '@elitjs/state';
 
 const emailError = computed({ email }, ({ email }) => validateEmail(email));
 ```
@@ -315,7 +315,7 @@ For cleaner imports, configure aliases in `elit.config.ts`:
 ```ts
 // elit.config.ts
 import path from 'node:path';
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 
 export default defineConfig({
   resolve: {

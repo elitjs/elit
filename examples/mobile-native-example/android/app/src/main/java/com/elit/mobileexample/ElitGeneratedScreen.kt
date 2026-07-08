@@ -22,7 +22,7 @@ fun ElitGeneratedScreen() {
             onCheckedChange = { toggleValue0 = it },
             modifier = Modifier
         )
-        TextButton(onClick = { uriHandler.openUri("https://github.com/d-osc/elit") }, modifier = Modifier) {
+        TextButton(onClick = { uriHandler.openUri("https://github.com/elitjs/elit") }, modifier = Modifier) {
             Text(text = "Open project page")
         }
         Button(onClick = { /* TODO: wire elit event(s): press */ }, modifier = Modifier) {

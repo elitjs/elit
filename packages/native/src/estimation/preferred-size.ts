@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import type { NativeNode, NativePropValue } from '../types';
 import { isFillValue } from '../color';
 import { parseCssUnitValue, resolveAxisUnitNumber, toScaledUnitNumber } from '../units';

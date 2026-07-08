@@ -1,4 +1,4 @@
-import type { ElementFactory } from '../../core/types';
+import type { ElementFactory } from '@elitjs/core';
 
 export const tags = [
     'html', 'head', 'body', 'title', 'base', 'link', 'meta', 'style',

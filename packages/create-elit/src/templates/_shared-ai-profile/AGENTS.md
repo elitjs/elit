@@ -67,8 +67,8 @@ CRITICAL: `createRouterView(router, options)` returns a **function**. Render it 
 
 ```ts
 // src/server.ts
-import { ElitRequest, ElitResponse, ServerRouter } from 'elit/server';
-import { Database } from 'elit/database';
+import { ElitRequest, ElitResponse, ServerRouter } from '@elitjs/server';
+import { Database } from '@elitjs/database';
 
 export const router = new ServerRouter();
 
@@ -160,7 +160,7 @@ When the skills don't cover a question in depth, these are the canonical sources
 - Native CSS support: https://d-osc.github.io/elit/native-css-support.md
 - Native element support: https://d-osc.github.io/elit/native-element-support.md
 - Cross-runtime subpath docs (`http`, `ws`, `fs`, `path`, `mime-types`, `chokidar`): https://d-osc.github.io/elit/API.md
-- Framework source (when the type defs aren't enough): https://github.com/d-osc/elit
-- Release notes / breaking changes: https://github.com/d-osc/elit/releases
+- Framework source (when the type defs aren't enough): https://github.com/elitjs/elit
+- Release notes / breaking changes: https://github.com/elitjs/elit/releases
 
 **When the docs and the installed package disagree, the installed package wins** — pin to the version in `package.json` and consult the matching release notes.

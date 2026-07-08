@@ -36,4 +36,4 @@ Open http://localhost:3003 and start adding tasks. Every create, update, complet
 ## Learn more
 
 - [Elit Documentation](https://d-osc.github.io/elit)
-- [GitHub Repository](https://github.com/d-osc/elit)
+- [GitHub Repository](https://github.com/elitjs/elit)

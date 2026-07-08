@@ -31,7 +31,7 @@ if (($generatedScreen.Split('Checkbox(').Length - 1) -lt 2) {
     throw '[android-native-test] FAILED: generated Compose output should contain two Checkbox blocks'
 }
 
-if (-not $generatedScreen.Contains('openUri("https://github.com/d-osc/elit")')) {
+if (-not $generatedScreen.Contains('openUri("https://github.com/elitjs/elit")')) {
     throw '[android-native-test] FAILED: generated Compose output is missing openUri(...) for the external link'
 }
 

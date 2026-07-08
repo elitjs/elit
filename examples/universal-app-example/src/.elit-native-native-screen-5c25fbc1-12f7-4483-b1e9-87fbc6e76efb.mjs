@@ -873,7 +873,7 @@ var sharedStateManager = new SharedStateManager();
 // shared.ts
 var APP_NAME = "Elit Universal Example";
 var APP_TAGLINE = "One repo validating browser, desktop, and Android mobile workflows.";
-var APP_LINK = "https://github.com/d-osc/elit";
+var APP_LINK = "https://github.com/elitjs/elit";
 var INITIAL_VALIDATION_COUNT = 3;
 var INITIAL_VALIDATION_TARGET = "web + desktop + mobile";
 var INITIAL_REPO_NOTE = "Desktop and mobile are driven from the same repo.";

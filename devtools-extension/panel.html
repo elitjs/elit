@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Elit</title>
+    <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+    <div class="root">
+        <header class="header">
+            <div class="brand">
+                <img id="brand-icon" class="brand-icon" src="favicon.svg" alt="Elit">
+                <h1>Elit DevTools</h1>
+            </div>
+            <span id="status" class="status">No Elit app detected</span>
+        </header>
+        <nav class="tabs">
+            <button class="tab active" data-tab="components">Components</button>
+            <button class="tab" data-tab="state">State (<span data-count="state">0</span>)</button>
+            <button class="tab" data-tab="router">Router (<span data-count="router">0</span>)</button>
+            <button class="tab" data-tab="perf">Perf</button>
+        </nav>
+        <main id="content" class="content"></main>
+    </div>
+    <script src="panel.js"></script>
+</body>
+</html>

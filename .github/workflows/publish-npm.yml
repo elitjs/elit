@@ -79,6 +79,12 @@ jobs:
           # Update version in package.json
           npm version ${{ steps.extract_tag.outputs.version }} --no-git-tag-version --allow-same-version
 
+      - name: "Normalize file: deps"
+        run: node ./scripts/normalize-deps.mjs ${{ steps.extract_tag.outputs.git_tag }}
+
+      - name: Wait for @elitjs/* deps
+        run: node ./scripts/wait-for-deps.mjs ${{ steps.extract_tag.outputs.git_tag }}
+
       - name: Publish to NPM
         run: |
           npm publish --tag ${{ steps.extract_tag.outputs.npm_tag }} --provenance --access public

@@ -1,4 +1,4 @@
-import { dom } from '../dom';
+import { dom } from '@elitjs/dom';
 import { buildNavigationUrl, executeGuard, findRoute, getCurrentPath, parseLocation } from './helpers';
 import type { RouteLocation, Router, RouterOptions } from './types';
 

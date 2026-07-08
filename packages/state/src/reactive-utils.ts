@@ -1,5 +1,5 @@
-import type { Child, Props, VNode } from '../../core/types';
-import { dom } from '../dom';
+import type { Child, Props, VNode } from '@elitjs/core';
+import { dom } from '@elitjs/dom';
 
 export const scheduleRAFUpdate = (rafId: number | null, updateFn: () => void): number => {
     if (rafId) {
@@ -20,7 +20,7 @@ export const renderToFragment = (content: VNode | Child | Child[], isVNode?: boo
         }
     } else if (isVNode && content && typeof content === 'object' && 'tagName' in content) {
         const { children } = content as VNode;
-        for (const child of children) {
+        for (const child of children ?? []) {
             dom.renderToDOM(child, fragment);
         }
     } else {

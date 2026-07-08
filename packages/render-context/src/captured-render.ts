@@ -1,4 +1,4 @@
-import type { VNode } from '../../core/types';
+import type { VNode } from '@elitjs/core';
 
 import { CAPTURED_RENDER_KEY, RUNTIME_TARGET_KEY } from './constants';
 import { getGlobalRenderScope } from './globals';

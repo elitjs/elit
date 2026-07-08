@@ -1,5 +1,5 @@
-import type { Child, Props, State, VNode } from '../../core/types';
-import { dom } from '../dom';
+import type { Child, Props, State, VNode } from '@elitjs/core';
+import { dom } from '@elitjs/dom';
 import { renderToFragment, scheduleRAFUpdate, updateElementProps } from './reactive-utils';
 
 export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Child | Child[]): VNode => {
@@ -37,7 +37,7 @@ export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Chi
                 const isCurrentVNode = !!(isVNodeResult && newResult && typeof newResult === 'object' && 'tagName' in newResult);
                 if (isCurrentVNode) {
                     const { props } = newResult as VNode;
-                    updateElementProps(elementRef, props);
+                    updateElementProps(elementRef, props ?? {});
                 }
 
                 const fragment = renderToFragment(newResult as any, isCurrentVNode);

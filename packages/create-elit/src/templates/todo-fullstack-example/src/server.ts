@@ -1,5 +1,5 @@
-import { Database } from 'elit/database';
-import { ServerRouter, json, type ServerRouteContext } from 'elit/server';
+import { Database } from '@elitjs/database';
+import { ServerRouter, json, type ServerRouteContext } from '@elitjs/server';
 import { resolve } from 'path';
 import type { TodoItem, TodoPriority, TodoSummary } from './todo-types';
 

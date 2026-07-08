@@ -1,1 +1,0 @@
-export * from './shares/workspace-package';

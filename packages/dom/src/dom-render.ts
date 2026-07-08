@@ -1,6 +1,13 @@
-import { captureRenderedVNode, detectRenderRuntimeTarget } from '../../desktop/render-context';
-import type { Child, Children, Props, VNode } from '../../core/types';
+import { captureRenderedVNode, detectRenderRuntimeTarget } from '@elitjs/render-context';
+import type { Child, Children, Props, VNode } from '@elitjs/core';
 import { ensureElement, hasDocumentApi, isState, resolveElement, resolveTextareaValue, shouldSkipChild } from './helpers';
+import packageJson from './package.json';
+
+const ELIT_VERSION = packageJson.version;
+
+function markElitVersion(el: HTMLElement): void {
+    el.setAttribute('elit-version', ELIT_VERSION);
+}
 
 function isSvgElement(tagName: string, parent: HTMLElement | SVGElement | DocumentFragment): boolean {
     return tagName === 'svg'
@@ -8,52 +15,68 @@ function isSvgElement(tagName: string, parent: HTMLElement | SVGElement | Docume
         || (parent as SVGElement).namespaceURI === 'http://www.w3.org/2000/svg';
 }
 
+function applyProp(el: HTMLElement | SVGElement, key: string, value: any, textareaValue: string | undefined): void {
+    if (value == null || value === false) return;
+
+    const c = key.charCodeAt(0);
+
+    if (c === 99 && (key.length < 6 || key[5] === 'N')) {
+        const classValue = Array.isArray(value) ? value.join(' ') : String(value);
+        if (el instanceof SVGElement) {
+            el.setAttribute('class', classValue);
+        } else {
+            el.className = classValue;
+        }
+    }
+    else if (c === 115 && key.length === 5) {
+        if (typeof value === 'string') {
+            (el as HTMLElement).style.cssText = value;
+        } else {
+            const style = (el as HTMLElement).style;
+            for (const styleKey in value) {
+                (style as any)[styleKey] = value[styleKey];
+            }
+        }
+    }
+    else if (c === 111 && key.charCodeAt(1) === 110) {
+        (el as any)[key.toLowerCase()] = value;
+    }
+    else if (c === 100 && key.length > 20) {
+        (el as HTMLElement).innerHTML = (value as { __html: string }).__html;
+    }
+    else if (c === 114 && key === 'ref') {
+        setTimeout(() => {
+            if (typeof value === 'function') {
+                value(el as HTMLElement);
+            } else {
+                (value as { current?: HTMLElement }).current = el as HTMLElement;
+            }
+        }, 0);
+    }
+    else if (textareaValue !== undefined && key === 'value') {
+        return;
+    }
+    else if (key === 'value' && el instanceof HTMLInputElement) {
+        (el as HTMLInputElement).value = String(value);
+    }
+    else {
+        el.setAttribute(key, value === true ? '' : String(value));
+    }
+}
+
 function applyProps(el: HTMLElement | SVGElement, props: Props, textareaValue: string | undefined): void {
     for (const key in props) {
         const value = props[key];
-        if (value == null || value === false) continue;
 
-        const c = key.charCodeAt(0);
-
-        if (c === 99 && (key.length < 6 || key[5] === 'N')) {
-            const classValue = Array.isArray(value) ? value.join(' ') : String(value);
-            if (el instanceof SVGElement) {
-                el.setAttribute('class', classValue);
-            } else {
-                el.className = classValue;
-            }
-        }
-        else if (c === 115 && key.length === 5) {
-            if (typeof value === 'string') {
-                (el as HTMLElement).style.cssText = value;
-            } else {
-                const style = (el as HTMLElement).style;
-                for (const styleKey in value) {
-                    (style as any)[styleKey] = value[styleKey];
-                }
-            }
-        }
-        else if (c === 111 && key.charCodeAt(1) === 110) {
-            (el as any)[key.toLowerCase()] = value;
-        }
-        else if (c === 100 && key.length > 20) {
-            (el as HTMLElement).innerHTML = (value as { __html: string }).__html;
-        }
-        else if (c === 114 && key === 'ref') {
-            setTimeout(() => {
-                if (typeof value === 'function') {
-                    value(el as HTMLElement);
-                } else {
-                    (value as { current?: HTMLElement }).current = el as HTMLElement;
-                }
-            }, 0);
-        }
-        else if (textareaValue !== undefined && key === 'value') {
+        if (isState(value)) {
+            applyProp(el, key, value.value, textareaValue);
+            value.subscribe((newValue: any) => {
+                applyProp(el, key, newValue, textareaValue);
+            });
             continue;
         }
-        else {
-            el.setAttribute(key, value === true ? '' : String(value));
-        }
+
+        applyProp(el, key, value, textareaValue);
     }
 }
 
@@ -102,10 +125,10 @@ export function renderToDOM(vNode: Child, parent: HTMLElement | SVGElement | Doc
     }
 
     const { tagName, props, children } = vNode as VNode;
-    const textareaValue = resolveTextareaValue(tagName, props);
+    const textareaValue = resolveTextareaValue(tagName ?? '', props ?? {});
 
     if (!tagName) {
-        renderChildren(children, parent);
+        renderChildren(children ?? [], parent);
         return;
     }
 
@@ -113,9 +136,9 @@ export function renderToDOM(vNode: Child, parent: HTMLElement | SVGElement | Doc
         ? document.createElementNS('http://www.w3.org/2000/svg', tagName.replace('svg', '').toLowerCase() || tagName)
         : document.createElement(tagName);
 
-    applyProps(el, props, textareaValue);
+    applyProps(el, props ?? {}, textareaValue);
 
-    const renderableChildren = textareaValue === undefined ? children : [];
+    const renderableChildren = textareaValue === undefined ? (children ?? []) : [];
     if (!renderableChildren.length) {
         if (textareaValue !== undefined) {
             (el as HTMLTextAreaElement).value = textareaValue;
@@ -149,6 +172,7 @@ export function render(rootElement: string | HTMLElement, vNode: VNode): HTMLEle
 
     const el = ensureElement(resolveElement(rootElement), rootElement);
     el.innerHTML = '';
+    markElitVersion(el);
 
     if (vNode.children && vNode.children.length > 500) {
         const fragment = document.createDocumentFragment();
@@ -163,6 +187,7 @@ export function render(rootElement: string | HTMLElement, vNode: VNode): HTMLEle
 
 export function batchRender(rootElement: string | HTMLElement, vNodes: VNode[]): HTMLElement {
     const el = ensureElement(resolveElement(rootElement), rootElement);
+    markElitVersion(el);
     const len = vNodes.length;
 
     if (len > 3000) {
@@ -203,6 +228,7 @@ export function renderChunked(
     onProgress?: (current: number, total: number) => void,
 ): HTMLElement {
     const el = ensureElement(resolveElement(rootElement), rootElement);
+    markElitVersion(el);
     const len = vNodes.length;
     let index = 0;
 

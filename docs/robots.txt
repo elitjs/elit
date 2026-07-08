@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://elit.d-osc.com/sitemap.xml

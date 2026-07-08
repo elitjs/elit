@@ -1,4 +1,4 @@
-import type { Child } from '../../core/types';
+import type { Child } from '@elitjs/core';
 import type {
     NativeElementNode,
     NativeNode,

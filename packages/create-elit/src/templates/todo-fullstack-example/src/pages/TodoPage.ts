@@ -14,8 +14,8 @@ import {
   select,
   span,
   textarea
-} from 'elit/el';
-import { bindValue, createState, reactive } from 'elit/state';
+} from '@elitjs/el';
+import { bindValue, createState, reactive } from '@elitjs/state';
 import type { TodoFilter, TodoItem, TodoPriority, TodoSummary } from '../todo-types';
 
 interface TodoResponse {

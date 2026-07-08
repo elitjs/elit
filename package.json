@@ -1,227 +1,208 @@
 {
   "name": "elit",
-  "version": "3.7.1",
+  "version": "4.0.0",
   "description": "Optimized lightweight library for creating DOM elements with reactive state",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "browser": "dist/index.js",
-  "require": "dist/index.cjs",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "elit": "./dist/cli.cjs"
-  },
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "browser": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    },
-    "./dom": {
-      "types": "./dist/dom.d.ts",
-      "browser": "./dist/dom.js",
-      "import": "./dist/dom.mjs",
-      "require": "./dist/dom.cjs"
-    },
-    "./desktop": {
-      "types": "./dist/desktop.d.ts",
-      "browser": "./dist/desktop.js",
-      "import": "./dist/desktop.mjs",
-      "require": "./dist/desktop.cjs"
-    },
-    "./el": {
-      "types": "./dist/el.d.ts",
-      "browser": "./dist/el.js",
-      "import": "./dist/el.mjs",
-      "require": "./dist/el.cjs"
-    },
-    "./native": {
-      "types": "./dist/native.d.ts",
-      "browser": "./dist/native.js",
-      "import": "./dist/native.mjs",
-      "require": "./dist/native.cjs"
-    },
-    "./universal": {
-      "types": "./dist/universal.d.ts",
-      "browser": "./dist/universal.js",
-      "import": "./dist/universal.mjs",
-      "require": "./dist/universal.cjs"
-    },
-    "./router": {
-      "types": "./dist/router.d.ts",
-      "browser": "./dist/router.js",
-      "import": "./dist/router.mjs",
-      "require": "./dist/router.cjs"
-    },
-    "./state": {
-      "types": "./dist/state.d.ts",
-      "browser": "./dist/state.js",
-      "import": "./dist/state.mjs",
-      "require": "./dist/state.cjs"
-    },
-    "./style": {
-      "types": "./dist/style.d.ts",
-      "browser": "./dist/style.js",
-      "import": "./dist/style.mjs",
-      "require": "./dist/style.cjs"
-    },
-    "./server": {
-      "types": "./dist/server.d.ts",
-      "browser": "./dist/server.js",
-      "import": "./dist/server.mjs",
-      "require": "./dist/server.cjs"
-    },
-    "./hmr": {
-      "types": "./dist/hmr.d.ts",
-      "browser": "./dist/hmr.js",
-      "import": "./dist/hmr.mjs",
-      "require": "./dist/hmr.cjs"
-    },
-    "./build": {
-      "types": "./dist/build.d.ts",
-      "browser": "./dist/build.js",
-      "import": "./dist/build.mjs",
-      "require": "./dist/build.cjs"
-    },
-    "./http": {
-      "types": "./dist/http.d.ts",
-      "browser": "./dist/http.js",
-      "import": "./dist/http.mjs",
-      "require": "./dist/http.cjs"
-    },
-    "./https": {
-      "types": "./dist/https.d.ts",
-      "browser": "./dist/https.js",
-      "import": "./dist/https.mjs",
-      "require": "./dist/https.cjs"
-    },
-    "./smtp-server": {
-      "types": "./dist/smtp-server.d.ts",
-      "browser": "./dist/smtp-server.js",
-      "import": "./dist/smtp-server.mjs",
-      "require": "./dist/smtp-server.cjs"
-    },
-    "./ws": {
-      "types": "./dist/ws.d.ts",
-      "browser": "./dist/ws.js",
-      "import": "./dist/ws.mjs",
-      "require": "./dist/ws.cjs"
-    },
-    "./fs": {
-      "types": "./dist/fs.d.ts",
-      "browser": "./dist/fs.js",
-      "import": "./dist/fs.mjs",
-      "require": "./dist/fs.cjs"
-    },
-    "./mime-types": {
-      "types": "./dist/mime-types.d.ts",
-      "browser": "./dist/mime-types.js",
-      "import": "./dist/mime-types.mjs",
-      "require": "./dist/mime-types.cjs"
-    },
-    "./chokidar": {
-      "types": "./dist/chokidar.d.ts",
-      "browser": "./dist/chokidar.js",
-      "import": "./dist/chokidar.mjs",
-      "require": "./dist/chokidar.cjs"
-    },
-    "./path": {
-      "types": "./dist/path.d.ts",
-      "browser": "./dist/path.js",
-      "import": "./dist/path.mjs",
-      "require": "./dist/path.cjs"
-    },
-    "./wss": {
-      "types": "./dist/wss.d.ts",
-      "browser": "./dist/wss.js",
-      "import": "./dist/wss.mjs",
-      "require": "./dist/wss.cjs"
-    },
-    "./runtime": {
-      "types": "./dist/runtime.d.ts",
-      "browser": "./dist/runtime.js",
-      "import": "./dist/runtime.mjs",
-      "require": "./dist/runtime.cjs"
-    },
-    "./pm": {
-      "types": "./dist/pm.d.ts",
-      "browser": "./dist/pm.js",
-      "import": "./dist/pm.mjs",
-      "require": "./dist/pm.cjs"
-    },
-    "./database": {
-      "types": "./dist/database.d.ts",
-      "browser": "./dist/database.js",
-      "import": "./dist/database.mjs",
-      "require": "./dist/database.cjs"
-    },
-    "./config": {
-      "types": "./dist/config.d.ts",
-      "import": "./dist/config.mjs",
-      "require": "./dist/config.cjs"
-    },
-    "./test": {
-      "types": "./dist/test.d.ts",
-      "browser": "./dist/test.js",
-      "import": "./dist/test.mjs",
-      "require": "./dist/test.cjs"
-    },
-    "./test-runtime": {
-      "types": "./dist/test-runtime.d.ts",
-      "browser": "./dist/test-runtime.js",
-      "import": "./dist/test-runtime.mjs",
-      "require": "./dist/test-runtime.cjs"
-    },
-    "./test-reporter": {
-      "types": "./dist/test-reporter.d.ts",
-      "browser": "./dist/test-reporter.js",
-      "import": "./dist/test-reporter.mjs",
-      "require": "./dist/test-reporter.cjs"
-    },
-    "./test-globals": {
-      "types": "./dist/test-globals.d.ts"
+      "types": "./shims/index.d.ts",
+      "browser": "./shims/index.js",
+      "import": "./shims/index.js",
+      "require": "./shims/index.cjs"
     },
     "./types": {
-      "types": "./dist/types.d.ts",
-      "browser": "./dist/types.js",
-      "import": "./dist/types.mjs",
-      "require": "./dist/types.cjs"
+      "types": "./shims/index.d.ts",
+      "import": "./shims/index.js",
+      "require": "./shims/index.cjs"
     },
     "./cli": {
-      "types": "./dist/cli.d.ts",
-      "browser": "./dist/cli.js",
-      "import": "./dist/cli.mjs",
-      "require": "./dist/cli.cjs"
+      "types": "./shims/cli.d.ts",
+      "import": "./shims/cli.js",
+      "require": "./shims/cli.cjs"
+    },
+    "./package.json": "./package.json",
+    "./config": {
+      "types": "./shims/config.d.ts",
+      "import": "./shims/config.js",
+      "require": "./shims/config.cjs"
+    },
+    "./core": {
+      "types": "./shims/core.d.ts",
+      "import": "./shims/core.js",
+      "require": "./shims/core.cjs"
+    },
+    "./el": {
+      "types": "./shims/el.d.ts",
+      "import": "./shims/el.js",
+      "require": "./shims/el.cjs"
+    },
+    "./dom": {
+      "types": "./shims/dom.d.ts",
+      "import": "./shims/dom.js",
+      "require": "./shims/dom.cjs"
+    },
+    "./state": {
+      "types": "./shims/state.d.ts",
+      "import": "./shims/state.js",
+      "require": "./shims/state.cjs"
+    },
+    "./router": {
+      "types": "./shims/router.d.ts",
+      "import": "./shims/router.js",
+      "require": "./shims/router.cjs"
+    },
+    "./style": {
+      "types": "./shims/style.d.ts",
+      "import": "./shims/style.js",
+      "require": "./shims/style.cjs"
     },
     "./render-context": {
-      "types": "./dist/render-context.d.ts",
-      "browser": "./dist/render-context.js",
-      "import": "./dist/render-context.mjs",
-      "require": "./dist/render-context.cjs"
+      "types": "./shims/render-context.d.ts",
+      "import": "./shims/render-context.js",
+      "require": "./shims/render-context.cjs"
     },
-    "./preview-build": {
-      "types": "./dist/preview-build.d.ts",
-      "browser": "./dist/preview-build.js",
-      "import": "./dist/preview-build.mjs",
-      "require": "./dist/preview-build.cjs"
+    "./universal": {
+      "types": "./shims/universal.d.ts",
+      "import": "./shims/universal.js",
+      "require": "./shims/universal.cjs"
     },
-    "./dev-build": {
-      "types": "./dist/dev-build.d.ts",
-      "browser": "./dist/dev-build.js",
-      "import": "./dist/dev-build.mjs",
-      "require": "./dist/dev-build.cjs"
+    "./hmr": {
+      "types": "./shims/hmr.d.ts",
+      "import": "./shims/hmr.js",
+      "require": "./shims/hmr.cjs"
+    },
+    "./server": {
+      "types": "./shims/server.d.ts",
+      "import": "./shims/server.js",
+      "require": "./shims/server.cjs"
+    },
+    "./http": {
+      "types": "./shims/http.d.ts",
+      "import": "./shims/http.js",
+      "require": "./shims/http.cjs"
+    },
+    "./https": {
+      "types": "./shims/https.d.ts",
+      "import": "./shims/https.js",
+      "require": "./shims/https.cjs"
+    },
+    "./ws": {
+      "types": "./shims/ws.d.ts",
+      "import": "./shims/ws.js",
+      "require": "./shims/ws.cjs"
+    },
+    "./wss": {
+      "types": "./shims/wss.d.ts",
+      "import": "./shims/wss.js",
+      "require": "./shims/wss.cjs"
+    },
+    "./database": {
+      "types": "./shims/database.d.ts",
+      "import": "./shims/database.js",
+      "require": "./shims/database.cjs"
+    },
+    "./smtp-server": {
+      "types": "./shims/smtp-server.d.ts",
+      "import": "./shims/smtp-server.js",
+      "require": "./shims/smtp-server.cjs"
+    },
+    "./native": {
+      "types": "./shims/native.d.ts",
+      "import": "./shims/native.js",
+      "require": "./shims/native.cjs"
+    },
+    "./desktop": {
+      "types": "./shims/desktop.d.ts",
+      "import": "./shims/desktop.js",
+      "require": "./shims/desktop.cjs"
     },
     "./desktop-auto-render": {
-      "types": "./dist/desktop-auto-render.d.ts",
-      "browser": "./dist/desktop-auto-render.js",
-      "import": "./dist/desktop-auto-render.mjs",
-      "require": "./dist/desktop-auto-render.cjs"
+      "types": "./shims/desktop-auto-render.d.ts",
+      "import": "./shims/desktop-auto-render.js",
+      "require": "./shims/desktop-auto-render.cjs"
+    },
+    "./wapk": {
+      "types": "./shims/wapk.d.ts",
+      "import": "./shims/wapk.js",
+      "require": "./shims/wapk.cjs"
+    },
+    "./build": {
+      "types": "./shims/build.d.ts",
+      "import": "./shims/build.js",
+      "require": "./shims/build.cjs"
+    },
+    "./dev-build": {
+      "types": "./shims/dev-build.d.ts",
+      "import": "./shims/dev-build.js",
+      "require": "./shims/dev-build.cjs"
+    },
+    "./preview-build": {
+      "types": "./shims/preview-build.d.ts",
+      "import": "./shims/preview-build.js",
+      "require": "./shims/preview-build.cjs"
+    },
+    "./pm": {
+      "types": "./shims/pm.d.ts",
+      "import": "./shims/pm.js",
+      "require": "./shims/pm.cjs"
+    },
+    "./devtools": {
+      "types": "./shims/devtools.d.ts",
+      "import": "./shims/devtools.js",
+      "require": "./shims/devtools.cjs"
+    },
+    "./test": {
+      "types": "./shims/test.d.ts",
+      "import": "./shims/test.js",
+      "require": "./shims/test.cjs"
+    },
+    "./test/contracts": {
+      "types": "./shims/test/contracts.d.ts",
+      "import": "./shims/test/contracts.js",
+      "require": "./shims/test/contracts.cjs"
+    },
+    "./test/globals": {
+      "types": "./node_modules/@elitjs/test/src/globals.d.ts"
+    },
+    "./chokidar": {
+      "types": "./shims/chokidar.d.ts",
+      "import": "./shims/chokidar.js",
+      "require": "./shims/chokidar.cjs"
+    },
+    "./fs": {
+      "types": "./shims/fs.d.ts",
+      "import": "./shims/fs.js",
+      "require": "./shims/fs.cjs"
+    },
+    "./path": {
+      "types": "./shims/path.d.ts",
+      "import": "./shims/path.js",
+      "require": "./shims/path.cjs"
+    },
+    "./mime-types": {
+      "types": "./shims/mime-types.d.ts",
+      "import": "./shims/mime-types.js",
+      "require": "./shims/mime-types.cjs"
+    },
+    "./runtime": {
+      "types": "./shims/runtime.d.ts",
+      "import": "./shims/runtime.js",
+      "require": "./shims/runtime.cjs"
+    },
+    "./workspace-package": {
+      "types": "./shims/workspace-package.d.ts",
+      "import": "./shims/workspace-package.js",
+      "require": "./shims/workspace-package.cjs"
     }
   },
   "scripts": {
-    "build": "node ./scripts/tsup-runner.mjs",
-    "dev": "node ./scripts/tsup-runner.mjs --watch",
-    "typecheck": "tsc --noEmit",
+    "build": "node ./scripts/build-all.mjs",
+    "shims": "node ./scripts/generate-proxy-shims.mjs",
+    "website:dev": "npm run --prefix website dev",
+    "website:build": "npm run --prefix website build",
+    "website:preview": "npm run --prefix website preview",
+    "devtools:build": "npm run --prefix packages/devtools build",
+    "devtools:watch": "npm run --prefix packages/devtools dev",
     "test": "node ./scripts/run-local-cli.mjs test",
     "test:run": "node ./scripts/run-local-cli.mjs test --run",
     "test:coverage": "node ./scripts/run-local-cli.mjs test --coverage",
@@ -264,13 +245,47 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-osc/elit.git"
+    "url": "https://github.com/elitjs/elit.git"
   },
   "bugs": {
-    "url": "https://github.com/d-osc/elit/issues"
+    "url": "https://github.com/elitjs/elit/issues"
   },
   "homepage": "https://d-osc.github.io/elit/",
   "dependencies": {
+    "@elitjs/build": "file:packages/build",
+    "@elitjs/chokidar": "file:packages/chokidar",
+    "@elitjs/cli": "file:packages/cli",
+    "@elitjs/config": "file:packages/config",
+    "@elitjs/core": "file:packages/core",
+    "@elitjs/database": "file:packages/database",
+    "@elitjs/desktop": "file:packages/desktop",
+    "@elitjs/desktop-auto-render": "file:packages/desktop-auto-render",
+    "@elitjs/dev-build": "file:packages/dev-build",
+    "@elitjs/dom": "file:packages/dom",
+    "@elitjs/el": "file:packages/el",
+    "@elitjs/devtools": "file:packages/devtools",
+    "@elitjs/fs": "file:packages/fs",
+    "@elitjs/hmr": "file:packages/hmr",
+    "@elitjs/http": "file:packages/http",
+    "@elitjs/https": "file:packages/https",
+    "@elitjs/mime-types": "file:packages/mime-types",
+    "@elitjs/native": "file:packages/native",
+    "@elitjs/path": "file:packages/path",
+    "@elitjs/pm": "file:packages/pm",
+    "@elitjs/preview-build": "file:packages/preview-build",
+    "@elitjs/render-context": "file:packages/render-context",
+    "@elitjs/router": "file:packages/router",
+    "@elitjs/runtime": "file:packages/runtime",
+    "@elitjs/server": "file:packages/server",
+    "@elitjs/smtp-server": "file:packages/smtp-server",
+    "@elitjs/state": "file:packages/state",
+    "@elitjs/style": "file:packages/style",
+    "@elitjs/test": "file:packages/test",
+    "@elitjs/universal": "file:packages/universal",
+    "@elitjs/wapk": "file:packages/wapk",
+    "@elitjs/workspace-package": "file:packages/workspace-package",
+    "@elitjs/ws": "file:packages/ws",
+    "@elitjs/wss": "file:packages/wss",
     "acorn": "^8.14.0",
     "esbuild": "^0.28.1",
     "esbuild-obfuscator-plugin": "^0.0.5",
@@ -289,22 +304,15 @@
     "elysia": "^1.4.19",
     "terser": "^5.44.1",
     "ts-node": "^10.9.2",
-    "tsup": "^8.0.0",
-    "typescript": "^5.3.0"
+    "tsup": "^8.0.0"
   },
   "overrides": {
     "esbuild": "^0.28.1"
   },
   "files": [
-    "dist/*.cjs",
-    "dist/*.mjs",
-    "dist/*.d.ts",
-    "dist/*.js",
-    "desktop",
-    "vendor",
-    "Cargo.toml",
-    "Cargo.lock",
+    "package.json",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "shims"
   ]
 }

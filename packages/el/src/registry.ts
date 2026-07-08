@@ -1,7 +1,16 @@
+import type { Child, ElementFactory, JsonNode, Props, VNode } from '@elitjs/core';
 import { createElementFactory } from './factory';
 import { capitalize } from './helpers';
+import { jsonToVNode } from './json';
 import type { Elements } from './tags';
 import { mathTags, svgTags, tags } from './tags';
+
+export type El = {
+    (tagName: string): ElementFactory;
+    (tagName: string, ...children: Child[]): VNode;
+    (tagName: string, props: Props | null, ...children: Child[]): VNode;
+    (json: JsonNode): VNode;
+} & Elements;
 
 function createPrefixedFactories(tagsToCreate: readonly string[], prefix: string, elements: Partial<Elements>): void {
     tagsToCreate.forEach((tag) => {
@@ -46,5 +55,22 @@ export const {
     varElement,
 } = elements as Elements;
 
-export const el = elements;
+function elImpl(tagName: string): ElementFactory;
+function elImpl(tagName: string, ...children: Child[]): VNode;
+function elImpl(tagName: string, props: Props | null, ...children: Child[]): VNode;
+function elImpl(json: JsonNode): VNode;
+function elImpl(arg: string | JsonNode, ...rest: unknown[]): ElementFactory | VNode {
+    if (typeof arg === 'string') {
+        const factory = createElementFactory(arg);
+        if (rest.length === 0) return factory;
+        return (factory as (...args: unknown[]) => VNode)(...rest);
+    }
+    const vnode = jsonToVNode(arg);
+    if (vnode == null || typeof vnode !== 'object') {
+        throw new Error('el(JsonNode): invalid JsonNode (missing tag)');
+    }
+    return vnode;
+}
+
+export const el: El = Object.assign(elImpl, elements as Elements);
 export { elements };

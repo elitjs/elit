@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import type { NativePropValue } from '../types';
 import { getNativeStyleResolveOptions, toPointLiteral } from '../units';
 import { buildComposeArrangement, buildComposeCrossAlignment, resolveSwiftColumnAlignment } from './alignment';

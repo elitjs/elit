@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import type { NativePropValue, NativeRenderHints } from '../types';
 import { formatFloat, getNativeStyleResolveOptions } from './base';
 import { parsePercentageValue } from './parsing';

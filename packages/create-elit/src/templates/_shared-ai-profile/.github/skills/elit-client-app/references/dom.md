@@ -8,8 +8,8 @@
 Mounts a VNode tree to a CSS selector or HTMLElement. Clears existing children first.
 
 ```ts
-import { dom, div, h1 } from 'elit/dom';
-import { el } from 'elit/el';
+import { dom, div, h1 } from '@elitjs/dom';
+import { el } from '@elitjs/el';
 
 // by selector
 dom.render('#app', div(h1('Hello')));
@@ -48,8 +48,8 @@ These work in Node/Bun/Deno too — that's how `dev.clients[].ssr` produces init
 Serializes a VNode to an HTML string.
 
 ```ts
-import { dom } from 'elit/dom';
-import { div, h1 } from 'elit/el';
+import { dom } from '@elitjs/dom';
+import { div, h1 } from '@elitjs/el';
 
 const html = dom.renderToString(div(h1('Hello')));
 // "<div><h1>Hello</h1></div>"
@@ -125,7 +125,7 @@ dom.setTitle('Dashboard — MyApp');
 Injects arbitrary VNodes into `<head>`. Returns the resulting `<head>` element.
 
 ```ts
-import { meta } from 'elit/el';
+import { meta } from '@elitjs/el';
 dom.renderToHead(meta({ name: 'robots', content: 'noindex' }));
 ```
 
@@ -135,7 +135,7 @@ dom.renderToHead(meta({ name: 'robots', content: 'noindex' }));
 Lazy component loader. The returned function returns a Promise that resolves to the rendered component.
 
 ```ts
-import { dom } from 'elit/dom';
+import { dom } from '@elitjs/dom';
 
 const AdminPanel = dom.lazy(async () => {
   const { AdminPanel } = await import('./AdminPanel');

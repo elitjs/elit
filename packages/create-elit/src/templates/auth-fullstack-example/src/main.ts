@@ -1,6 +1,6 @@
-import { div, main } from 'elit/el';
-import { reactive } from 'elit/state';
-import { dom } from 'elit/dom';
+import { div, main } from '@elitjs/el';
+import { reactive } from '@elitjs/state';
+import { dom } from '@elitjs/dom';
 import { injectStyles } from './styles';
 import { router, RouterView } from './router';
 import { Header } from './components/Header';

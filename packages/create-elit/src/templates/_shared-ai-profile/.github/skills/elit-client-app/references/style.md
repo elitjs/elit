@@ -5,7 +5,7 @@
 ## Creating an Instance
 
 ```ts
-import { createStyles } from 'elit/style';
+import { createStyles } from '@elitjs/style';
 
 const styles = createStyles();
 ```

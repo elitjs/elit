@@ -1,4 +1,4 @@
-import type { Child, Props } from '../../core/types';
+import type { Child, Props } from '@elitjs/core';
 import { isState, resolveTextareaValue, shouldSkipChild } from './helpers';
 
 const SELF_CLOSING_TAGS = new Set([

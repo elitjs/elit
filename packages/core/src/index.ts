@@ -3,9 +3,9 @@
  */
 
 export interface VNode {
-    tagName: string;
-    props: Props;
-    children: Children;
+    tagName?: string;
+    props?: Props;
+    children?: Children;
 }
 
 export type Child = VNode | string | number | boolean | null | undefined | Child[];
@@ -49,13 +49,13 @@ export interface VirtualListController {
 }
 
 export interface JsonNode {
-    tag: string;
+    tag?: string;
     attributes?: Record<string, any>;
     children?: JsonNode | JsonNode[] | string | number | boolean | null;
 }
 
 export type VNodeJson = {
-    tagName: string;
+    tagName?: string;
     props?: Record<string, any>;
     children?: (VNodeJson | string | number | boolean | null)[];
 } | string | number | boolean | null;

@@ -1,5 +1,5 @@
-import { ElitRequest, ElitResponse, ServerRouter } from 'elit/server';
-import {  Database } from 'elit/database';
+import { ElitRequest, ElitResponse, ServerRouter } from '@elitjs/server';
+import {  Database } from '@elitjs/database';
 import { resolve } from 'path';
 import { scrypt, randomBytes, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';

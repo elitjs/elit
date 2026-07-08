@@ -10,7 +10,7 @@ All functions here are **runtime-injected globals**. The desktop shell injects t
 Creates a new desktop window. Either `url` or `html` is required (mutually exclusive).
 
 ```ts
-import { createWindow } from 'elit/desktop';
+import { createWindow } from '@elitjs/desktop';
 
 createWindow({
   title: 'My App',
@@ -57,7 +57,7 @@ createWindow({
 Creates a window with an embedded HTTP server for IPC. Returns a handle with the bound port/pipe.
 
 ```ts
-import { createWindowServer } from 'elit/desktop';
+import { createWindowServer } from '@elitjs/desktop';
 
 const result = await createWindowServer((req, res) => {
   if (req.url === '/ping') {
@@ -87,7 +87,7 @@ console.log(result);
 Minimize / maximize / restore the active window.
 
 ```ts
-import { windowMinimize, windowMaximize, windowUnmaximize } from 'elit/desktop';
+import { windowMinimize, windowMaximize, windowUnmaximize } from '@elitjs/desktop';
 
 button({ onclick: () => windowMinimize() }, '_');
 button({ onclick: () => windowMaximize() }, '[]');
@@ -98,7 +98,7 @@ button({ onclick: () => windowUnmaximize() }, '↘');
 Updates the title bar text dynamically.
 
 ```ts
-import { windowSetTitle } from 'elit/desktop';
+import { windowSetTitle } from '@elitjs/desktop';
 
 windowSetTitle(`My App — ${document.title}`);
 ```
@@ -148,7 +148,7 @@ button({
 Registers a single handler for messages from the native shell. Messages are STRINGS — JSON-encode structured data yourself.
 
 ```ts
-import { onMessage } from 'elit/desktop';
+import { onMessage } from '@elitjs/desktop';
 
 onMessage((msg: string) => {
   try {
@@ -183,7 +183,7 @@ windowEval(`console.log("${Date.now()}")`);
 // desktop: { /* set decorations: false via createWindow */ }
 
 // in app code
-import { detectRenderRuntimeTarget, windowDrag, windowMinimize, windowMaximize, windowQuit } from 'elit/desktop';
+import { detectRenderRuntimeTarget, windowDrag, windowMinimize, windowMaximize, windowQuit } from '@elitjs/desktop';
 
 const isDesktop = detectRenderRuntimeTarget() === 'desktop';
 

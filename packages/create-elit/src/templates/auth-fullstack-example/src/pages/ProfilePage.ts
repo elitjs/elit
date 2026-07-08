@@ -1,6 +1,6 @@
-import { div, h3, p, button, span, input, label } from 'elit/el';
-import { createState, reactive, reactiveAs } from 'elit/state';
-import type { Router } from 'elit';
+import { div, h3, p, button, span, input, label } from '@elitjs/el';
+import { createState, reactive, reactiveAs } from '@elitjs/state';
+import type { Router } from '@elitjs/router';
 
 export function ProfilePage(router: Router) {
   const isEditing = createState(false);

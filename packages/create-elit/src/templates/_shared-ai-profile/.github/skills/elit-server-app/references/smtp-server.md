@@ -42,7 +42,7 @@ The framework binds the listener on dev server start; logs `SMTP listening on 12
 Creates an SMTP server instance without starting it.
 
 ```ts
-import { createSmtpServer } from 'elit/smtp-server';
+import { createSmtpServer } from '@elitjs/smtp-server';
 
 const smtp = createSmtpServer({
   port: 2525,
@@ -59,7 +59,7 @@ smtp.listen(() => console.log('SMTP ready'));
 Creates and immediately starts listening.
 
 ```ts
-import { startSmtpServer } from 'elit/smtp-server';
+import { startSmtpServer } from '@elitjs/smtp-server';
 
 const smtp = startSmtpServer({ port: 2525 });
 ```

@@ -30,7 +30,7 @@ import {
   detectRenderRuntimeTarget, setRenderRuntimeTarget,
   captureRenderedVNode, completeDesktopAutoRender,
   setDesktopRenderOptions, getDesktopRenderOptions
-} from 'elit/desktop';
+} from '@elitjs/desktop';
 ```
 
 ## Detecting the Desktop Runtime
@@ -38,7 +38,7 @@ import {
 Three equivalent checks:
 
 ```ts
-import { detectRenderRuntimeTarget } from 'elit/desktop';
+import { detectRenderRuntimeTarget } from '@elitjs/desktop';
 
 // Method 1 — explicit API
 const target = detectRenderRuntimeTarget();   // 'web' | 'desktop' | 'mobile' | 'unknown'
@@ -60,7 +60,7 @@ Always gate desktop-only calls behind one of these — calling `windowMinimize()
 import {
   detectRenderRuntimeTarget,
   windowMinimize, windowMaximize, windowQuit, windowSetTitle, windowDrag
-} from 'elit/desktop';
+} from '@elitjs/desktop';
 
 const isDesktop = detectRenderRuntimeTarget() === 'desktop';
 
@@ -87,7 +87,7 @@ For most apps you don't call `createWindow` manually — Elit's auto-render does
 You configure window options via `setDesktopRenderOptions(...)`:
 
 ```ts
-import { setDesktopRenderOptions } from 'elit/desktop';
+import { setDesktopRenderOptions } from '@elitjs/desktop';
 
 setDesktopRenderOptions({
   title: 'My App',
@@ -104,7 +104,7 @@ Call this BEFORE `dom.render(...)` so the options are set before the window is c
 ## IPC: JS ↔ Shell Messages
 
 ```ts
-import { onMessage } from 'elit/desktop';
+import { onMessage } from '@elitjs/desktop';
 
 // Receive messages from the native shell
 onMessage((msg: string) => {
@@ -119,7 +119,7 @@ onMessage((msg: string) => {
 For request/response IPC, use `createWindowServer`:
 
 ```ts
-import { createWindowServer } from 'elit/desktop';
+import { createWindowServer } from '@elitjs/desktop';
 
 const { port } = await createWindowServer((req, res) => {
   if (req.url === '/health') {
@@ -172,7 +172,7 @@ console.log('IPC server on', port);
 **External docs:**
 - Desktop config reference: https://d-osc.github.io/elit/CONFIG.md#desktop
 - CLI commands (`elit desktop run/build/wapk`): https://d-osc.github.io/elit/CLI.md
-- GitHub repo (browse `src/desktop/`): https://github.com/d-osc/elit
+- GitHub repo (browse `src/desktop/`): https://github.com/elitjs/elit
 
 **Related skills:**
 - `elit-client-app` — the VNode tree rendered to desktop is the same as the browser tree; most UI code is shared

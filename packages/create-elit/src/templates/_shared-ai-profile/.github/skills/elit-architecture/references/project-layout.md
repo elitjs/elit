@@ -110,7 +110,7 @@ server/
 **`server/index.ts` composition pattern:**
 
 ```ts
-import { ServerRouter } from 'elit/server';
+import { ServerRouter } from '@elitjs/server';
 import { registerAuthRoutes } from './auth/routes';
 import { registerChatRoutes } from './chat/routes';
 import { registerProfileRoutes } from './profile/routes';
@@ -131,7 +131,7 @@ registerProfileRoutes(router);
 
 ```ts
 // src/server/auth/routes.ts
-import type { ServerRouter } from 'elit/server';
+import type { ServerRouter } from '@elitjs/server';
 import { requireAuth } from '../_shared/auth-middleware';
 import { ok, error } from '../_shared/response-helpers';
 import { toPublicUser } from '../_shared/serialization';
@@ -171,7 +171,7 @@ styles/
 **`styles/tokens.ts` pattern:**
 
 ```ts
-import { createStyles } from 'elit/style';
+import { createStyles } from '@elitjs/style';
 
 export const tokens = createStyles();
 tokens.addVar('color-bg', '#ffffff');
@@ -191,7 +191,7 @@ tokens.addVar('font-size-base', '14px');
 **`styles/index.ts` composition:**
 
 ```ts
-import { injectStyles } from 'elit/style';
+import { injectStyles } from '@elitjs/style';
 import { tokens } from './tokens';
 import { reset } from './reset';
 

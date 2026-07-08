@@ -1,4 +1,4 @@
-import { footer, div, p, a } from 'elit/el';
+import { footer, div, p, a } from '@elitjs/el';
 
 export function Footer() {
   const today = new Date();

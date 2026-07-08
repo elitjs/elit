@@ -5,6 +5,6 @@ export const screen = () => div(
     h1('Elit Native Mobile Example'),
     p('This screen is generated from the same Elit syntax during elit mobile sync.'),
     input({ type: 'checkbox', checked: true }),
-    a({ href: 'https://github.com/d-osc/elit' }, 'Open project page'),
+    a({ href: 'https://github.com/elitjs/elit' }, 'Open project page'),
     button({ onClick: () => undefined }, 'Native placeholder button')
 );

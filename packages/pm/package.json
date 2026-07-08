@@ -1,0 +1,50 @@
+{
+  "name": "@elitjs/pm",
+  "version": "4.0.0",
+  "description": "Process manager for Elit (start, stop, restart, watch)",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "pm": "./dist/cli.cjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./cli": {
+      "types": "./dist/cli.d.ts",
+      "import": "./dist/cli.mjs",
+      "require": "./dist/cli.cjs"
+    }
+  },
+  "files": ["dist", "src/node-shared-listener-bootstrap.cjs"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elitjs/elit.git",
+    "directory": "packages/pm"
+  },
+  "bugs": {
+    "url": "https://github.com/elitjs/elit/issues"
+  },
+  "homepage": "https://d-osc.github.io/elit/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@elitjs/chokidar": "file:../chokidar",
+    "@elitjs/config": "file:../config"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}

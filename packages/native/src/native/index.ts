@@ -1,5 +1,5 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
-import type { Child } from '../../core/types';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
+import type { Child } from '@elitjs/core';
 import type {
     NativePlatform,
     NativePropObject,

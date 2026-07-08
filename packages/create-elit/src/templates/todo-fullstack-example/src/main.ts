@@ -1,4 +1,4 @@
-import { dom } from 'elit/dom';
+import { dom } from '@elitjs/dom';
 import { injectStyles } from './styles';
 import { App } from './web';
 

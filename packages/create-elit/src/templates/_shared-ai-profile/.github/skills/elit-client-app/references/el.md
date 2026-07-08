@@ -14,7 +14,7 @@ type ElementFactory = (
 The first argument is **props** if it's a plain object; otherwise it's treated as the first child. This is why `div('hello')` and `div({ class: 'box' }, 'hello')` both work.
 
 ```ts
-import { div, p, h1, button, input, ul, li, a, section, header, nav, main, footer } from 'elit/el';
+import { div, p, h1, button, input, ul, li, a, section, header, nav, main, footer } from '@elitjs/el';
 
 // props + children
 div({ class: 'container', style: 'padding: 1rem' },
@@ -64,7 +64,7 @@ input({
 Fragment — renders children without a wrapper element.
 
 ```ts
-import { frag, h1, p } from 'elit/el';
+import { frag, h1, p } from '@elitjs/el';
 const header = frag(h1('Title'), p('Subtitle'));
 ```
 
@@ -72,7 +72,7 @@ const header = frag(h1('Title'), p('Subtitle'));
 Lower-level helper. Use only when you need a tag Elit doesn't ship.
 
 ```ts
-import { createElementFactory } from 'elit/el';
+import { createElementFactory } from '@elitjs/el';
 const customEl = createElementFactory('my-widget');
 customEl({ someProp: 'x' }, 'content');
 ```

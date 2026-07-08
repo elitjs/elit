@@ -20,6 +20,13 @@
     "test:coverage": "elit test --coverage"
   },
   "dependencies": {
+    "@elitjs/database": "^ELIT_VERSION",
+    "@elitjs/dom": "^ELIT_VERSION",
+    "@elitjs/el": "^ELIT_VERSION",
+    "@elitjs/router": "^ELIT_VERSION",
+    "@elitjs/server": "^ELIT_VERSION",
+    "@elitjs/state": "^ELIT_VERSION",
+    "@elitjs/style": "^ELIT_VERSION",
     "@types/node": "^25.0.9",
     "elit": "^ELIT_VERSION"
   }

@@ -8,7 +8,7 @@ Reactive primitives that drive UI updates. A `State<T>` cell holds a value; UI s
 Creates a reactive cell with `.value` and `.subscribe()`.
 
 ```ts
-import { createState } from 'elit/state';
+import { createState } from '@elitjs/state';
 
 const count = createState(0);
 
@@ -35,7 +35,7 @@ const theme = createState<'light' | 'dark'>('light', { persistKey: 'app.theme' }
 Derives a state from other states. Re-computates whenever any dependency changes.
 
 ```ts
-import { createState, computed } from 'elit/state';
+import { createState, computed } from '@elitjs/state';
 
 const first = createState('Ada');
 const last = createState('Lovelace');
@@ -52,7 +52,7 @@ The first argument is a record of states; the second receives the unwrapped valu
 Runs `fn` whenever a state accessed inside it changes. Auto-tracks dependencies.
 
 ```ts
-import { createState, effect } from 'elit/state';
+import { createState, effect } from '@elitjs/state';
 
 const count = createState(0);
 effect(() => console.log('count is', count.value));  // runs immediately
@@ -67,8 +67,8 @@ Returns a disposer: `const dispose = effect(...); dispose();`.
 The most-used primitive for reactive UI. Returns a VNode that re-renders when `state` changes.
 
 ```ts
-import { div, p, button } from 'elit/el';
-import { createState, reactive } from 'elit/state';
+import { div, p, button } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
 
 const count = createState(0);
 
@@ -93,8 +93,8 @@ reactiveAs('li', items, list => list.map(renderItem), { class: 'list-item' });
 Reactive text node. Pass a `State` for live updates; pass anything else for a static string.
 
 ```ts
-import { text, createState } from 'elit/state';
-import { div } from 'elit/el';
+import { text, createState } from '@elitjs/state';
+import { div } from '@elitjs/el';
 
 const clock = createState(Date.now());
 div(text(clock));                       // updates when clock changes
@@ -105,8 +105,8 @@ div(text('static'));                    // static string
 Two-way binding for text inputs, textareas, and selects. Spreads onto the element's props.
 
 ```ts
-import { input, form, label } from 'elit/el';
-import { createState, bindValue } from 'elit/state';
+import { input, form, label } from '@elitjs/el';
+import { createState, bindValue } from '@elitjs/state';
 
 const email = createState('');
 const count = createState(0);
@@ -123,8 +123,8 @@ Handles `number` coercion automatically (input value is string, state stays numb
 Two-way binding for checkboxes.
 
 ```ts
-import { input } from 'elit/el';
-import { createState, bindChecked } from 'elit/state';
+import { input } from '@elitjs/el';
+import { createState, bindChecked } from '@elitjs/state';
 
 const agree = createState(false);
 input({ type: 'checkbox', ...bindChecked(agree) });
@@ -136,7 +136,7 @@ input({ type: 'checkbox', ...bindChecked(agree) });
 Invokes `fn` at most once per `delayMs` window (leading + trailing call).
 
 ```ts
-import { throttle } from 'elit/state';
+import { throttle } from '@elitjs/state';
 
 const onResize = throttle(() => console.log(window.innerWidth), 100);
 window.addEventListener('resize', onResize);
@@ -146,7 +146,7 @@ window.addEventListener('resize', onResize);
 Invokes `fn` only after `delayMs` has elapsed since the last call.
 
 ```ts
-import { debounce } from 'elit/state';
+import { debounce } from '@elitjs/state';
 
 const search = debounce((q: string) => fetch(`/api/search?q=${q}`), 250);
 input({ oninput: e => search((e.target as HTMLInputElement).value) });
@@ -158,7 +158,7 @@ input({ oninput: e => search((e.target as HTMLInputElement).value) });
 Cross-tab + cross-client state synced via WebSocket. Uses Elit's internal `/__elit_ws` socket by default.
 
 ```ts
-import { createSharedState } from 'elit/state';
+import { createSharedState } from '@elitjs/state';
 
 const presence = createSharedState<string[]>('presence', []);
 presence.subscribe(list => console.log('online:', list));

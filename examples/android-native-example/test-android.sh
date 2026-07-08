@@ -33,7 +33,7 @@ if [[ "$CHECKBOX_COUNT" -lt 2 ]]; then
   exit 1
 fi
 
-if ! grep -Fq 'openUri("https://github.com/d-osc/elit")' "$GENERATED_SCREEN_PATH"; then
+if ! grep -Fq 'openUri("https://github.com/elitjs/elit")' "$GENERATED_SCREEN_PATH"; then
   echo "[android-native-test] FAILED: generated Compose output is missing openUri(...) for the external link"
   exit 1
 fi

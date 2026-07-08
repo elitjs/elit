@@ -9,7 +9,7 @@ For WebSocket **endpoints in dev/preview**, prefer configuring them in `elit.con
 ### `new WebSocket(url, protocols?)`
 
 ```ts
-import { WebSocket } from 'elit/ws';
+import { WebSocket } from '@elitjs/ws';
 
 const ws = new WebSocket('ws://localhost:8080');
 
@@ -31,7 +31,7 @@ ws.on('error', (err) => console.error(err));
 For secure WebSockets use `wss://`:
 
 ```ts
-import { WebSocket } from 'elit/wss';
+import { WebSocket } from '@elitjs/wss';
 const ws = new WebSocket('wss://example.com/socket');
 ```
 
@@ -58,7 +58,7 @@ ws.pong(data?);
 ### Constants
 
 ```ts
-import { ReadyState, CLOSE_CODES } from 'elit/ws';
+import { ReadyState, CLOSE_CODES } from '@elitjs/ws';
 
 // ReadyState: { CONNECTING: 0, OPEN: 1, CLOSING: 2, CLOSED: 3 }
 // CLOSE_CODES: { NORMAL: 1000, GOING_AWAY: 1001, ... }
@@ -69,7 +69,7 @@ import { ReadyState, CLOSE_CODES } from 'elit/ws';
 ### `new WebSocketServer(options)`
 
 ```ts
-import { WebSocketServer } from 'elit/ws';
+import { WebSocketServer } from '@elitjs/ws';
 
 const wss = new WebSocketServer({
   port: 8080,
@@ -132,7 +132,7 @@ wss.clients.forEach(client => {
 Factory shortcut.
 
 ```ts
-import { createWebSocketServer } from 'elit/ws';
+import { createWebSocketServer } from '@elitjs/ws';
 
 const wss = createWebSocketServer({ port: 8080 }, () => {
   console.log('ws server ready');

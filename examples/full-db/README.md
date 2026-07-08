@@ -23,4 +23,4 @@ Visit http://localhost:3003 to view your app.
 ## Learn More
 
 - [Elit Documentation](https://d-osc.github.io/elit)
-- [GitHub Repository](https://github.com/d-osc/elit)
+- [GitHub Repository](https://github.com/elitjs/elit)

@@ -1,4 +1,4 @@
-import { button, div, h1, p, span } from 'elit/el';
+import { button, div, h1, p, span } from '@elitjs/el';
 
 function Tile(title: string, body: string) {
   return div(

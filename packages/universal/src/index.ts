@@ -1,4 +1,4 @@
-import type { Props } from './types';
+import type { Props } from '@elitjs/core';
 
 export type UniversalPayload =
     | string

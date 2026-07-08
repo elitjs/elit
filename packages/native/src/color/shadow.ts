@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import type { NativeColorValue, NativePropValue, NativeShadowValue } from '../types';
 import { formatFloat, getNativeStyleResolveOptions, splitCssFunctionArguments, toScaledUnitNumber } from '../units';
 import { extractColorToken, getDefaultCurrentColor } from './base';

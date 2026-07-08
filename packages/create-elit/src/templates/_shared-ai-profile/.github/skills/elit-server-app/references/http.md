@@ -10,7 +10,7 @@ These re-export Node-compatible types (`IncomingMessage`, `ServerResponse`) so t
 Creates an HTTP server. Same shape as `http.createServer`.
 
 ```ts
-import { createServer } from 'elit/http';
+import { createServer } from '@elitjs/http';
 
 const server = createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -25,7 +25,7 @@ server.listen(3000, 'localhost', () => {
 For HTTPS:
 
 ```ts
-import { createServer } from 'elit/https';
+import { createServer } from '@elitjs/https';
 import { readFileSync } from 'node:fs';
 
 const server = createServer(
@@ -113,7 +113,7 @@ res.status(200).json({ ok: true });
 ### `get(url, options?, callback?)`
 
 ```ts
-import { get } from 'elit/http';
+import { get } from '@elitjs/http';
 
 get('https://api.example.com/data', (res) => {
   let body = '';
@@ -125,7 +125,7 @@ get('https://api.example.com/data', (res) => {
 For POST/PUT/DELETE use `request`:
 
 ```ts
-import { request } from 'elit/http';
+import { request } from '@elitjs/http';
 
 const req = request({
   hostname: 'api.example.com',

@@ -5,7 +5,7 @@
 ## Creating an Instance
 
 ```ts
-import { Database } from 'elit/database';
+import { Database } from '@elitjs/database';
 import { resolve } from 'node:path';
 
 const db = new Database({
@@ -63,8 +63,8 @@ The in-memory array `users` is the persistent store; the file itself is the sche
 
 ```ts
 // src/server.ts
-import { Database } from 'elit/database';
-import { ServerRouter } from 'elit/server';
+import { Database } from '@elitjs/database';
+import { ServerRouter } from '@elitjs/server';
 import { randomUUID } from 'node:crypto';
 
 const db = new Database({ dir: resolve(process.cwd(), 'databases'), language: 'ts' });

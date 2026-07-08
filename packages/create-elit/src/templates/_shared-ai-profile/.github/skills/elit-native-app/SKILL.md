@@ -26,13 +26,13 @@ import {
   renderNativeJson,           // VNode → JSON string (for debugging)
   renderAndroidCompose,       // VNode/NativeTree → Kotlin source
   renderSwiftUI               // VNode/NativeTree → Swift source
-} from 'elit/native';
+} from '@elitjs/native';
 ```
 
 For state and bindings, import from `elit/state` (same primitives as browser):
 
 ```ts
-import { createState, bindValue, bindChecked, computed } from 'elit/state';
+import { createState, bindValue, bindChecked, computed } from '@elitjs/state';
 ```
 
 ## Screen Declaration
@@ -41,8 +41,8 @@ A native screen is a function that returns a VNode tree. Elit exports it by name
 
 ```ts
 // src/native-screen.ts
-import { div, h1, p, button, input } from 'elit/el';
-import { createState, bindValue } from 'elit/state';
+import { div, h1, p, button, input } from '@elitjs/el';
+import { createState, bindValue } from '@elitjs/state';
 
 export const screen = () => {
   const name = createState('');
@@ -87,8 +87,8 @@ For unsupported tags, Elit falls back to a generic container.
 ## Renderer Pipeline
 
 ```ts
-import { renderNativeTree, renderAndroidCompose, renderSwiftUI } from 'elit/native';
-import { div, h1 } from 'elit/el';
+import { renderNativeTree, renderAndroidCompose, renderSwiftUI } from '@elitjs/native';
+import { div, h1 } from '@elitjs/el';
 
 const tree = div({ class: 'container' }, h1('Hello'));
 
@@ -206,7 +206,7 @@ desktop: {
 - Native CSS support: https://d-osc.github.io/elit/native-css-support.md
 - Native element support: https://d-osc.github.io/elit/native-element-support.md
 - Mobile config reference: https://d-osc.github.io/elit/CONFIG.md#mobile
-- GitHub repo (browse `src/native/`): https://github.com/d-osc/elit
+- GitHub repo (browse `src/native/`): https://github.com/elitjs/elit
 
 **Related skills:**
 - `elit-client-app` — same VNode primitives and `createState` from `elit/state`. The screen tree is constructed the same way as a browser tree.

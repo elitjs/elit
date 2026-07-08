@@ -1,4 +1,4 @@
-import { type NativeStyleResolveOptions } from '../../client/style';
+import { type NativeStyleResolveOptions } from '@elitjs/style';
 import type { NativeContentStackAlignment, NativePropValue } from '../types';
 import { getNativeStyleResolveOptions, toDpLiteral } from '../units';
 

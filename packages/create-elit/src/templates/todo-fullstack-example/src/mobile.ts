@@ -1,4 +1,4 @@
-import { button, div, h1, input, p, span } from 'elit/el';
+import { button, div, h1, input, p, span } from '@elitjs/el';
 
 function mobileTodo(label: string, checked: boolean) {
     return div(

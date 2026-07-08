@@ -1,4 +1,4 @@
-import styles, { type NativeStyleResolveOptions } from '../../client/style';
+import styles, { type NativeStyleResolveOptions } from '@elitjs/style';
 import type {
     NativeElementNode,
     NativeNode,

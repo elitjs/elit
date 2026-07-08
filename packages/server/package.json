@@ -1,0 +1,53 @@
+{
+  "name": "@elitjs/server",
+  "version": "4.0.0",
+  "description": "Dev server, router, and WebSocket orchestration for Elit",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elitjs/elit.git",
+    "directory": "packages/server"
+  },
+  "bugs": {
+    "url": "https://github.com/elitjs/elit/issues"
+  },
+  "homepage": "https://d-osc.github.io/elit/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@elitjs/core": "file:../core",
+    "@elitjs/chokidar": "file:../chokidar",
+    "@elitjs/dom": "file:../dom",
+    "@elitjs/fs": "file:../fs",
+    "@elitjs/http": "file:../http",
+    "@elitjs/https": "file:../https",
+    "@elitjs/mime-types": "file:../mime-types",
+    "@elitjs/path": "file:../path",
+    "@elitjs/runtime": "file:../runtime",
+    "@elitjs/smtp-server": "file:../smtp-server",
+    "@elitjs/ws": "file:../ws",
+    "@elitjs/wss": "file:../wss"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.13",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}

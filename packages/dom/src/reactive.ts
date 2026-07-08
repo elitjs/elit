@@ -1,4 +1,4 @@
-import type { Child, State } from '../../core/types';
+import type { Child, State } from '@elitjs/core';
 
 export type ReactiveNodeEntry = {
     node: Text | null;

@@ -1,4 +1,4 @@
-import type { State } from '../../core/types';
+import type { State } from '@elitjs/core';
 import { createState } from './core';
 
 const ELIT_INTERNAL_WS_PATH = '/__elit_ws';

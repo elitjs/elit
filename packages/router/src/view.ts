@@ -1,4 +1,4 @@
-import type { VNode } from '../../core/types';
+import type { VNode } from '@elitjs/core';
 import { matchRoute, wrapComponent } from './helpers';
 import type { Router, RouterOptions } from './types';
 

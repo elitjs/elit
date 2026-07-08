@@ -1,6 +1,6 @@
-import { div, h2, p, input, button, span, form } from 'elit/el';
-import { createState, reactive, createSharedState } from 'elit/state';
-import type { Router } from 'elit';
+import { div, h2, p, input, button, span, form } from '@elitjs/el';
+import { createState, reactive, createSharedState } from '@elitjs/state';
+import type { Router } from '@elitjs/router';
 
 interface ChatMessage {
   id: string;

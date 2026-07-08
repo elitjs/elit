@@ -1,4 +1,4 @@
-import { createRouter, createRouterView } from 'elit';
+import { createRouter, createRouterView } from '@elitjs/router';
 import { TodoPage } from './pages/TodoPage';
 
 // Initialize router

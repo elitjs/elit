@@ -1,4 +1,4 @@
-import { body, div, head, html, link, meta, script, title } from 'elit/el';
+import { body, div, head, html, link, meta, script, title } from '@elitjs/el';
 
 export const client = html(
   head(

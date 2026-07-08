@@ -27,8 +27,8 @@ Do NOT import from `elit/el`, `elit/state`, or other browser surfaces in server 
 
 ```ts
 // src/server.ts
-import { ElitRequest, ElitResponse, ServerRouter } from 'elit/server';
-import { Database } from 'elit/database';
+import { ElitRequest, ElitResponse, ServerRouter } from '@elitjs/server';
+import { Database } from '@elitjs/database';
 import { resolve } from 'path';
 
 export const router = new ServerRouter();
@@ -248,7 +248,7 @@ Read these before writing code in unfamiliar areas — they have signatures, exa
 - Low-level transport docs (`http.md`, `ws.md`, `fs.md`, `path.md`, `mime-types.md`): https://d-osc.github.io/elit/API.md
 - Config reference (`dev.api`, `dev.ws`, `dev.smtp`, `dev.blockFiles`, `preview.api`): https://d-osc.github.io/elit/CONFIG.md
 - CLI reference (`elit dev --no-server-watch`): https://d-osc.github.io/elit/CLI.md
-- GitHub repo (browse `src/server/` for framework source): https://github.com/d-osc/elit
+- GitHub repo (browse `src/server/` for framework source): https://github.com/elitjs/elit
 
 **Related skills:**
 - `elit-client-app` — when wiring the client side of an `/api/...` route (fetch calls, error handling, loading state)

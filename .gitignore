@@ -21,3 +21,14 @@ examples/mobile-native-example/android/app/build
 examples/mobile-native-example/android/.gradle
 *.wapk
 dev-dist
+shims
+
+packages/*.crx
+packages/*.pem
+/*.crx
+/*.pem
+
+benchmark/*
+artifacts/*
+coverage/*
+.elit

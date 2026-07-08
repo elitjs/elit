@@ -1,6 +1,6 @@
-import { button, div, h1, h2, p, section, span } from 'elit/el';
-import { dom } from 'elit/dom';
-import { createState, reactive } from 'elit/state';
+import { button, div, h1, h2, p, section, span } from '@elitjs/el';
+import { dom } from '@elitjs/dom';
+import { createState, reactive } from '@elitjs/state';
 import { injectStyles } from './styles';
 
 const count = createState(0);

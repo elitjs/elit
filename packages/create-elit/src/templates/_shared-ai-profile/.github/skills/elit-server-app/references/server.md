@@ -5,7 +5,7 @@
 ## ServerRouter
 
 ```ts
-import { ServerRouter } from 'elit/server';
+import { ServerRouter } from '@elitjs/server';
 
 export const router = new ServerRouter();
 ```
@@ -176,7 +176,7 @@ router.use('/api', (ctx, next) => {
 Import directly from `elit/server`:
 
 ```ts
-import { ServerRouter, cors, logger, errorHandler, rateLimit, bodyLimit, cacheControl, compress, security } from 'elit/server';
+import { ServerRouter, cors, logger, errorHandler, rateLimit, bodyLimit, cacheControl, compress, security } from '@elitjs/server';
 
 const router = new ServerRouter();
 router.use(cors({ origin: 'https://example.com', credentials: true }));
@@ -203,7 +203,7 @@ router.use(errorHandler());
 ### Standalone response helpers
 
 ```ts
-import { json, text, html, status } from 'elit/server';
+import { json, text, html, status } from '@elitjs/server';
 
 // Use directly when you only have the raw res
 json(ctx.res, { ok: true }, 201);

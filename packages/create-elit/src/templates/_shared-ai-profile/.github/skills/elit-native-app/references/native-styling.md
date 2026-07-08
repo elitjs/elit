@@ -133,8 +133,8 @@ State works exactly like the browser surface — same `createState`, `computed`,
 ### Two-way bindings (recommended for forms)
 
 ```ts
-import { createState, bindValue, bindChecked } from 'elit/state';
-import { div, input, label } from 'elit/el';
+import { createState, bindValue, bindChecked } from '@elitjs/state';
+import { div, input, label } from '@elitjs/el';
 
 export const screen = () => {
   const name = createState('');
@@ -161,7 +161,7 @@ export const screen = () => {
 For showing a state value without binding back to user input, use `reactive(...)` just like the browser:
 
 ```ts
-import { reactive } from 'elit/state';
+import { reactive } from '@elitjs/state';
 
 const count = createState(0);
 
@@ -174,7 +174,7 @@ return div(
 ### Computed state
 
 ```ts
-import { computed } from 'elit/state';
+import { computed } from '@elitjs/state';
 
 const count = createState(0);
 const doubled = computed({ count }, ({ count }) => count * 2);

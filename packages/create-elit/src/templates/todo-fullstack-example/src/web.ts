@@ -1,5 +1,5 @@
-import { div, main } from 'elit/el';
-import { reactive } from 'elit/state';
+import { div, main } from '@elitjs/el';
+import { reactive } from '@elitjs/state';
 import { AppFooter } from './components/AppFooter';
 import { AppHeader } from './components/AppHeader';
 import { router, RouterView } from './router';

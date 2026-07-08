@@ -7,7 +7,7 @@ Hash-mode (default) or history-mode router with route params, guards, and reacti
 ### `createRouter(options)`
 
 ```ts
-import { createRouter } from 'elit/router';
+import { createRouter } from '@elitjs/router';
 
 const router = createRouter({
   mode: 'hash',            // 'hash' | 'history'  (default: 'hash')
@@ -70,10 +70,10 @@ router.beforeEach((to, from) => {
 Returns a **function** that renders the matched route's component. The router does not push updates by itself — you MUST wrap the call in `reactive(router.currentRoute, ...)`.
 
 ```ts
-import { createRouter, createRouterView } from 'elit/router';
-import { reactive } from 'elit/state';
-import { div, main } from 'elit/el';
-import { dom } from 'elit/dom';
+import { createRouter, createRouterView } from '@elitjs/router';
+import { reactive } from '@elitjs/state';
+import { div, main } from '@elitjs/el';
+import { dom } from '@elitjs/dom';
 
 const router = createRouter({ mode: 'hash', routes });
 const RouterView = createRouterView(router, { mode: 'hash', routes });
@@ -96,8 +96,8 @@ Forgetting `reactive(router.currentRoute, () => RouterView())` is the most commo
 Creates an `<a>` that calls `router.push(props.to)` on click and prevents default. Auto-prefixes `#` in hash mode.
 
 ```ts
-import { routerLink } from 'elit/router';
-import { Header } from 'elit/el';
+import { routerLink } from '@elitjs/router';
+import { Header } from '@elitjs/el';
 
 header(
   nav(

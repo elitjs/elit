@@ -1,7 +1,7 @@
-import { header, nav, div, h1, button, span } from 'elit/el';
-import { createState, reactive } from 'elit/state';
-import { routerLink } from 'elit/router';
-import type { Router } from 'elit';
+import { header, nav, div, h1, button, span } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
+import { routerLink } from '@elitjs/router';
+import type { Router } from '@elitjs/router';
 
 export function Header(router: Router) {
   // Check if user is logged in (has token in localStorage)

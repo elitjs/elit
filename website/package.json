@@ -1,0 +1,26 @@
+{
+  "name": "elit-website",
+  "private": true,
+  "version": "4.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "elit dev",
+    "build": "elit build",
+    "preview": "elit preview"
+  },
+  "dependencies": {
+    "@elitjs/config": "file:../packages/config",
+    "@elitjs/core": "file:../packages/core",
+    "@elitjs/devtools": "file:../packages/devtools",
+    "@elitjs/dom": "file:../packages/dom",
+    "@elitjs/el": "file:../packages/el",
+    "@elitjs/render-context": "file:../packages/render-context",
+    "@elitjs/router": "file:../packages/router",
+    "@elitjs/state": "file:../packages/state",
+    "@elitjs/style": "file:../packages/style",
+    "elit": "file:.."
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

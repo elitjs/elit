@@ -33,9 +33,10 @@ Do NOT import from `elit/server`, `elit/database`, or other backend surfaces ins
 
 ```ts
 // src/pages/HomePage.ts
-import { section, div, h1, p, reactive } from 'elit';
-import type { Router } from 'elit';
-import { routerLink } from 'elit';
+import { section, div, h1, p } from '@elitjs/el';
+import { reactive } from '@elitjs/state';
+import type { Router } from '@elitjs/router';
+import { routerLink } from '@elitjs/router';
 import { currentLang, t } from '../i18n';  // if the app has i18n
 
 export const HomePage = (_router: Router) =>
@@ -55,9 +56,10 @@ Pages are functions that take `router` and return a VNode. Use `reactive(state, 
 
 ```ts
 // src/components/Header.ts
-import { header, nav, div, a, button, reactive } from 'elit';
-import type { Router } from 'elit';
-import { routerLink } from 'elit';
+import { header, nav, div, a, button } from '@elitjs/el';
+import { reactive } from '@elitjs/state';
+import type { Router } from '@elitjs/router';
+import { routerLink } from '@elitjs/router';
 
 export const Header = (router: Router) =>
   header({ className: 'header' },
@@ -94,7 +96,7 @@ Forgetting the `reactive(...)` wrapper is the most common bug — navigation wil
 
 ```ts
 // src/styles.ts
-import { createStyles } from 'elit/style';
+import { createStyles } from '@elitjs/style';
 
 const styles = createStyles();
 
@@ -138,7 +140,7 @@ Available methods on `createStyles()`: `addVar`, `addTag`, `addClass`, `addPseud
 
 ```ts
 // src/client.ts
-import { div, main } from 'elit/el';
+import { div, main } from '@elitjs/el';
 import { router, RouterView } from './router';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -207,7 +209,7 @@ Read these before writing code in unfamiliar areas — they have signatures, exa
 **External docs:**
 - API reference (elements, state, router, style, SSR): https://d-osc.github.io/elit/#/api
 - Config reference (`dev.ssr`, `dev.clients[].ssr`): https://d-osc.github.io/elit/CONFIG.md
-- GitHub repo (browse `src/client/` for framework source): https://github.com/d-osc/elit
+- GitHub repo (browse `src/client/` for framework source): https://github.com/elitjs/elit
 
 **Related skills:**
 - `elit-server-app` — when the page/component needs to call `/api/...` routes (the client side of those routes lives here; the handlers themselves do not)

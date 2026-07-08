@@ -1,4 +1,4 @@
-import styles from 'elit/style';
+import styles from '@elitjs/style';
 
 styles.addTag('*', {
   margin: 0,

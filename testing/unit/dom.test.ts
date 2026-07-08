@@ -138,3 +138,21 @@ describe('dom renderer props', () => {
         expect(renderToString(textarea({ value: 'Preset message' }))).toBe('<textarea>Preset message</textarea>');
     });
 });
+
+describe('dom renderer elit-version', () => {
+    beforeEach(() => {
+        (globalThis as any).document = createFakeDocument();
+    });
+
+    afterEach(() => {
+        delete (globalThis as any).document;
+    });
+
+    it('stamps the elit-version attribute on the mounted root element', () => {
+        const root = new FakeElement('root');
+
+        render(root as any, div('Hello'));
+
+        expect(root.getAttribute('elit-version')).toBe('4.0.0');
+    });
+});

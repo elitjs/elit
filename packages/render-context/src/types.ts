@@ -1,4 +1,4 @@
-import type { VNode } from '../../core/types';
+import type { VNode } from '@elitjs/core';
 
 export type RenderRuntimeTarget = 'web' | 'desktop' | 'mobile' | 'unknown';
 

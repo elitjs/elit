@@ -1,6 +1,6 @@
 {
   "name": "create-elit",
-  "version": "3.7.1",
+  "version": "4.0.0",
   "description": "Scaffolding tool for creating Elit projects",
   "type": "module",
   "bin": {
@@ -25,11 +25,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-osc/elit.git",
+    "url": "https://github.com/elitjs/elit.git",
     "directory": "packages/create-elit"
   },
   "bugs": {
-    "url": "https://github.com/d-osc/elit/issues"
+    "url": "https://github.com/elitjs/elit/issues"
   },
   "homepage": "https://d-osc.github.io/elit/",
   "devDependencies": {
