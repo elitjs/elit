@@ -42,8 +42,7 @@ export function security(...): Middleware;
 export function createProxyHandler(config: ProxyConfig): (req, res) => void;
 
 // import map
-export function createElitImportMap(...): { imports: Record<string, string> };
-export function resolveWorkspaceElitImportBasePath(...): string;
+export function createImportMap(rootDir: string, basePath?: string): Promise<string>;
 export function clearImportMapCache(): void;
 
 // shared state

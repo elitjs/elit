@@ -1,11 +1,11 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { resolve as resolvePath, sep } from 'node:path';
 
 import {
     resolveSpecifier,
     rewriteModuleSpecifiers,
-} from '../../src/server/server/ast-rewriter';
+} from '../../packages/server/src/ast-rewriter';
 
 const IMPORTER_DIR = resolvePath('/root/src');
 const CLIENT_ROOT = resolvePath('/root');

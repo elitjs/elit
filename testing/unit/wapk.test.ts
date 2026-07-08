@@ -1,10 +1,10 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { createWapkLiveSync, extractWapkArchive, packWapkDirectory, prepareWapkApp, readWapkArchive, runPreparedWapkApp, runWapkCommand, shouldUseShellExecution } from '../../src/wapk';
+import { createWapkLiveSync, extractWapkArchive, packWapkDirectory, prepareWapkApp, readWapkArchive, runPreparedWapkApp, runWapkCommand, shouldUseShellExecution } from '../../packages/wapk/src';
 
 function createTempDir() {
     return fs.mkdtempSync(path.join(os.tmpdir(), 'elit-wapk-'));

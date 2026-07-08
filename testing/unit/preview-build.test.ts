@@ -1,11 +1,12 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import fs from 'node:fs';
 import os from 'node:os';
 import { join } from 'node:path';
 
-import { createStandalonePreviewEntrySource, resolveStandalonePreviewBuildPlan, writeStandalonePackageJson } from '../../src/preview-build';
-import type { BuildOptions, PreviewOptions } from '../../src/types';
+import { createStandalonePreviewEntrySource, resolveStandalonePreviewBuildPlan, writeStandalonePackageJson } from '../../packages/preview-build/src';
+import type { BuildOptions } from '@elitjs/build';
+import type { PreviewOptions } from '@elitjs/server';
 
 describe('standalone preview build planning', () => {
     it('emits index.js into the preview root and serves built assets from the same folder', () => {

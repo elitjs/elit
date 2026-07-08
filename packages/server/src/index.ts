@@ -7,7 +7,7 @@
  */
 
 export { createDevServer } from './dev-server';
-export { clearImportMapCache, createElitImportMap, resolveWorkspaceElitImportBasePath } from './import-map';
+export { clearImportMapCache, createImportMap } from './import-map';
 export { bodyLimit, cacheControl, compress, cors, errorHandler, logger, rateLimit, security } from './middleware';
 export { createProxyHandler } from './proxy';
 export { html, json, status, text } from './responses';

@@ -12,7 +12,7 @@ import { createSmtpServer } from '@elitjs/smtp-server';
 import type { ElitSMTPServerHandle } from '@elitjs/smtp-server';
 import { CLOSE_CODES, ReadyState, WebSocket, WebSocketServer } from '@elitjs/ws';
 
-import { clearImportMapCache, createElitImportMap } from './import-map';
+import { clearImportMapCache, createImportMap } from './import-map';
 import { createProxyHandler } from './proxy';
 import { send403, send404, send500 } from './responses';
 import { StateManager } from './state';
@@ -511,9 +511,9 @@ export default css;
           }
         }
 
-        const elitImportMap = await createElitImportMap(client.root, basePath, client.mode);
+        const importMap = await createImportMap(client.root, basePath);
         const modeScript = config.mode === 'preview' ? '<script>window.__ELIT_MODE__=\'preview\';</script>' : '';
-        const headInjection = `\n${modeScript}${ssrStyles ? `\n${ssrStyles}` : ''}\n${elitImportMap}`;
+        const headInjection = `\n${modeScript}${ssrStyles ? `\n${ssrStyles}` : ''}\n${importMap}`;
         html = html.includes('</head>') ? html.replace('</head>', `${headInjection}</head>`) : html;
         html = html.includes('</body>') ? html.replace('</body>', `${hmrScript}</body>`) : html + hmrScript;
         content = Buffer.from(html);
@@ -587,9 +587,9 @@ export default css;
       html = rewriteRelativePaths(html, basePath);
 
       const hmrScript = config.mode !== 'preview' ? createHMRScript(config.port) : '';
-      const elitImportMap = await createElitImportMap(client.root, basePath, client.mode);
+      const importMap = await createImportMap(client.root, basePath);
       const modeScript = config.mode === 'preview' ? '<script>window.__ELIT_MODE__=\'preview\';</script>\n' : '';
-      html = html.includes('</head>') ? html.replace('</head>', `\n${modeScript}${elitImportMap}</head>`) : html;
+      html = html.includes('</head>') ? html.replace('</head>', `\n${modeScript}${importMap}</head>`) : html;
       html = html.includes('</body>') ? html.replace('</body>', `${hmrScript}</body>`) : html + hmrScript;
 
       res.writeHead(200, {

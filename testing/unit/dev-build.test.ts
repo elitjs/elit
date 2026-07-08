@@ -1,11 +1,11 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import fs from 'node:fs';
 import os from 'node:os';
 import { join } from 'node:path';
 
-import { createStandaloneDevEntrySource, resolveStandaloneDevBuildPlan, standaloneDevNeedsEsbuildRuntime } from '../../src/dev-build';
-import type { DevServerOptions } from '../../src/types';
+import { createStandaloneDevEntrySource, resolveStandaloneDevBuildPlan, standaloneDevNeedsEsbuildRuntime } from '../../packages/dev-build/src';
+import type { DevServerOptions } from '@elitjs/server';
 
 describe('standalone dev build planning', () => {
     it('emits index.js into dev-dist by default and points back to the dev root', () => {

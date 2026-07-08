@@ -1,10 +1,10 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-import { resolveWorkspacePackageImport } from '../../src/workspace-package';
+import { resolveWorkspacePackageImport } from '../../packages/workspace-package/src';
 
 describe('workspace package self-reference resolution', () => {
     const tempDirs: string[] = [];

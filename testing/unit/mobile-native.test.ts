@@ -1,4 +1,4 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import {
     buildIosXcodebuildArgs,
@@ -15,7 +15,7 @@ import {
     renderIosProjectFileSource,
     renderIosRuntimeConfigSource,
     renderIosWebViewSource,
-} from '../../src/mobile';
+} from '../../packages/cli/src/mobile';
 
 describe('mobile native templates', () => {
     it('renders a managed Android activity with imports for external native packages', () => {

@@ -1,6 +1,6 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
-import { parseBuildArgs, parseBuildDevArgs, parseBuildPreviewArgs } from '../../src/cli';
+import { parseBuildArgs, parseBuildDevArgs, parseBuildPreviewArgs } from '../../packages/cli/src';
 
 describe('cli build argument parsing', () => {
     it('parses regular build flags', () => {

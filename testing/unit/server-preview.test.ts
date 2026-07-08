@@ -1,10 +1,10 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import fs from 'node:fs';
 import os from 'node:os';
 import { join } from 'node:path';
 
-import { createDevServer } from '../../src/server';
+import { createDevServer } from '../../packages/server/src';
 
 async function waitForListening(server: any): Promise<void> {
     if (server.listening) {
