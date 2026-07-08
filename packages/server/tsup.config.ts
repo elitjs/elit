@@ -9,7 +9,7 @@ export default defineConfig({
   shims: true,
   target: 'es2020',
   platform: 'node',
-  external: ['ws'],
+  external: ['ws', 'javascript-obfuscator'],
   outExtension({ format }) {
     return {
       js: format === 'cjs' ? '.cjs' : '.mjs',
