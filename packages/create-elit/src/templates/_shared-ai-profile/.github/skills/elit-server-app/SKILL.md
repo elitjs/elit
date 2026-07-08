@@ -244,10 +244,10 @@ Read these before writing code in unfamiliar areas — they have signatures, exa
 - `node_modules/elit/dist/index.d.ts` — umbrella re-exports
 
 **External docs:**
-- Server docs (`ServerRouter`, middleware, shared state, WS): https://d-osc.github.io/elit/server.md
-- Low-level transport docs (`http.md`, `ws.md`, `fs.md`, `path.md`, `mime-types.md`): https://d-osc.github.io/elit/API.md
-- Config reference (`dev.api`, `dev.ws`, `dev.smtp`, `dev.blockFiles`, `preview.api`): https://d-osc.github.io/elit/CONFIG.md
-- CLI reference (`elit dev --no-server-watch`): https://d-osc.github.io/elit/CLI.md
+- Server docs (`ServerRouter`, middleware, shared state, WS): https://elitjs.github.io/elit/server.md
+- Low-level transport docs (`http.md`, `ws.md`, `fs.md`, `path.md`, `mime-types.md`): https://elitjs.github.io/elit/API.md
+- Config reference (`dev.api`, `dev.ws`, `dev.smtp`, `dev.blockFiles`, `preview.api`): https://elitjs.github.io/elit/CONFIG.md
+- CLI reference (`elit dev --no-server-watch`): https://elitjs.github.io/elit/CLI.md
 - GitHub repo (browse `src/server/` for framework source): https://github.com/elitjs/elit
 
 **Related skills:**

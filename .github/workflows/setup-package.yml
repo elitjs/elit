@@ -1,0 +1,62 @@
+name: Setup Package
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      package:
+        required: true
+        type: string
+      pkgVersion:
+        required: true
+        type: string
+      nodeVersion:
+        required: true
+        type: string
+      build_package:
+        required: true
+        type: boolean
+
+permissions:
+  contents: read
+  packages: write  # สำหรับ publish package
+
+jobs:
+
+  publish:
+    if: inputs.build_package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "${{ inputs.nodeVersion }}"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build ${{ inputs.package }}@${{ inputs.pkgVersion }}
+        run: npm run build:${{ inputs.package }}
+
+      - name: Publish ${{ inputs.package }}@${{ inputs.pkgVersion }}
+        run: |
+          OWNER=${GITHUB_REPOSITORY%/*}
+          PACKAGE_NAME=${{ inputs.package }}
+          VERSION=${{ inputs.pkgVersion }}
+          TAG=${{ inputs.environment }}
+
+          echo "📦 Publishing $PACKAGE_NAME@$VERSION with tag '$TAG'"
+
+          npm version $VERSION --prefix ./dist/$OWNER/$PACKAGE_NAME --no-git-tag-version
+          npm publish ./dist/$OWNER/$PACKAGE_NAME \
+            --tag $TAG \
+            --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,96 @@
+name: Deploy Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: '📦 Select Package to Deploy'
+        required: true
+        type: choice
+        options:
+          - build
+          - chokidar
+          - cli
+          - config
+          - core
+          - create-elit
+          - create-elit-skills
+          - database
+          - desktop
+          - desktop-auto-render
+          - dev-build
+          - devtools
+          - dom
+          - el
+          - fs
+          - hmr
+          - http
+          - https
+          - mime-types
+          - native
+          - path
+          - pm
+          - preview-build
+          - render-context
+          - router
+          - runtime
+          - server
+          - smtp-server
+          - state
+          - style
+          - test
+          - universal
+          - wapk
+          - workspace-package
+          - ws
+          - wss
+
+      environment:
+        description: '🏷 Publish Tag (e.g. sit, release)'
+        required: true
+        default: pvt
+        type: choice
+        options:
+          - latest
+          - alpha
+          - dev
+          - pvt
+          - beta
+          - sit
+          - rc
+          - release
+          - next
+          - test
+
+      pkgVersion:
+        description: '📌 Version (e.g. v1.0.0-pvt.1)'
+        required: true
+        type: string
+
+      nodeVersion:
+        description: '🧪 Node Version'
+        required: true
+        default: '22'
+        type: choice
+        options:
+          - '24'
+          - '22'
+          - '20'
+          - '18'
+          - '16'
+          - '14'
+          - '12'
+
+
+
+run-name: "Deploy package ${{ github.event.client_payload.inputs.package || github.event.inputs.package }} <${{ github.event.client_payload.inputs.pkgVersion || github.event.inputs.pkgVersion }}> on ${{ github.event.client_payload.inputs.environment || github.event.inputs.environment }}"
+
+jobs:
+  call-deploy:
+    uses: ./.github/workflows/setup-package.yml
+    with:
+      environment: ${{ inputs.environment }}
+      package:  ${{ inputs.package }}
+      pkgVersion: ${{ inputs.pkgVersion }}
+      nodeVersion: ${{ inputs.nodeVersion }}
+      build_package: true

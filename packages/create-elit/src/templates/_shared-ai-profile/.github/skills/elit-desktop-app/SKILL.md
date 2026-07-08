@@ -170,8 +170,8 @@ console.log('IPC server on', port);
 - `node_modules/elit/dist/desktop.d.ts` — full desktop API surface
 
 **External docs:**
-- Desktop config reference: https://d-osc.github.io/elit/CONFIG.md#desktop
-- CLI commands (`elit desktop run/build/wapk`): https://d-osc.github.io/elit/CLI.md
+- Desktop config reference: https://elitjs.github.io/elit/CONFIG.md#desktop
+- CLI commands (`elit desktop run/build/wapk`): https://elitjs.github.io/elit/CLI.md
 - GitHub repo (browse `src/desktop/`): https://github.com/elitjs/elit
 
 **Related skills:**

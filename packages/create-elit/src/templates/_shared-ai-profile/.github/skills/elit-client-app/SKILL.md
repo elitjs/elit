@@ -207,8 +207,8 @@ Read these before writing code in unfamiliar areas — they have signatures, exa
 - `node_modules/elit/dist/dom.d.ts` — `dom.render`, `dom.renderToString`
 
 **External docs:**
-- API reference (elements, state, router, style, SSR): https://d-osc.github.io/elit/#/api
-- Config reference (`dev.ssr`, `dev.clients[].ssr`): https://d-osc.github.io/elit/CONFIG.md
+- API reference (elements, state, router, style, SSR): https://elitjs.github.io/elit/#/api
+- Config reference (`dev.ssr`, `dev.clients[].ssr`): https://elitjs.github.io/elit/CONFIG.md
 - GitHub repo (browse `src/client/` for framework source): https://github.com/elitjs/elit
 
 **Related skills:**

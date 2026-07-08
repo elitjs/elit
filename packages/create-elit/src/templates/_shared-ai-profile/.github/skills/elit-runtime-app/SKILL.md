@@ -358,11 +358,11 @@ Read these before writing code in unfamiliar areas — they have signatures, exa
 - `node_modules/elit/dist/cli.d.ts` — CLI flag surface
 
 **External docs:**
-- Config reference (every section, every option): https://d-osc.github.io/elit/CONFIG.md
-- CLI reference (every command and flag): https://d-osc.github.io/elit/CLI.md
-- Mobile workflow (`mobile init`, `doctor`, `sync`, `run`, `build`): https://d-osc.github.io/elit/CONFIG.md#mobile
-- Desktop workflow (`desktop run`, `build`, `wapk`): https://d-osc.github.io/elit/CONFIG.md#desktop
-- WAPK packaging (`wapk build`, `run`, online/Google Drive sync): https://d-osc.github.io/elit/CONFIG.md#wapk
+- Config reference (every section, every option): https://elitjs.github.io/elit/CONFIG.md
+- CLI reference (every command and flag): https://elitjs.github.io/elit/CLI.md
+- Mobile workflow (`mobile init`, `doctor`, `sync`, `run`, `build`): https://elitjs.github.io/elit/CONFIG.md#mobile
+- Desktop workflow (`desktop run`, `build`, `wapk`): https://elitjs.github.io/elit/CONFIG.md#desktop
+- WAPK packaging (`wapk build`, `run`, online/Google Drive sync): https://elitjs.github.io/elit/CONFIG.md#wapk
 - GitHub repo (browse `src/cli/`, `src/build/`): https://github.com/elitjs/elit
 - Release notes (breaking changes between versions): https://github.com/elitjs/elit/releases
 
