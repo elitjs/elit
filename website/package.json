@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "elit dev",
-    "build": "node ./build.mjs",
+    "build": "elit build",
     "preview": "elit preview"
   },
   "dependencies": {
