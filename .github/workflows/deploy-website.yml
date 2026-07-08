@@ -29,20 +29,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: website/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Install dependencies
-        working-directory: ./website
-        run: npm ci || npm install
+        run: npm ci
 
       - name: Build
-        working-directory: ./website
-        run: npm run build
+        run: npm run website:build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
