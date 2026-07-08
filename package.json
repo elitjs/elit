@@ -1,6 +1,6 @@
 {
   "name": "elit",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Optimized lightweight library for creating DOM elements with reactive state",
   "type": "module",
   "exports": {
@@ -197,6 +197,8 @@
   },
   "scripts": {
     "build": "node ./scripts/build-all.mjs",
+    "update:lockfile": "node scripts/install-all.mjs --install",
+    "install:ci": "node scripts/install-all.mjs",
     "shims": "node ./scripts/generate-proxy-shims.mjs",
     "website:dev": "npm run --prefix website dev",
     "website:build": "npm run --prefix website build",
@@ -213,7 +215,13 @@
     "docs:dev": "npm run --prefix docs dev",
     "docs:build": "npm run --prefix docs build",
     "docs:preview": "npm run --prefix docs preview",
-    "docs:deploy": "npm run docs:build && gh-pages -d docs/dist"
+    "docs:deploy": "npm run docs:build && gh-pages -d docs/dist",
+    "patch:version": "node scripts/change-version.mjs patch",
+    "minor:version": "node scripts/change-version.mjs minor",
+    "major:version": "node scripts/change-version.mjs major",
+    "pre:beta:version": "node scripts/change-version.mjs prerelease --tag beta",
+    "pre:alpha:version": "node scripts/change-version.mjs prerelease --tag alpha",
+    "pre:rc:version": "node scripts/change-version.mjs prerelease --tag rc"
   },
   "keywords": [
     "dom",
@@ -250,7 +258,7 @@
   "bugs": {
     "url": "https://github.com/elitjs/elit/issues"
   },
-  "homepage": "https://d-osc.github.io/elit/",
+  "homepage": "https://elitjs.github.io/elit/",
   "dependencies": {
     "@elitjs/build": "file:packages/build",
     "@elitjs/chokidar": "file:packages/chokidar",

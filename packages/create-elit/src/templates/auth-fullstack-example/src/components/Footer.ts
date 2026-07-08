@@ -12,7 +12,7 @@ export function Footer() {
       ),
       div({ className: 'footer-section' },
         a({ href: 'https://github.com/n-devs', target: '_blank', className: 'footer-link' }, 'GitHub'),
-        a({ href: 'https://d-osc.github.io/elit/#/docs', className: 'footer-link' }, 'Documentation'),
+        a({ href: 'https://elitjs.github.io/elit/#/docs', className: 'footer-link' }, 'Documentation'),
         a({ href: '#', className: 'footer-link' }, 'Support')
       ),
       div({ className: 'footer-section' },

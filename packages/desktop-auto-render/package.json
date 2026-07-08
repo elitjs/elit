@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/desktop-auto-render",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Auto-render helpers for Elit desktop apps",
   "type": "module",
   "main": "dist/index.cjs",
@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/elitjs/elit/issues"
   },
-  "homepage": "https://d-osc.github.io/elit/",
+  "homepage": "https://elitjs.github.io/elit/",
   "publishConfig": {
     "access": "public"
   },

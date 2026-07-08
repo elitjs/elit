@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/universal",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Universal bridge for Elit desktop/mobile messaging",
   "type": "module",
   "main": "dist/index.cjs",
@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/elitjs/elit/issues"
   },
-  "homepage": "https://d-osc.github.io/elit/",
+  "homepage": "https://elitjs.github.io/elit/",
   "publishConfig": {
     "access": "public"
   },

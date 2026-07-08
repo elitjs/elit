@@ -1,6 +1,6 @@
 {
   "name": "create-elit",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Scaffolding tool for creating Elit projects",
   "type": "module",
   "bin": {
@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/elitjs/elit/issues"
   },
-  "homepage": "https://d-osc.github.io/elit/",
+  "homepage": "https://elitjs.github.io/elit/",
   "devDependencies": {
     "@types/node": "^25.0.10",
     "tsup": "^8.0.0",

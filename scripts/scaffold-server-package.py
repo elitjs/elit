@@ -78,7 +78,7 @@ def scaffold(name, description, deps):
             "directory": f"packages/{name}"
         },
         "bugs": {"url": "https://github.com/elitjs/elit/issues"},
-        "homepage": "https://d-osc.github.io/elit/",
+        "homepage": "https://elitjs.github.io/elit/",
         "publishConfig": {"access": "public"},
         "dependencies": deps,
         "devDependencies": {

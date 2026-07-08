@@ -1,0 +1,82 @@
+name: Auto PackCode
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger เมื่อมีการสร้าง tag เช่น v1.0.0
+
+permissions:
+  contents: read
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read libs.json and set matrix
+        id: set-matrix
+        run: |
+          libs=$(jq -c '.libs | map({lib: .})' .github/config/packages.json)
+          echo "matrix=$libs" >> $GITHUB_OUTPUT
+
+  build-libs:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # จำเป็นสำหรับ --provenance (ดึง OIDC token จาก GitHub)
+
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+
+    if: github.repository == 'elitjs/elit' && startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # เพื่อให้เข้าถึง tag ได้
+
+      - name: Get tag version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'  # เขียน NODE_AUTH_TOKEN ลง .npmrc ให้ publish ได้
+
+      - name: Install dependencies
+        working-directory: ./packages/${{ matrix.lib }}
+        run: npm ci
+
+      - name: Build ${{ matrix.lib }}@${{ env.TAG_VERSION }}
+        working-directory: ./packages/${{ matrix.lib }}
+        run: npm run build
+
+      - name: Publish ${{ matrix.lib }}@${{ env.TAG_VERSION }}
+        run: |
+          OWNER=${GITHUB_REPOSITORY%/*}
+          PACKAGE_NAME=${{ matrix.lib }}
+          PACKAGE_VERSION=${{ env.TAG_VERSION }}
+
+          # ดึง dist-tag จาก prerelease เช่น v1.0.0-beta -> beta, v1.0.0 -> release
+          VERSION_NO_V="${PACKAGE_VERSION#v}"
+          VERSION_NO_BUILD="${VERSION_NO_V%%+*}"
+          if [[ "$VERSION_NO_BUILD" == *"-"* ]]; then
+            PRERELEASE="${VERSION_NO_BUILD#*-}"
+            DIST_TAG="${PRERELEASE%%.*}"
+          else
+            DIST_TAG="latest"
+          fi
+
+          echo "Publishing $PACKAGE_NAME@$PACKAGE_VERSION (tag: $DIST_TAG)"
+
+          npm version $PACKAGE_VERSION --prefix ./packages/$PACKAGE_NAME --no-git-tag-version
+          npm publish ./packages/$PACKAGE_NAME --provenance --access public --tag "$DIST_TAG"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

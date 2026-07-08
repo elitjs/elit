@@ -153,13 +153,13 @@ When the skills don't cover a question in depth, these are the canonical sources
 - Type defs are the source of truth when docs and behavior disagree.
 
 **External docs (published from the Elit repo):**
-- API reference: https://d-osc.github.io/elit/#/api
-- Config reference: https://d-osc.github.io/elit/CONFIG.md
-- CLI reference: https://d-osc.github.io/elit/CLI.md
-- Server deep-dive: https://d-osc.github.io/elit/server.md
-- Native CSS support: https://d-osc.github.io/elit/native-css-support.md
-- Native element support: https://d-osc.github.io/elit/native-element-support.md
-- Cross-runtime subpath docs (`http`, `ws`, `fs`, `path`, `mime-types`, `chokidar`): https://d-osc.github.io/elit/API.md
+- API reference: https://elitjs.github.io/elit/#/api
+- Config reference: https://elitjs.github.io/elit/CONFIG.md
+- CLI reference: https://elitjs.github.io/elit/CLI.md
+- Server deep-dive: https://elitjs.github.io/elit/server.md
+- Native CSS support: https://elitjs.github.io/elit/native-css-support.md
+- Native element support: https://elitjs.github.io/elit/native-element-support.md
+- Cross-runtime subpath docs (`http`, `ws`, `fs`, `path`, `mime-types`, `chokidar`): https://elitjs.github.io/elit/API.md
 - Framework source (when the type defs aren't enough): https://github.com/elitjs/elit
 - Release notes / breaking changes: https://github.com/elitjs/elit/releases
 

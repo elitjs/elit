@@ -203,9 +203,9 @@ desktop: {
 - `node_modules/elit/dist/state.d.ts` — same state primitives as browser
 
 **External docs:**
-- Native CSS support: https://d-osc.github.io/elit/native-css-support.md
-- Native element support: https://d-osc.github.io/elit/native-element-support.md
-- Mobile config reference: https://d-osc.github.io/elit/CONFIG.md#mobile
+- Native CSS support: https://elitjs.github.io/elit/native-css-support.md
+- Native element support: https://elitjs.github.io/elit/native-element-support.md
+- Mobile config reference: https://elitjs.github.io/elit/CONFIG.md#mobile
 - GitHub repo (browse `src/native/`): https://github.com/elitjs/elit
 
 **Related skills:**
