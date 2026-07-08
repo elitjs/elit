@@ -4,7 +4,10 @@ import type { BuildOptions } from '@elitjs/build';
 const rewriteScriptSrc = (content: string, config: BuildOptions): string => {
     let html = content.replace('src="./src/main.ts"', 'src="./index.js"');
     if (config.basePath) {
-            const baseTag = `<base href="${config.basePath}/">`;
+            const normalizedBase = config.basePath.endsWith('/')
+                ? config.basePath.slice(0, -1)
+                : config.basePath;
+            const baseTag = `<base href="${normalizedBase}/">`;
             html = html.replace(
               '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
               `<meta name="viewport" content="width=device-width, initial-scale=1.0">\n  ${baseTag}`
