@@ -85,6 +85,10 @@ on:
 
 run-name: "Deploy package ${{ github.event.client_payload.inputs.package || github.event.inputs.package }} <${{ github.event.client_payload.inputs.pkgVersion || github.event.inputs.pkgVersion }}> on ${{ github.event.client_payload.inputs.environment || github.event.inputs.environment }}"
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   call-deploy:
     uses: ./.github/workflows/setup-package.yml
