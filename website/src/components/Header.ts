@@ -34,7 +34,7 @@ export const Header = (): VNode => ({
                     to: '/',
                     class: 'brand',
                     children: [
-                        { tagName: 'span', props: { class: 'brand-dot' }, children: [img({ src: '/favicon.svg' })] },
+                        { tagName: 'span', props: { class: 'brand-dot' }, children: [img({ src: './favicon.svg' })] },
                         { tagName: 'span', props: {}, children: ['Elit.js'] },
                     ],
                 }),
