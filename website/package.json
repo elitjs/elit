@@ -18,6 +18,7 @@
     "@elitjs/router": "file:../packages/router",
     "@elitjs/server": "file:../packages/server",
     "@elitjs/state": "file:../packages/state",
+    "@elitjs/fs": "file:../packages/fs",
     "@elitjs/style": "file:../packages/style"
   },
   "devDependencies": {

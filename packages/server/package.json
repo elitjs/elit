@@ -46,7 +46,7 @@
     "@elitjs/smtp-server": "file:../smtp-server",
     "@elitjs/ws": "file:../ws",
     "@elitjs/wss": "file:../wss",
-    "open": "^10.0.0"
+    "open": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",
