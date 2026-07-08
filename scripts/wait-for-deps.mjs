@@ -43,7 +43,7 @@ const POLL_INTERVAL_MS = 15 * 1000;
 const startedAt = Date.now();
 
 async function checkDep(name, targetVersion) {
-    const url = `https://registry.npmjs.org/${encodeURIComponent(name).replace('%2F', '/')}`;
+    const url = `https://registry.npmjs.org/${name.split('/').map(encodeURIComponent).join('/')}`;
     try {
         const res = await fetch(url);
         if (!res.ok) return false;
