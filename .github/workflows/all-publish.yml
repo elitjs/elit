@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'  # Trigger เมื่อมีการสร้าง tag เช่น v1.0.0
 
+permissions:
+  contents: read
+
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
