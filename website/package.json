@@ -16,13 +16,14 @@
     "@elitjs/el": "file:../packages/el",
     "@elitjs/render-context": "file:../packages/render-context",
     "@elitjs/router": "file:../packages/router",
+    "@elitjs/server": "file:../packages/server",
     "@elitjs/state": "file:../packages/state",
-    "@elitjs/style": "file:../packages/style",
-    "@elitjs/server": "file:../packages/server"
+    "@elitjs/style": "file:../packages/style"
   },
   "devDependencies": {
-    "@elitjs/cli": "file:../packages/cli",
     "@elitjs/build": "file:../packages/build",
+    "@elitjs/cli": "file:../packages/cli",
+    "@types/node": "^26.1.1",
     "typescript": "^5.3.0"
   }
 }
