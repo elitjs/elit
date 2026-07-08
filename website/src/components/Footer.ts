@@ -17,7 +17,7 @@ export const Footer = (): VNode => ({
                             tagName: 'div',
                             props: { class: 'footer-brand-row' },
                             children: [
-                                { tagName: 'span', props: { class: 'brand-dot' }, children: [img({ src: '/favicon.svg' })] },
+                                { tagName: 'span', props: { class: 'brand-dot' }, children: [img({ src: './favicon.svg' })] },
                                 { tagName: 'span', props: {}, children: ['Elit.js'] },
                             ],
                         },

@@ -1,7 +1,17 @@
 import type { ElitConfig } from '@elitjs/config';
+import type { BuildOptions } from '@elitjs/build';
 
-const rewriteScriptSrc = (content: string): string =>
-    content.replace(/src="\/src\/main\.ts"/g, 'src="/index.js"');
+const rewriteScriptSrc = (content: string, config: BuildOptions): string => {
+    let html = content.replace('src="./src/main.ts"', 'src="./index.js"');
+    if (config.basePath) {
+            const baseTag = `<base href="${config.basePath}/">`;
+            html = html.replace(
+              '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+              `<meta name="viewport" content="width=device-width, initial-scale=1.0">\n  ${baseTag}`
+            );
+    }
+    return html;
+};
 
 const buildAlias = {
     '@elitjs/core': '../packages/core/dist/index.mjs',
@@ -19,6 +29,7 @@ const config: ElitConfig = {
         port: 5180,
         open: false,
         root: '.',
+        basePath: '/elit/',
     },
     build: {
         entry: 'src/main.ts',
@@ -29,6 +40,7 @@ const config: ElitConfig = {
         target: 'es2022',
         minify: true,
         sourcemap: false,
+        basePath: '/elit/',
         resolve: { alias: buildAlias },
         copy: [
             { from: 'index.html', to: 'index.html', transform: rewriteScriptSrc },
@@ -38,6 +50,8 @@ const config: ElitConfig = {
     preview: {
         port: 5181,
         open: false,
+        root: 'dist',
+        basePath: '/elit/',
     },
 };
 
