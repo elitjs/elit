@@ -21,7 +21,9 @@
       "require": "./dist/cli.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"
@@ -43,6 +45,7 @@
     "@elitjs/config": "file:../config"
   },
   "devDependencies": {
+    "@types/node": "^25.0.10",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0"
   }
