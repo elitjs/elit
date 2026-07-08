@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/mime-types",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "MIME type detection for Elit",
   "type": "module",
   "main": "dist/index.cjs",

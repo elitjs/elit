@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/cli",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Command-line interface for Elit (dev, build, preview, test, mobile, desktop, wapk, pm)",
   "type": "module",
   "main": "dist/index.cjs",

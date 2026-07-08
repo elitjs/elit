@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/wss",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Cross-runtime secure WebSocket (wss) server for Elit",
   "type": "module",
   "main": "dist/index.cjs",

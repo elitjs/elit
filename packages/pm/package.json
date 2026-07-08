@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/pm",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Process manager for Elit (start, stop, restart, watch)",
   "type": "module",
   "main": "dist/index.cjs",

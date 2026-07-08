@@ -22,6 +22,9 @@ jobs:
   build-libs:
     needs: generate-matrix
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # จำเป็นสำหรับ --provenance (ดึง OIDC token จาก GitHub)
 
     strategy:
       matrix:
@@ -42,12 +45,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          registry-url: 'https://registry.npmjs.org'  # เขียน NODE_AUTH_TOKEN ลง .npmrc ให้ publish ได้
 
       - name: Install dependencies
-        run: npm install
+        working-directory: ./packages/${{ matrix.lib }}
+        run: npm ci
 
       - name: Build ${{ matrix.lib }}@${{ env.TAG_VERSION }}
-        run: npm run build:${{ matrix.lib }}
+        working-directory: ./packages/${{ matrix.lib }}
+        run: npm run build
 
       - name: Publish ${{ matrix.lib }}@${{ env.TAG_VERSION }}
         run: |
@@ -67,7 +73,7 @@ jobs:
 
           echo "Publishing $PACKAGE_NAME@$PACKAGE_VERSION (tag: $DIST_TAG)"
 
-          npm version $PACKAGE_VERSION --prefix ./dist/$OWNER/$PACKAGE_NAME --no-git-tag-version
-          npm publish ./dist/$OWNER/$PACKAGE_NAME --tag "$DIST_TAG"
+          npm version $PACKAGE_VERSION --prefix ./packages/$PACKAGE_NAME --no-git-tag-version
+          npm publish ./packages/$PACKAGE_NAME --provenance --access public --tag "$DIST_TAG"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/native",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Native (SwiftUI/Compose) rendering pipeline for Elit",
   "type": "module",
   "main": "dist/index.cjs",

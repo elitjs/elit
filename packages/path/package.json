@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/path",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Cross-runtime path utilities for Elit",
   "type": "module",
   "main": "dist/index.cjs",

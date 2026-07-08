@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/devtools",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Browser DevTools panel for Elit (state, router, perf inspection)",
   "type": "module",
   "main": "dist/index.cjs",

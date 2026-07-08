@@ -38,12 +38,15 @@ jobs:
         with:
           node-version: "${{ inputs.nodeVersion }}"
           cache: npm
+          registry-url: 'https://registry.npmjs.org'  # เขียน NODE_AUTH_TOKEN ลง .npmrc ให้ publish ได้
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        working-directory: ./packages/${{ inputs.package }}
+        run: npm ci
 
       - name: Build ${{ inputs.package }}@${{ inputs.pkgVersion }}
-        run: npm run build:${{ inputs.package }}
+        working-directory: ./packages/${{ inputs.package }}
+        run: npm run build
 
       - name: Publish ${{ inputs.package }}@${{ inputs.pkgVersion }}
         run: |
@@ -54,9 +57,10 @@ jobs:
 
           echo "📦 Publishing $PACKAGE_NAME@$VERSION with tag '$TAG'"
 
-          npm version $VERSION --prefix ./dist/$OWNER/$PACKAGE_NAME --no-git-tag-version
-          npm publish ./dist/$OWNER/$PACKAGE_NAME \
+          npm version $VERSION --prefix ./packages/$PACKAGE_NAME --no-git-tag-version
+          npm publish ./packages/$PACKAGE_NAME \
             --tag $TAG \
-            --registry=https://npm.pkg.github.com
+            --access public \
+            --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/database",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Cross-runtime database utilities for Elit",
   "type": "module",
   "main": "dist/index.cjs",
