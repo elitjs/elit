@@ -8,4 +8,4 @@ import { router } from './router';
 initTheme();
 injectGlobalStyles();
 render('#app', App);
-installDevTools({ router, showPanel: true, autoTrack: true });
+installDevTools({ router, showPanel: false, autoTrack: true });
