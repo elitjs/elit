@@ -1,20 +1,7 @@
 import { join, resolve } from '@elitjs/path';
-import { readFile, realpath } from '@elitjs/fs';
+import { readFile, readdir } from '@elitjs/fs';
 
 import { findSpecialDir, type ImportMapEntry } from './utils';
-
-const BROWSER_SAFE_ELIT_IMPORTS = {
-  'elit': 'index',
-  'elit/dom': 'dom',
-  'elit/el': 'el',
-  'elit/native': 'native',
-  'elit/universal': 'universal',
-  'elit/router': 'router',
-  'elit/state': 'state',
-  'elit/style': 'style',
-  'elit/hmr': 'hmr',
-  'elit/types': 'types',
-} as const;
 
 interface PackageExports {
   [key: string]: string | PackageExports;
@@ -30,68 +17,36 @@ interface PackageJson {
   sideEffects?: boolean | string[];
 }
 
-const importMapCache = new Map<string, ImportMapEntry>();
-
-function createBrowserSafeElitImports(basePath: string, fileExt: string): ImportMapEntry {
-  return Object.fromEntries(
-    Object.entries(BROWSER_SAFE_ELIT_IMPORTS).map(([specifier, outputName]) => [
-      specifier,
-      `${basePath}/${outputName}${fileExt}`,
-    ]),
-  );
-}
-
-export async function resolveWorkspaceElitImportBasePath(rootDir: string, basePath: string, _mode: 'dev' | 'preview'): Promise<string | undefined> {
-  const resolvedRootDir = await realpath(resolve(rootDir));
-
-  try {
-    const packageJsonBuffer = await readFile(join(resolvedRootDir, 'package.json'));
-    const packageJson = JSON.parse(packageJsonBuffer.toString()) as { name?: string };
-
-    if (packageJson.name === 'elit') {
-      return basePath ? `${basePath}/dist` : '/dist';
-    }
-  } catch {
-    // Fall back to generated package exports when the root is not the Elit package workspace.
-  }
-
-  return undefined;
-}
+const importMapCache = new Map<string, Promise<ImportMapEntry>>();
 
 export function clearImportMapCache(): void {
   importMapCache.clear();
 }
 
-export async function createElitImportMap(rootDir: string, basePath: string = '', mode: 'dev' | 'preview' = 'dev'): Promise<string> {
-  const workspaceImportBasePath = await resolveWorkspaceElitImportBasePath(rootDir, basePath, mode);
-  const fileExt = '.mjs';
-
-  const elitImports: ImportMapEntry = workspaceImportBasePath
-    ? createBrowserSafeElitImports(workspaceImportBasePath, fileExt)
-    : {};
-
-  const externalImports = await generateExternalImportMaps(rootDir, basePath);
-  const allImports = { ...externalImports, ...elitImports };
-
-  return `<script type="importmap">${JSON.stringify({ imports: allImports }, null, 2)}</script>`;
+export async function createImportMap(rootDir: string, basePath: string = ''): Promise<string> {
+  const imports = await generateExternalImportMaps(rootDir, basePath);
+  return `<script type="importmap">${JSON.stringify({ imports }, null, 2)}</script>`;
 }
 
 async function generateExternalImportMaps(rootDir: string, basePath: string = ''): Promise<ImportMapEntry> {
   const cacheKey = `${rootDir}:${basePath}`;
-  if (importMapCache.has(cacheKey)) {
-    return importMapCache.get(cacheKey)!;
-  }
+  const cached = importMapCache.get(cacheKey);
+  if (cached) return cached;
 
+  const promise = scanNodeModules(rootDir, basePath);
+  importMapCache.set(cacheKey, promise);
+  return promise;
+}
+
+async function scanNodeModules(rootDir: string, basePath: string): Promise<ImportMapEntry> {
   const importMap: ImportMapEntry = {};
   const nodeModulesPath = await findNodeModules(rootDir);
 
   if (!nodeModulesPath) {
-    importMapCache.set(cacheKey, importMap);
     return importMap;
   }
 
   try {
-    const { readdir } = await import('@elitjs/fs');
     const packages = await readdir(nodeModulesPath);
 
     for (const pkgEntry of packages) {
@@ -117,7 +72,6 @@ async function generateExternalImportMaps(rootDir: string, basePath: string = ''
     console.error('[Import Maps] Error scanning node_modules:', error);
   }
 
-  importMapCache.set(cacheKey, importMap);
   return importMap;
 }
 
@@ -176,10 +130,6 @@ function isBrowserCompatible(pkgName: string, pkgJson: PackageJson): boolean {
     return false;
   }
 
-  if (pkgName === 'lodash') {
-    return false;
-  }
-
   if (pkgJson.browser || pkgJson.module) {
     return true;
   }
@@ -235,42 +185,6 @@ function processExportsField(
   baseUrl: string,
   importMap: ImportMapEntry,
 ): void {
-  if (pkgName === 'elit') {
-    if (typeof exports !== 'object' || exports === null) {
-      return;
-    }
-
-    const elitExports = exports as Record<string, unknown>;
-    const browserSafeImports: ImportMapEntry = {};
-
-    const rootResolved = '.' in elitExports
-      ? resolveExport(elitExports['.'])
-      : 'import' in elitExports
-        ? resolveExport(elitExports)
-        : null;
-
-    if (rootResolved) {
-      browserSafeImports.elit = `${baseUrl}/${rootResolved}`;
-    }
-
-    const allowedSubpaths = Object.keys(BROWSER_SAFE_ELIT_IMPORTS)
-      .filter((specifier) => specifier !== 'elit')
-      .map((specifier) => ({
-        exportKey: `./${specifier.slice('elit/'.length)}`,
-        importName: specifier,
-      }));
-
-    for (const { exportKey, importName } of allowedSubpaths) {
-      const resolved = resolveExport(elitExports[exportKey]);
-      if (resolved) {
-        browserSafeImports[importName] = `${baseUrl}/${resolved}`;
-      }
-    }
-
-    Object.assign(importMap, browserSafeImports);
-    return;
-  }
-
   if (typeof exports === 'string') {
     importMap[pkgName] = `${baseUrl}/${exports}`;
     importMap[`${pkgName}/`] = `${baseUrl}/`;

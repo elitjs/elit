@@ -1,10 +1,10 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
-import { a, audio, br, button, canvas, div, frag, h1, h2, head, hr, iframe, img, input, li, main, mathMath, mathMi, meta, option, optgroup, p, progress, select, slot, span, svgCircle, svgEllipse, svgLine, svgPath, svgPolygon, svgPolyline, svgRect, svgSvg, table, tbody, td, template, textarea, tr, ul, video } from '../../src/el';
-import { renderAndroidCompose, renderMaterializedNativeTree, renderNativeJson, renderNativeTree, renderSwiftUI } from '../../src/native';
-import { bindChecked, bindValue, createState } from '../../src/state';
-import styles from '../../src/style';
-import { createUniversalBridgeProps, createUniversalLinkProps, mergeUniversalProps } from '../../src/universal';
+import { a, audio, br, button, canvas, div, frag, h1, h2, head, hr, iframe, img, input, li, main, mathMath, mathMi, meta, option, optgroup, p, progress, select, slot, span, svgCircle, svgEllipse, svgLine, svgPath, svgPolygon, svgPolyline, svgRect, svgSvg, table, tbody, td, template, textarea, tr, ul, video } from '../../packages/el/src';
+import { renderAndroidCompose, renderMaterializedNativeTree, renderNativeJson, renderNativeTree, renderSwiftUI } from '../../packages/native/src';
+import { bindChecked, bindValue, createState } from '../../packages/state/src';
+import styles from '../../packages/style/src';
+import { createUniversalBridgeProps, createUniversalLinkProps, mergeUniversalProps } from '../../packages/universal/src';
 
 describe('native target foundation', () => {
     beforeEach(() => {

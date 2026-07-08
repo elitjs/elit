@@ -1,6 +1,6 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
-import { createSharedState } from '../../src/state';
+import { createSharedState } from '../../packages/state/src';
 
 const originalWindow = (globalThis as any).window;
 const originalLocation = (globalThis as any).location;

@@ -1,4 +1,4 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { request as httpRequest } from 'node:http';
@@ -13,7 +13,7 @@ import {
     resolvePmStartDefinitions,
     sanitizePmProcessName,
     terminateProcessTree,
-} from '../../src/pm';
+} from '../../packages/pm/src';
 
 function createWapkPmRecord(overrides = {}) {
     return {

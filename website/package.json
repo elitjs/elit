@@ -18,9 +18,10 @@
     "@elitjs/router": "file:../packages/router",
     "@elitjs/state": "file:../packages/state",
     "@elitjs/style": "file:../packages/style",
-    "elit": "file:.."
+    "@elitjs/server": "file:../packages/server"
   },
   "devDependencies": {
+    "@elitjs/cli": "file:../packages/cli",
     "typescript": "^5.3.0"
   }
 }

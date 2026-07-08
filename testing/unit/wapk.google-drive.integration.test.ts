@@ -1,10 +1,10 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { createWapkLiveSync, packWapkDirectory, prepareWapkApp, readWapkArchive } from '../../src/wapk';
+import { createWapkLiveSync, packWapkDirectory, prepareWapkApp, readWapkArchive } from '../../packages/wapk/src';
 
 const DRIVE_FILE_ID_ENV = 'ELIT_TEST_GOOGLE_DRIVE_FILE_ID';
 const DRIVE_SHARED_ENV = 'ELIT_TEST_GOOGLE_DRIVE_SHARED_DRIVE';

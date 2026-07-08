@@ -1,13 +1,12 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { unlinkSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { div, h1 } from '../../src/el';
-import { renderNativeJson } from '../../src/native';
-import { loadNativeEntryValue, resolveNativeEntryExport, resolveNativeExportValue } from '../../src/native';
-import { renderAndroidCompose } from '../../src/native';
-import styles from '../../src/style';
+import { div, h1 } from '../../packages/el/src';
+import { renderNativeJson, renderAndroidCompose } from '../../packages/native/src';
+import { loadNativeEntryValue, resolveNativeEntryExport, resolveNativeExportValue } from '../../packages/cli/src/native';
+import styles from '../../packages/style/src';
 
 describe('native cli helpers', () => {
     afterEach(() => {
@@ -40,8 +39,8 @@ describe('native cli helpers', () => {
     it('shares registered class styles across bundled native entry loading', async () => {
         const entryPath = resolve(__dirname, '.tmp-native-cli-style-entry.ts');
         writeFileSync(entryPath, `
-import styles from '../../src/style';
-import { div } from '../../src/el';
+import styles from '../../packages/style/src';
+import { div } from '../../packages/el/src';
 
 styles.addClass('card', {
   padding: '16px',

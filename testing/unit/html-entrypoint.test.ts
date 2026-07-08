@@ -1,4 +1,4 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import fs from 'node:fs';
 import { resolve } from 'node:path';

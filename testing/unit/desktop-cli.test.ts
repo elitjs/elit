@@ -1,4 +1,4 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -11,7 +11,7 @@ import {
     resolveDesktopCargoTargetBaseDir,
     resolveConfiguredDesktopEntry,
     resolveDesktopBootstrapSupportModulePath,
-} from '../../src/desktop';
+} from '../../packages/cli/src/desktop';
 
 describe('desktop cli mode helpers', () => {
     it('defaults to hybrid when no native desktop entry is configured', () => {

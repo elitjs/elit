@@ -1,6 +1,6 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
-import { WebSocketServer } from '../../src/ws';
+import { WebSocketServer } from '../../packages/ws/src';
 
 describe('websocket server path handling', () => {
     it('matches the pathname when the request includes query parameters', () => {

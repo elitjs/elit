@@ -1,12 +1,12 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import fs from 'node:fs';
 import net from 'node:net';
 import os from 'node:os';
 import { join } from 'node:path';
 
-import { createDevServer } from '../../src/server';
-import { createSmtpServer } from '../../src/smtp-server';
+import { createDevServer } from '../../packages/server/src';
+import { createSmtpServer } from '../../packages/smtp-server/src';
 
 async function waitForListening(server: any): Promise<void> {
     if (server.listening) {

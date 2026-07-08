@@ -1,8 +1,8 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
-import { a, div, textarea } from '../../src/el';
-import { render, renderToString } from '../../src/dom';
-import { createState } from '../../src/state';
+import { a, div, textarea } from '../../packages/el/src';
+import { render, renderToString } from '../../packages/dom/src';
+import { createState } from '../../packages/state/src';
 
 class FakeTextNode {
     constructor(public textContent: string) {}

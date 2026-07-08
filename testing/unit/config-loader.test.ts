@@ -1,10 +1,10 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-import { loadConfig } from '../../src/config';
+import { loadConfig } from '../../packages/config/src';
 
 describe('TypeScript config loading', () => {
     const tempDirs: string[] = [];

@@ -1,4 +1,4 @@
-/// <reference path="../../src/test-globals.d.ts" />
+/// <reference path="../../packages/test/src/globals.d.ts" />
 
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -8,7 +8,7 @@ import {
     buildServerDependencyGraph,
     discoverServerEntries,
     resolveLocalFile,
-} from '../../src/cli/cli/server-deps';
+} from '../../packages/cli/src/cli/server-deps';
 
 interface Fixture {
     root: string;
