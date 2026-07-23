@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/chokidar",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Cross-runtime file watcher for Elit",
   "type": "module",
   "main": "dist/index.cjs",

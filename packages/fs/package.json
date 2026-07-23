@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/fs",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Cross-runtime filesystem utilities for Elit",
   "type": "module",
   "main": "dist/index.cjs",

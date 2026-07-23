@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/desktop-auto-render",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Auto-render helpers for Elit desktop apps",
   "type": "module",
   "main": "dist/index.cjs",

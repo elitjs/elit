@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/server",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Dev server, router, and WebSocket orchestration for Elit",
   "type": "module",
   "main": "dist/index.cjs",

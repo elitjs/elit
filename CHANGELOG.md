@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.2] - 2026-07-23
+
+### Fixed
+- **`reactive()` no longer drops input focus on each keystroke** - when an `<input>`, `<textarea>`, or `<select>` lived anywhere inside a `reactive()` block, every state update destroyed and recreated the element, so users had to re-click the input before each character ("พิมพ์ได้ทีละครั้ง"). The update path now reconciles children positionally: nodes whose text content or tagName matches the previous render are patched in place (props + recursive children), and only genuinely different nodes are replaced. Comment placeholders left by null/conditional reactive results are skipped so they keep working as anchors.
+  - Applies to both `reactive()` and `reactiveAs()` update paths.
+  - Verified by simulating four consecutive `input` events on an input nested inside `reactive()`: focus and the underlying `<input>` DOM node are preserved across all keystrokes, while sibling reactive content (a mirror span) stays in sync.
+- **Stale props on reused elements** - `updateElementProps` now diffs the new props against the previous render's props (tracked via `__elitPrevProps` on the element) and removes any prop that is no longer present. Without this, properties and event handlers from earlier renders accumulated on reused DOM nodes: a removed `onclick` would keep firing (memory leak + wrong behavior), a removed `class` would linger, and a removed `value`/`checked` on a form control would keep the old input state. Initial-render `applyProps` (`@elitjs/dom`) also seeds `__elitPrevProps` so the first reactive update can diff against it.
+- **Form-control props during reactive updates** - `updateElementProps` now assigns `value` on `<input>`/`<textarea>`/`<select>` and `checked` on `<input>` via the DOM property (with an equality check) instead of `setAttribute`. The previous `setAttribute('value', …)` path was semantically wrong for live form values and could cause cursor jumps when the input was the root of a `reactive()` block.
+- **State-as-prop regression** - `updateElementProps` now skips `State` values (they already have their own subscription from the initial `applyProps` pass) instead of coercing them to `"[object Object]"` via `String()`, which broke form controls that received `value: someState`.
+- **Snapshot-based prev-props storage** - the previous-props cache used to diff reused DOM nodes is now stored in a shared `WeakMap<HTMLElement | SVGElement, Props>` exported from `@elitjs/dom` (instead of an `__elitPrevProps` expando property on the element). Removes DOM pollution and `as any` casts; entries are GC'd with the element. The accompanying `snapshotProps` helper shallow-clones nested object/array values (notably `style`, arrays passed to `class`/`className`, and `dangerouslySetInnerHTML`), so diffing detects in-place mutation of reused prop objects — e.g. a caller doing `delete sharedStyle.fontSize` between renders now correctly clears `font-size` on the element.
+
+### Security
+- **XSS audit of the reactive update path** - confirmed that all assignments in the new reconcile/patch logic are XSS-safe by construction: text children use `textContent` and `createTextNode` (not parsed as HTML), element props use `setAttribute` and direct property assignment (also not HTML-parsed). The only `innerHTML` write is for the explicit `dangerouslySetInnerHTML` prop (user opt-in, same contract as React); `updateElementProps` now handles that key for consistency with initial render. Verified with a `<img src=x onerror=…>` payload that was rendered as visible text without any script execution.
+
+### Changed
+- **Version metadata refresh** - release-facing version references across `package.json`, `package-lock.json`, all `@elitjs/*` subpackages, `create-elit`, `create-elit-skills`, and the docs hero on the website now track `v4.0.2`. Rebuilt `@elitjs/dom` and `@elitjs/state` dist so the baked-in `ELIT_VERSION` constant matches.
+
 ## [3.7.1] - 2026-07-02
 
 ### Added

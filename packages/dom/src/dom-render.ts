@@ -5,6 +5,40 @@ import packageJson from './package.json';
 
 const ELIT_VERSION = packageJson.version;
 
+export const prevPropsMap = new WeakMap<HTMLElement | SVGElement, Props>();
+
+// True for `{}`-style literals and `Object.create(null)` objects. We only shallow-clone
+// these plus arrays; anything else (Date, RegExp, Map, Set, class instances) keeps its
+// reference because spreading them would silently strip internal state.
+const isPlainObject = (v: unknown): v is Record<string, unknown> => {
+    if (!v || typeof v !== 'object') return false;
+    const proto = Object.getPrototypeOf(v);
+    return proto === null || proto === Object.prototype;
+};
+
+// Shallow-clone a single prop value so prev-props snapshots are insulated from in-place
+// mutation of the caller's object (e.g. `delete sharedStyle.fontSize`). Only plain objects
+// and arrays are cloned; other object kinds keep their reference. One level is enough for
+// Elit's surface (`style`, `class`/`className` arrays, `dangerouslySetInnerHTML` all carry
+// primitive leaves). If we ever introduce deeply-nested prop shapes that callers are likely
+// to mutate, switch to a per-key deep clone or move to value-equality diffing.
+const snapshotPropValue = (v: unknown): unknown => {
+    if (Array.isArray(v)) return [...v];
+    if (isPlainObject(v)) return { ...v };
+    return v;
+};
+
+export const snapshotProps = (props: Props): Props => {
+    const out: Props = {};
+    for (const key of Object.keys(props)) {
+        if (key === 'ref') continue;
+        const value = props[key];
+        if (isState(value)) continue;
+        out[key] = snapshotPropValue(value);
+    }
+    return out;
+};
+
 function markElitVersion(el: HTMLElement): void {
     el.setAttribute('elit-version', ELIT_VERSION);
 }
@@ -78,6 +112,8 @@ function applyProps(el: HTMLElement | SVGElement, props: Props, textareaValue: s
 
         applyProp(el, key, value, textareaValue);
     }
+
+    prevPropsMap.set(el, snapshotProps(props));
 }
 
 function renderChildren(children: Children, target: HTMLElement | SVGElement | DocumentFragment): void {

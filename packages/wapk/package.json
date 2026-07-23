@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/wapk",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "WAPK archive, runtime, online sync, and remote resolution for Elit",
   "type": "module",
   "main": "dist/index.cjs",

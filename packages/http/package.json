@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/http",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Cross-runtime HTTP server and client for Elit",
   "type": "module",
   "main": "dist/index.cjs",

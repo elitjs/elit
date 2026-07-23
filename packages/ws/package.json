@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/ws",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Cross-runtime WebSocket server and client for Elit",
   "type": "module",
   "main": "dist/index.cjs",

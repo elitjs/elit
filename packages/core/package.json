@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/core",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Shared type contracts for @elitjs/* packages",
   "type": "module",
   "main": "dist/index.cjs",

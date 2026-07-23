@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/workspace-package",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Workspace package resolver for Elit",
   "type": "module",
   "main": "dist/index.cjs",

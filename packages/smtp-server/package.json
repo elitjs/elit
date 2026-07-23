@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/smtp-server",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "SMTP server utilities for Elit",
   "type": "module",
   "main": "dist/index.cjs",
