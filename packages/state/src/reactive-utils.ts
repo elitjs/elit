@@ -1,5 +1,5 @@
 import type { Child, Props, State, VNode } from '@elitjs/core';
-import { dom } from '@elitjs/dom';
+import { dom, prevPropsMap, snapshotProps } from '@elitjs/dom';
 
 export const scheduleRAFUpdate = (rafId: number | null, updateFn: () => void): number => {
     if (rafId) {
@@ -29,8 +29,6 @@ export const renderToFragment = (content: VNode | Child | Child[], isVNode?: boo
 
     return fragment;
 };
-
-const PREV_PROPS_KEY = '__elitPrevProps';
 
 const isFormControl = (el: any): el is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement =>
     el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement;
@@ -69,7 +67,7 @@ const removeProp = (element: HTMLElement | SVGElement, key: string): void => {
 };
 
 export const updateElementProps = (element: HTMLElement | SVGElement, props: Props): void => {
-    const prev = (element as any)[PREV_PROPS_KEY] as Props | undefined;
+    const prev = prevPropsMap.get(element);
 
     if (prev) {
         for (const key in prev) {
@@ -141,14 +139,7 @@ export const updateElementProps = (element: HTMLElement | SVGElement, props: Pro
         }
     }
 
-    const stored: Props = {};
-    for (const key in props) {
-        if (key === 'ref') continue;
-        const value = props[key];
-        if (isStateValue(value)) continue;
-        stored[key] = value;
-    }
-    (element as any)[PREV_PROPS_KEY] = stored;
+    prevPropsMap.set(element, snapshotProps(props));
 };
 
 const flattenChildren = (children: Child[]): Child[] => {

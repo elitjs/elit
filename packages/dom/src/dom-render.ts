@@ -5,6 +5,25 @@ import packageJson from './package.json';
 
 const ELIT_VERSION = packageJson.version;
 
+export const prevPropsMap = new WeakMap<HTMLElement | SVGElement, Props>();
+
+const snapshotPropValue = (v: any): any => {
+    if (Array.isArray(v)) return v.slice();
+    if (v && typeof v === 'object') return { ...v };
+    return v;
+};
+
+export const snapshotProps = (props: Props): Props => {
+    const out: Props = {};
+    for (const key in props) {
+        if (key === 'ref') continue;
+        const value = props[key];
+        if (isState(value)) continue;
+        out[key] = snapshotPropValue(value);
+    }
+    return out;
+};
+
 function markElitVersion(el: HTMLElement): void {
     el.setAttribute('elit-version', ELIT_VERSION);
 }
@@ -79,14 +98,7 @@ function applyProps(el: HTMLElement | SVGElement, props: Props, textareaValue: s
         applyProp(el, key, value, textareaValue);
     }
 
-    const stored: Props = {};
-    for (const key in props) {
-        if (key === 'ref') continue;
-        const value = props[key];
-        if (isState(value)) continue;
-        stored[key] = value;
-    }
-    (el as any).__elitPrevProps = stored;
+    prevPropsMap.set(el, snapshotProps(props));
 }
 
 function renderChildren(children: Children, target: HTMLElement | SVGElement | DocumentFragment): void {

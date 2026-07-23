@@ -3,7 +3,7 @@
  */
 
 import type { VNode, Child, Children, Props, State, StateOptions, VirtualListController, JsonNode, VNodeJson } from '@elitjs/core';
-import { addLink, addMeta, addStyle, batchRender, cleanupUnusedElements, render as renderDom, renderChunked, renderToDOM, renderToHead, setTitle } from './dom-render';
+import { addLink, addMeta, addStyle, batchRender, cleanupUnusedElements, prevPropsMap, render as renderDom, renderChunked, renderToDOM, renderToHead, setTitle, snapshotProps } from './dom-render';
 import { jsonToVNode, renderJson, renderJsonToString, renderVNode, renderVNodeToString, vNodeJsonToVNode } from './json';
 import type { ReactiveNodes } from './reactive';
 import { renderToHTMLDocument, renderToString as renderToStringDom } from './string-render';
@@ -149,4 +149,4 @@ export const dom = new DomNode();
 export const render = dom.render.bind(dom);
 export const renderToString = dom.renderToString.bind(dom);
 export const mount = render; // alias for render
-export { setStateCreatedHook };
+export { setStateCreatedHook, prevPropsMap, snapshotProps };
