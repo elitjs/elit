@@ -7,9 +7,14 @@ const ELIT_VERSION = packageJson.version;
 
 export const prevPropsMap = new WeakMap<HTMLElement | SVGElement, Props>();
 
-const snapshotPropValue = (v: any): any => {
-    if (Array.isArray(v)) return v.slice();
-    if (v && typeof v === 'object') return { ...v };
+// Shallow-clone a single prop value so prev-props snapshots are insulated from in-place
+// mutation of the caller's object (e.g. `delete sharedStyle.fontSize`). One level is enough
+// for Elit's surface: `style`, `class`/`className` arrays, and `dangerouslySetInnerHTML`
+// all carry primitive leaves. If we ever introduce deeply-nested prop shapes that callers
+// are likely to mutate, switch to a per-key deep clone or move to value-equality diffing.
+const snapshotPropValue = (v: unknown): unknown => {
+    if (Array.isArray(v)) return (v as unknown[]).slice();
+    if (v && typeof v === 'object') return { ...(v as Record<string, unknown>) };
     return v;
 };
 
@@ -19,7 +24,7 @@ export const snapshotProps = (props: Props): Props => {
         if (key === 'ref') continue;
         const value = props[key];
         if (isState(value)) continue;
-        out[key] = snapshotPropValue(value);
+        out[key] = snapshotPropValue(value) as any;
     }
     return out;
 };
