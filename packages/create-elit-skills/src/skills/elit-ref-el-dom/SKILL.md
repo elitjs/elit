@@ -86,7 +86,7 @@ interface Props {
 
 - `className` and `class` both work; arrays are joined with spaces.
 - `style` accepts either a string or a `Partial<CSSStyleDeclaration>` object (camelCase keys).
-- `dangerouslySetInnerHTML={{ __html: '...' }}` injects raw HTML.
+- `dangerouslySetInnerHTML={{ __html: '...' }}` injects raw HTML. **Security:** only pass trusted content — Elit does not sanitize. Any user-controlled string here is an XSS vector (script injection, event handlers, data exfiltration). Sanitize with DOMPurify or similar before binding, or use text children instead.
 - `ref` accepts a callback `(el) => void` or `{ current: HTMLElement }`.
 - Event handlers: `onClick`, `onInput`, `onChange`, `onSubmit`, `onMouseOver`, etc. — lowercase `on` + event name. **Not** `onclick` (that's the DOM property name, but the convention in Elit is camelCase in code).
 

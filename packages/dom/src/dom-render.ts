@@ -34,7 +34,7 @@ export const snapshotProps = (props: Props): Props => {
         if (key === 'ref') continue;
         const value = props[key];
         if (isState(value)) continue;
-        out[key] = snapshotPropValue(value) as any;
+        out[key] = snapshotPropValue(value);
     }
     return out;
 };
