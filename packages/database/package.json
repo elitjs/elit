@@ -33,9 +33,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^25.0.10",
+    "esbuild": "^0.28.1",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0"
   }

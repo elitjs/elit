@@ -34,8 +34,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@elitjs/core": "file:../core",
     "@elitjs/chokidar": "file:../chokidar",
+    "@elitjs/core": "file:../core",
     "@elitjs/dom": "file:../dom",
     "@elitjs/fs": "file:../fs",
     "@elitjs/http": "file:../http",
@@ -51,7 +51,9 @@
   "devDependencies": {
     "@types/node": "^25.0.10",
     "@types/ws": "^8.5.13",
+    "javascript-obfuscator": "^5.5.0",
     "tsup": "^8.0.0",
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "ws": "^8.21.1"
   }
 }

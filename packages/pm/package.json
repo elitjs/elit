@@ -44,7 +44,9 @@
   },
   "dependencies": {
     "@elitjs/chokidar": "file:../chokidar",
-    "@elitjs/config": "file:../config"
+    "@elitjs/config": "file:../config",
+    "esbuild": "^0.28.1",
+    "source-map": "^0.7.6"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",
