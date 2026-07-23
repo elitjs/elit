@@ -10,7 +10,7 @@ export const prevPropsMap = new WeakMap<HTMLElement | SVGElement, Props>();
 // True for `{}`-style literals and `Object.create(null)` objects. We only shallow-clone
 // these plus arrays; anything else (Date, RegExp, Map, Set, class instances) keeps its
 // reference because spreading them would silently strip internal state.
-const isPlainObject = (v: unknown): boolean => {
+const isPlainObject = (v: unknown): v is Record<string, unknown> => {
     if (!v || typeof v !== 'object') return false;
     const proto = Object.getPrototypeOf(v);
     return proto === null || proto === Object.prototype;
@@ -23,8 +23,8 @@ const isPlainObject = (v: unknown): boolean => {
 // primitive leaves). If we ever introduce deeply-nested prop shapes that callers are likely
 // to mutate, switch to a per-key deep clone or move to value-equality diffing.
 const snapshotPropValue = (v: unknown): unknown => {
-    if (Array.isArray(v)) return (v as unknown[]).slice();
-    if (isPlainObject(v)) return { ...(v as Record<string, unknown>) };
+    if (Array.isArray(v)) return [...v];
+    if (isPlainObject(v)) return { ...v };
     return v;
 };
 
