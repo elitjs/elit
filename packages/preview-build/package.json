@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/preview-build",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Standalone preview build for Elit",
   "type": "module",
   "main": "dist/index.cjs",

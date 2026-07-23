@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/runtime",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Runtime detection for Elit (node, bun, deno)",
   "type": "module",
   "main": "dist/index.cjs",

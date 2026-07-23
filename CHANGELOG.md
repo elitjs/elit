@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.2] - 2026-07-23
+
+### Fixed
+- **`reactive()` no longer drops input focus on each keystroke** - when an `<input>`, `<textarea>`, or `<select>` lived anywhere inside a `reactive()` block, every state update destroyed and recreated the element, so users had to re-click the input before each character ("พิมพ์ได้ทีละครั้ง"). The update path now reconciles children positionally: nodes whose text content or tagName matches the previous render are patched in place (props + recursive children), and only genuinely different nodes are replaced. Comment placeholders left by null/conditional reactive results are skipped so they keep working as anchors.
+  - Applies to both `reactive()` and `reactiveAs()` update paths.
+  - Verified by simulating four consecutive `input` events on an input nested inside `reactive()`: focus and the underlying `<input>` DOM node are preserved across all keystrokes, while sibling reactive content (a mirror span) stays in sync.
+- **Form-control props during reactive updates** - `updateElementProps` now assigns `value` on `<input>`/`<textarea>`/`<select>` and `checked` on `<input>` via the DOM property (with an equality check) instead of `setAttribute`. The previous `setAttribute('value', …)` path was semantically wrong for live form values and could cause cursor jumps when the input was the root of a `reactive()` block.
+
+### Changed
+- **Version metadata refresh** - release-facing version references across `package.json`, `package-lock.json`, all `@elitjs/*` subpackages, `create-elit`, `create-elit-skills`, and the docs hero on the website now track `v4.0.2`. Rebuilt `@elitjs/dom` dist so the baked-in `ELIT_VERSION` constant matches.
+
 ## [3.7.1] - 2026-07-02
 
 ### Added

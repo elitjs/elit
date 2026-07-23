@@ -45,7 +45,7 @@ export const HomePage = (): VNode => ({
                     props: { class: 'hero-eyebrow' },
                     children: [
                         { tagName: 'span', props: { class: 'dot' }, children: [] },
-                        'v4.0.1 — ',
+                        'v4.0.2 — ',
                         { tagName: 'strong', props: {}, children: ['36 scoped @elitjs/* packages'] },
                     ],
                 },

@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/el",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Hyperscript-style element factory for Elit",
   "type": "module",
   "main": "dist/index.cjs",

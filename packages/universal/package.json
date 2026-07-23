@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/universal",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Universal bridge for Elit desktop/mobile messaging",
   "type": "module",
   "main": "dist/index.cjs",

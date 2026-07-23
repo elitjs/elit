@@ -1,6 +1,6 @@
 import type { Child, Props, State, VNode } from '@elitjs/core';
 import { dom } from '@elitjs/dom';
-import { renderToFragment, scheduleRAFUpdate, updateElementProps } from './reactive-utils';
+import { reconcileChildren, scheduleRAFUpdate, updateElementProps } from './reactive-utils';
 
 export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Child | Child[]): VNode => {
     let rafId: number | null = null;
@@ -36,13 +36,14 @@ export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Chi
             if (elementRef) {
                 const isCurrentVNode = !!(isVNodeResult && newResult && typeof newResult === 'object' && 'tagName' in newResult);
                 if (isCurrentVNode) {
-                    const { props } = newResult as VNode;
-                    updateElementProps(elementRef, props ?? {});
+                    const vnode = newResult as VNode;
+                    updateElementProps(elementRef, vnode.props ?? {});
+                    reconcileChildren(elementRef, vnode.children ?? []);
+                } else {
+                    const newChildren = Array.isArray(newResult) ? newResult : [newResult];
+                    reconcileChildren(elementRef, newChildren);
                 }
 
-                const fragment = renderToFragment(newResult as any, isCurrentVNode);
-                elementRef.textContent = '';
-                elementRef.appendChild(fragment);
                 dom.getElementCache().set(elementRef, true);
             }
         }
@@ -96,9 +97,8 @@ export const reactiveAs = <T>(
                     elementRef.textContent = '';
                 } else {
                     (elementRef as HTMLElement).style.display = '';
-                    const fragment = renderToFragment(newResult as any, false);
-                    elementRef.textContent = '';
-                    elementRef.appendChild(fragment);
+                    const newChildren = Array.isArray(newResult) ? newResult : [newResult];
+                    reconcileChildren(elementRef, newChildren);
                 }
 
                 dom.getElementCache().set(elementRef, true);

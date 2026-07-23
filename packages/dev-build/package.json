@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/dev-build",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Standalone dev server build for Elit",
   "type": "module",
   "main": "dist/index.cjs",
