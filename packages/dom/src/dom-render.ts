@@ -78,6 +78,15 @@ function applyProps(el: HTMLElement | SVGElement, props: Props, textareaValue: s
 
         applyProp(el, key, value, textareaValue);
     }
+
+    const stored: Props = {};
+    for (const key in props) {
+        if (key === 'ref') continue;
+        const value = props[key];
+        if (isState(value)) continue;
+        stored[key] = value;
+    }
+    (el as any).__elitPrevProps = stored;
 }
 
 function renderChildren(children: Children, target: HTMLElement | SVGElement | DocumentFragment): void {

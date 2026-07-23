@@ -30,6 +30,8 @@ export const renderToFragment = (content: VNode | Child | Child[], isVNode?: boo
     return fragment;
 };
 
+const PREV_PROPS_KEY = '__elitPrevProps';
+
 const isFormControl = (el: any): el is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement =>
     el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement;
 
@@ -39,22 +41,84 @@ const isStateValue = (value: any): value is State<any> =>
 const isVNodeValue = (value: any): value is VNode =>
     value && typeof value === 'object' && 'tagName' in value && typeof value.tagName === 'string';
 
+const isDangerouslySetInnerHTMLKey = (key: string): boolean =>
+    key.charCodeAt(0) === 100 && key.length > 20;
+
+const removeProp = (element: HTMLElement | SVGElement, key: string): void => {
+    if (key === 'class' || key === 'className') {
+        if ((element as HTMLElement).className !== '') {
+            (element as HTMLElement).className = '';
+        }
+    } else if (key === 'style') {
+        (element as HTMLElement).style.cssText = '';
+    } else if (key.startsWith('on')) {
+        if ((element as any)[key.toLowerCase()] != null) {
+            (element as any)[key.toLowerCase()] = null;
+        }
+    } else if (key === 'value' && isFormControl(element)) {
+        if (element.value !== '') {
+            element.value = '';
+        }
+    } else if (key === 'checked' && element instanceof HTMLInputElement) {
+        if (element.checked) {
+            element.checked = false;
+        }
+    } else if (element.hasAttribute(key)) {
+        element.removeAttribute(key);
+    }
+};
+
 export const updateElementProps = (element: HTMLElement | SVGElement, props: Props): void => {
+    const prev = (element as any)[PREV_PROPS_KEY] as Props | undefined;
+
+    if (prev) {
+        for (const key in prev) {
+            if (key === 'ref') continue;
+            if (!(key in props)) {
+                removeProp(element, key);
+            }
+        }
+    }
+
     for (const key in props) {
         const value = props[key];
         if (key === 'ref') {
             continue;
         }
 
+        if (isStateValue(value)) {
+            continue;
+        }
+
         if (key === 'class' || key === 'className') {
-            (element as HTMLElement).className = Array.isArray(value) ? value.join(' ') : (value || '');
-        } else if (key === 'style' && typeof value === 'object') {
+            const next = Array.isArray(value) ? value.join(' ') : (value || '');
+            if ((element as HTMLElement).className !== next) {
+                (element as HTMLElement).className = next;
+            }
+        } else if (key === 'style') {
             const style = (element as HTMLElement).style;
-            for (const styleKey in value) {
-                (style as any)[styleKey] = value[styleKey];
+            if (typeof value === 'string') {
+                if (style.cssText !== value) {
+                    style.cssText = value;
+                }
+            } else if (value && typeof value === 'object') {
+                const prevStyle = prev && typeof (prev as any).style === 'object' ? (prev as any).style : null;
+                if (prevStyle) {
+                    for (const sk in prevStyle) {
+                        if (!(sk in value)) (style as any)[sk] = '';
+                    }
+                }
+                for (const sk in value) {
+                    (style as any)[sk] = value[sk];
+                }
             }
         } else if (key.startsWith('on')) {
             (element as any)[key.toLowerCase()] = value;
+        } else if (isDangerouslySetInnerHTMLKey(key) && value && typeof value === 'object' && '__html' in value) {
+            const html = String((value as any).__html);
+            if ((element as HTMLElement).innerHTML !== html) {
+                (element as HTMLElement).innerHTML = html;
+            }
         } else if (key === 'value' && isFormControl(element)) {
             const next = value == null ? '' : String(value);
             if (element.value !== next) {
@@ -65,12 +129,26 @@ export const updateElementProps = (element: HTMLElement | SVGElement, props: Pro
             if (element.checked !== next) {
                 element.checked = next;
             }
-        } else if (value != null && value !== false) {
-            element.setAttribute(key, String(value === true ? '' : value));
+        } else if (value == null || value === false) {
+            if (element.hasAttribute(key)) {
+                element.removeAttribute(key);
+            }
         } else {
-            element.removeAttribute(key);
+            const next = String(value === true ? '' : value);
+            if (element.getAttribute(key) !== next) {
+                element.setAttribute(key, next);
+            }
         }
     }
+
+    const stored: Props = {};
+    for (const key in props) {
+        if (key === 'ref') continue;
+        const value = props[key];
+        if (isStateValue(value)) continue;
+        stored[key] = value;
+    }
+    (element as any)[PREV_PROPS_KEY] = stored;
 };
 
 const flattenChildren = (children: Child[]): Child[] => {
