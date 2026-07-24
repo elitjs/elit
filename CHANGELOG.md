@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.3] - 2026-07-24
+
+### Fixed
+- **Publish workflow now rewrites `file:` deps to registry versions** - the matrix publish workflow lost the `normalize-deps.mjs` step during the f726bca/584ff45 refactor, so every `@elitjs/*@4.0.2*` published with `file:../core`-style dep specs that fail to resolve for end users. Restored the call between `npm version` and `npm publish`, and bumped every package to 4.0.3 since 4.0.2 cannot be republished at the same version on npm.
+
 ## [4.0.2] - 2026-07-23
 
 ### Fixed
