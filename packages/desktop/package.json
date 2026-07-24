@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/desktop",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Desktop runtime API for Elit",
   "type": "module",
   "main": "dist/index.cjs",

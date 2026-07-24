@@ -75,6 +75,7 @@ jobs:
           echo "Publishing $PACKAGE_NAME@$PACKAGE_VERSION (tag: $DIST_TAG)"
 
           npm version $PACKAGE_VERSION --prefix ./packages/$PACKAGE_NAME --no-git-tag-version --allow-same-version
+          node scripts/normalize-deps.mjs "$PACKAGE_VERSION" ./packages/$PACKAGE_NAME/package.json
           npm publish ./packages/$PACKAGE_NAME --provenance --access public --tag "$DIST_TAG"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
