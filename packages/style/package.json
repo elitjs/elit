@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/style",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "CSS-in-JS renderer, selector parser, and style store for Elit",
   "type": "module",
   "main": "dist/index.cjs",

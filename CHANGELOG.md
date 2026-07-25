@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.4] - 2026-07-26
+
+### Added
+- **HTTPS dev/preview server support** - `dev.https` / `preview.https` (previously declared but ignored) now serves the dev/preview server over HTTPS. `https: true` generates a self-signed dev certificate; `https: { cert, key }` uses real certs (PEM content or file paths). CLI flags `--https`, `--cert <path>`, `--key <path>` added to `dev` and `preview`. The WebSocket server stays attached to the same HTTPS server, so WSS works on the same origin.
+  - `@elitjs/https` Server now proxies the `upgrade` event (previously only `error`/`close`), enabling WebSocket-over-HTTPS on Node and fixing the standalone `@elitjs/wss` package.
+  - WebSocket-over-HTTPS also works on Bun (`@elitjs/https` Bun branch now mirrors `@elitjs/http`'s WebSocket plumbing). Deno still has no WebSocket support at all, not only over HTTPS — tracked as a separate effort.
+  - Self-signed dev certs via `selfsigned@2` (sync API, keeps `createDevServer` synchronous and avoids a breaking public-API change).
+
+### Fixed
+- **Client WebSocket behind TLS-terminating proxies (e.g. Cloudflare)** - the `@elitjs/hmr` client and the dev-server-injected HMR script derived the WebSocket URL from the dev server's host:port instead of the page origin, so behind a proxy the public origin differs from the server's port and every `wss://` connection failed. Both now use `window.location.host` (same origin); the hmr client also targets the `/__elit_ws` endpoint it previously omitted.
+- **`SharedState` reconnect spam** - it retried every 1s forever and logged each failure. Now uses capped exponential backoff (1s→30s, max 10 attempts), stays quiet per attempt, warns once when giving up, and stops reconnecting after `destroy()` even if a close event arrives late.
+- **`reactive()` sometimes didn't update** - the DOM renderer fires `ref` asynchronously (via `setTimeout`), so the first state change could land before `reactive()`'s element reference was set; the update was silently dropped and the element stayed on its initial snapshot. `reactive()` and `reactiveAs()` now track the missed update and replay it once the element exists. Also, `scheduleRAFUpdate` falls back to `setTimeout` when the tab is hidden, so state-driven updates keep flowing in background tabs where `requestAnimationFrame` is paused.
+
 ## [4.0.3] - 2026-07-24
 
 ### Fixed

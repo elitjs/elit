@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/router",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Client-side router for Elit applications",
   "type": "module",
   "main": "dist/index.cjs",
