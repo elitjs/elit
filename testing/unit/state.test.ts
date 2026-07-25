@@ -73,3 +73,75 @@ describe('shared state websocket url resolution', () => {
         state.destroy();
     });
 });
+
+describe('shared state reconnection', () => {
+    let instances = 0;
+    let closeListeners: Array<() => void> = [];
+    const warnings: string[] = [];
+    const originalWarn = console.warn;
+
+    class ClosingMockWebSocket {
+        readyState = 0;
+
+        constructor(_url: string) {
+            instances += 1;
+        }
+
+        addEventListener(type: string, listener: (...args: any[]) => void) {
+            if (type === 'close') {
+                closeListeners.push(listener as () => void);
+            }
+        }
+
+        removeEventListener() {
+            return;
+        }
+
+        send() {
+            return;
+        }
+
+        close() {
+            this.readyState = 3;
+        }
+    }
+
+    beforeEach(() => {
+        instances = 0;
+        closeListeners = [];
+        warnings.length = 0;
+        (globalThis as any).window = {};
+        (globalThis as any).location = { host: 'localhost:3000', protocol: 'http:' };
+        (globalThis as any).WebSocket = ClosingMockWebSocket;
+        console.warn = (msg: string) => warnings.push(msg);
+    });
+
+    afterEach(() => {
+        (globalThis as any).window = originalWindow;
+        (globalThis as any).location = originalLocation;
+        (globalThis as any).WebSocket = originalWebSocket;
+        console.warn = originalWarn;
+    });
+
+    it('does not reconnect after destroy even if a close event fires late', () => {
+        const state = createSharedState('counter', 0);
+        expect(instances).toBe(1);
+
+        state.destroy();
+        // Simulate a close event arriving after teardown — must not resurrect.
+        closeListeners.forEach((fn) => fn());
+
+        expect(instances).toBe(1);
+    });
+
+    it('stops retrying and warns once when the reconnect limit is reached', () => {
+        const state = createSharedState('counter', 0);
+        expect(instances).toBe(1);
+
+        (state as any).maxReconnectAttempts = 0;
+        closeListeners.forEach((fn) => fn());
+
+        expect(instances).toBe(1);
+        expect(warnings).toHaveLength(1);
+    });
+});
