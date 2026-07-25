@@ -170,8 +170,8 @@ export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' 
 
 export const ELIT_INTERNAL_WS_PATH = '/__elit_ws';
 
-export const createHMRScript = (port: number): string =>
-  `<script>(function(){let ws;let retries=0;let maxRetries=5;const protocol=window.location.protocol==='https:'?'wss://':'ws://';function connect(){ws=new WebSocket(protocol+window.location.hostname+':${port}${ELIT_INTERNAL_WS_PATH}');ws.onopen=()=>{console.log('[Elit HMR] Connected');retries=0};ws.onmessage=(e)=>{const d=JSON.parse(e.data);if(d.type==='update'){console.log('[Elit HMR] File updated:',d.path);window.location.reload()}else if(d.type==='reload'){console.log('[Elit HMR] Reloading...');window.location.reload()}else if(d.type==='error')console.error('[Elit HMR] Error:',d.error)};ws.onclose=()=>{if(retries<maxRetries){retries++;setTimeout(connect,1000*retries)}else if(retries===maxRetries){console.log('[Elit HMR] Connection closed. Start dev server to reconnect.')}};ws.onerror=()=>{ws.close()}}connect()})();</script>`;
+export const createHMRScript = (): string =>
+  `<script>(function(){let ws;let retries=0;let maxRetries=5;const protocol=window.location.protocol==='https:'?'wss://':'ws://';function connect(){ws=new WebSocket(protocol+window.location.host+'${ELIT_INTERNAL_WS_PATH}');ws.onopen=()=>{console.log('[Elit HMR] Connected');retries=0};ws.onmessage=(e)=>{const d=JSON.parse(e.data);if(d.type==='update'){console.log('[Elit HMR] File updated:',d.path);window.location.reload()}else if(d.type==='reload'){console.log('[Elit HMR] Reloading...');window.location.reload()}else if(d.type==='error')console.error('[Elit HMR] Error:',d.error)};ws.onclose=()=>{if(retries<maxRetries){retries++;setTimeout(connect,1000*retries)}else if(retries===maxRetries){console.log('[Elit HMR] Connection closed. Start dev server to reconnect.')}};ws.onerror=()=>{ws.close()}}connect()})();</script>`;
 
 export const rewriteRelativePaths = (html: string, basePath: string): string => {
   if (!basePath) return html;

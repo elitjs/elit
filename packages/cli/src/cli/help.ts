@@ -33,6 +33,9 @@ Dev Options:
   -r, --root <path>      Root directory to serve
   --no-open              Don't open browser automatically
   --silent               Disable logging
+  --https                Serve over HTTPS with an auto-generated self-signed cert
+  --cert <path>          TLS cert file (PEM); pair with --key for a real cert
+  --key <path>           TLS key file (PEM); pair with --cert
 
 Build Options:
   -e, --entry <file>     Entry file to build (required)
@@ -120,6 +123,9 @@ Preview Options:
   -b, --base-path <path>   Base path for the application
   --no-open                Don't open browser automatically
   --silent                 Disable logging
+  --https                  Serve over HTTPS with an auto-generated self-signed cert
+  --cert <path>            TLS cert file (PEM); pair with --key for a real cert
+  --key <path>             TLS key file (PEM); pair with --cert
 
 Note: Preview mode has full feature parity with dev mode:
       - Single root and multi-client configurations (use clients[] in config)

@@ -2,17 +2,19 @@ import { dom } from '@elitjs/dom';
 import { lookup } from '@elitjs/mime-types';
 import { isBun, isDeno } from '@elitjs/runtime';
 import type { VNode } from '@elitjs/core';
-import type { DevServer, DevServerOptions, HMRMessage } from './public-types';
+import type { DevServer, DevServerOptions, HMRMessage, HttpsCertConfig } from './public-types';
 
 import { watch } from '@elitjs/chokidar';
 import { readFile, realpath, stat } from '@elitjs/fs';
 import { createServer, type IncomingMessage, type ServerResponse } from '@elitjs/http';
+import { createServer as createHttpsServer } from '@elitjs/https';
 import { extname, join, normalize, relative, resolve, sep } from '@elitjs/path';
 import { createSmtpServer } from '@elitjs/smtp-server';
 import type { ElitSMTPServerHandle } from '@elitjs/smtp-server';
 import { CLOSE_CODES, ReadyState, WebSocket, WebSocketServer } from '@elitjs/ws';
 
 import { clearImportMapCache, createImportMap } from './import-map';
+import { resolveHttpsOptions } from './https-options';
 import { createProxyHandler } from './proxy';
 import { send403, send404, send500 } from './responses';
 import { StateManager } from './state';
@@ -141,13 +143,16 @@ export function createDevServer(options: DevServerOptions): DevServer {
 
   const globalProxyHandler = config.proxy ? createProxyHandler(config.proxy) : null;
 
-  const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  const isHttps = Boolean(config.https);
+  const scheme = isHttps ? 'https' : 'http';
+
+  const requestHandler = async (req: IncomingMessage, res: ServerResponse) => {
     const originalUrl = req.url || '/';
     const hostHeader = req.headers.host;
     const hostName = hostHeader ? (Array.isArray(hostHeader) ? hostHeader[0] : hostHeader).split(':')[0] : '';
 
     if (config.domain && hostName === (config.host || 'localhost')) {
-      const redirectUrl = `http://${config.domain}${originalUrl}`;
+      const redirectUrl = `${scheme}://${config.domain}${originalUrl}`;
       if (config.logging) {
         console.log(`[Domain Map] ${hostName}:${config.port}${originalUrl} -> ${redirectUrl}`);
       }
@@ -329,7 +334,11 @@ export function createDevServer(options: DevServerOptions): DevServer {
         send404(res, '404 Not Found');
       }
     }
-  });
+  };
+
+  const server = isHttps
+    ? createHttpsServer(resolveHttpsOptions(config.https as true | HttpsCertConfig), requestHandler)
+    : createServer(requestHandler);
 
   async function serveFile(filePath: string, req: IncomingMessage, res: ServerResponse, client: NormalizedClient, isNodeModulesOrDist: boolean = false) {
     function escapeForTemplateLiteral(input: string): string {
@@ -471,7 +480,7 @@ export default css;
       }
 
       if (ext === '.html') {
-        const hmrScript = config.mode !== 'preview' ? createHMRScript(config.port) : '';
+        const hmrScript = config.mode !== 'preview' ? createHMRScript() : '';
         let html = content.toString();
 
         let ssrStyles = '';
@@ -586,7 +595,7 @@ export default css;
       const basePath = normalizeBasePath(client.basePath);
       html = rewriteRelativePaths(html, basePath);
 
-      const hmrScript = config.mode !== 'preview' ? createHMRScript(config.port) : '';
+      const hmrScript = config.mode !== 'preview' ? createHMRScript() : '';
       const importMap = await createImportMap(client.root, basePath);
       const modeScript = config.mode === 'preview' ? '<script>window.__ELIT_MODE__=\'preview\';</script>\n' : '';
       html = html.includes('</head>') ? html.replace('</head>', `\n${modeScript}${importMap}</head>`) : html;
@@ -730,12 +739,12 @@ export default css;
   server.listen(config.port, config.host, () => {
     if (config.logging) {
       console.log('\n🚀 Elit Dev Server');
-      console.log(`\n  ➜ Local:   http://${config.host}:${config.port}`);
+      console.log(`\n  ➜ Local:   ${scheme}://${config.host}:${config.port}`);
 
       if (normalizedClients.length > 1) {
         console.log('  ➜ Clients:');
         normalizedClients.forEach((client) => {
-          const clientUrl = `http://${config.host}:${config.port}${client.basePath}`;
+          const clientUrl = `${scheme}://${config.host}:${config.port}${client.basePath}`;
           console.log(`     - ${clientUrl} → ${client.root}`);
         });
       } else {
@@ -751,7 +760,7 @@ export default css;
 
     if (config.open && normalizedClients.length > 0) {
       const firstClient = normalizedClients[0]!;
-      const url = `http://${config.host}:${config.port}${firstClient.basePath}`;
+      const url = `${scheme}://${config.host}:${config.port}${firstClient.basePath}`;
 
       const open = async () => {
         const { default: openBrowser } = await import('open');
@@ -796,7 +805,7 @@ export default css;
   };
 
   const primaryClient = normalizedClients[0]!;
-  const primaryUrl = `http://${config.host}:${config.port}${primaryClient.basePath}`;
+  const primaryUrl = `${scheme}://${config.host}:${config.port}${primaryClient.basePath}`;
 
   return {
     server: server as any,

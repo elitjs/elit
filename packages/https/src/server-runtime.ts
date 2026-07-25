@@ -111,6 +111,10 @@ export class Server extends EventEmitter {
         });
       }
 
+      this.nativeServer.on('upgrade', (req: any, socket: any, head: any) => {
+        self.emit('upgrade', req, socket, head);
+      });
+
       this.nativeServer.on('error', (err: Error) => this.emit('error', err));
       this.nativeServer.on('close', () => {
         this._listening = false;

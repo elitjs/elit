@@ -299,6 +299,7 @@
     "javascript-obfuscator": "^4.2.2",
     "magic-string": "^0.30.17",
     "open": "^11.0.0",
+    "selfsigned": "^2.4.1",
     "smtp-server": "^3.18.4",
     "source-map": "^0.7.6"
   },
