@@ -11,6 +11,9 @@
     "pm:list": "node ./scripts/pm-runner.mjs list",
     "pm:logs": "node ./scripts/pm-runner.mjs logs drive-app"
   },
+  "devDependencies": {
+    "@elitjs/cli": "file:../../packages/cli"
+  },
   "keywords": [
     "elit",
     "wapk",

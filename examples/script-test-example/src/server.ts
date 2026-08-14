@@ -1,6 +1,6 @@
-import { ServerRouter } from 'elit/http';
-import { Dom } from 'elit/dom';
-import { div, h1, h2, p, pre, script, span, style } from 'elit/el';
+import { ServerRouter } from '@elitjs/http';
+import { Dom } from '@elitjs/dom';
+import { div, h1, h2, p, pre, script, span, style } from '@elitjs/el';
 
 const dom = new Dom();
 

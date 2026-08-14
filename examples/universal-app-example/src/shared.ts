@@ -1,5 +1,5 @@
-import { createState } from '../../../src/state';
-import type { Child, State } from '../../../src/types';
+import { createState } from '@elitjs/state';
+import type { Child, State } from '@elitjs/core';
 
 export const APP_NAME = 'Elit Universal Example';
 export const APP_TAGLINE = 'One repo validating browser, desktop, and Android mobile workflows.';

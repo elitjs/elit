@@ -6,7 +6,7 @@ Demonstrates the **top-level `resolve.alias`** config (and per-target `dev.resol
 
 ```ts
 // elit.config.ts
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 
 export default defineConfig({
   resolve: {

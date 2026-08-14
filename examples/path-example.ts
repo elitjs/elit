@@ -19,7 +19,7 @@ import {
   posix,
   win32,
   getRuntime
-} from '../src/path';
+} from '@elitjs/path';
 
 console.log('=== Path Module Examples ===\n');
 console.log('Runtime:', getRuntime());

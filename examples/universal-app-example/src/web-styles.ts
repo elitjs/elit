@@ -1,4 +1,4 @@
-import styles from '../../../src/style';
+import styles from '@elitjs/style';
 
 const paper = styles.addVar('paper', '#f8f0e4');
 const ink = styles.addVar('ink', '#261914');

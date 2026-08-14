@@ -1,4 +1,4 @@
-import { ServerRouter } from 'elit/server';
+import { ServerRouter } from '@elitjs/server';
 
 import { WEBMAIL_SMTP_BANNER, WEBMAIL_SMTP_HOST, WEBMAIL_SMTP_PORT } from './shared';
 import { createOutgoingMessage, getMailboxStats, getMessage, injectDemoInboundMessage, listAccounts, listMessages, registerAccount, saveDraftMessage } from './store';

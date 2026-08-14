@@ -3,7 +3,7 @@
  * Cross-runtime WSS server and client compatible with 'ws' package
  */
 
-import { WSSServer, WSSClient, createWSSServer, createWSSClient, ReadyState } from '../src/wss';
+import { WSSServer, WSSClient, createWSSServer, createWSSClient, ReadyState } from '@elitjs/wss';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 

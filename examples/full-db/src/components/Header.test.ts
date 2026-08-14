@@ -9,8 +9,8 @@ if (typeof localStorage !== 'undefined') {
 }
 
 import { Header } from './Header';
-import { createRouter } from 'elit/router';
-import type { VNode } from 'elit/types';
+import { createRouter } from '@elitjs/router';
+import type { VNode } from '@elitjs/core';
 
 // Simple mock function to track calls
 function mockFn() {

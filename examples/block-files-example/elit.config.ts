@@ -3,7 +3,7 @@
 //
 // `defineConfig` is imported from the `elit/config` subpath. If this resolves,
 // it proves the new subpath export is wired up correctly.
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 
 // When you set `blockFiles`, you REPLACE the defaults — they are not merged.
 // To keep the default sensitive-file protection while adding your own patterns,

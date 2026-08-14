@@ -1,4 +1,4 @@
-import type { ElitSMTPServerConfig, SMTPServerSession } from 'elit/smtp-server';
+import type { ElitSMTPServerConfig, SMTPServerSession } from '@elitjs/smtp-server';
 
 import { WEBMAIL_SMTP_BANNER, WEBMAIL_SMTP_HOST, WEBMAIL_SMTP_PORT } from './shared';
 import { addIncomingMessage } from './store';

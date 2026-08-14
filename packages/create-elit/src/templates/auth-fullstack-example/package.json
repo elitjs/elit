@@ -27,7 +27,6 @@
     "@elitjs/server": "^ELIT_VERSION",
     "@elitjs/state": "^ELIT_VERSION",
     "@elitjs/style": "^ELIT_VERSION",
-    "@types/node": "^25.0.9",
-    "elit": "^ELIT_VERSION"
+    "@types/node": "^25.0.9"
   }
 }

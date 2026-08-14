@@ -14,6 +14,7 @@
     "mobile:build:ios": "elit mobile build ios --cwd ."
   },
   "devDependencies": {
-    "elit": "file:../.."
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/el": "file:../../packages/el"
   }
 }

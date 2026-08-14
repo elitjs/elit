@@ -3,8 +3,8 @@
  * Cross-runtime file watching
  */
 
-import { watch } from '../src/server/chokidar';
-import { writeFile, mkdir } from '../src/fs';
+import { watch } from '@elitjs/chokidar';
+import { writeFile, mkdir } from '@elitjs/fs';
 
 console.log('🔍 elit/chokidar File Watcher Example\n');
 

@@ -9,7 +9,10 @@
     "desktop:build": "elit desktop build"
   },
   "dependencies": {
-    "elit": "file:../.."
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/desktop": "file:../../packages/desktop",
+    "@elitjs/dom": "file:../../packages/dom",
+    "@elitjs/el": "file:../../packages/el"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",

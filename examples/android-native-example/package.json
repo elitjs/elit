@@ -15,6 +15,7 @@
     "mobile:test:sh": "bash ./test-android.sh"
   },
   "devDependencies": {
-    "elit": "file:../.."
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/el": "file:../../packages/el"
   }
 }

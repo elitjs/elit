@@ -109,7 +109,7 @@ if (typeof localStorage !== 'undefined') {
 
 // NOW import the component (after mocks are set up)
 import { HomePage } from './HomePage';
-import type { VNode } from 'elit/types';
+import type { VNode } from '@elitjs/core';
 
 // Helper function to render VNode to HTML string
 function renderToString(vNode: VNode | string | number | undefined | null): string {

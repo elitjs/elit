@@ -1,5 +1,5 @@
-import { div, h1, p } from 'elit/el';
-import { render } from 'elit/dom';
+import { div, h1, p } from '@elitjs/el';
+import { render } from '@elitjs/dom';
 // Alias import from the project root: '@/components/Counter' -> ./src/components/Counter.ts
 import { Counter } from '@/components/Counter';
 // Alias import for utilities:

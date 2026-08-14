@@ -86,7 +86,7 @@ The `client.ts` file exports an SSR template using modular imports from `elit/el
 
 ```typescript
 // src/client.ts
-import { div, html, head, body, title, link, script, meta } from 'elit/el';
+import { div, html, head, body, title, link, script, meta } from '@elitjs/el';
 
 export const client = html(
   head(
@@ -115,7 +115,7 @@ The `server.ts` file defines REST endpoints using modular import from `elit/serv
 
 ```typescript
 // src/server.ts
-import { ServerRouter } from 'elit/server';
+import { ServerRouter } from '@elitjs/server';
 
 export const router = new ServerRouter();
 
@@ -140,9 +140,9 @@ The `main.ts` file uses modular imports from `elit/el`, `elit/state`, and `elit/
 
 ```typescript
 // src/main.ts
-import { div, h1, h2, button, p } from 'elit/el';
-import { createState, reactive } from 'elit/state';
-import { render } from 'elit/dom';
+import { div, h1, h2, button, p } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
+import { render } from '@elitjs/dom';
 import './styles.ts';  // TypeScript import - automatically rewritten to .js
 
 export const count = createState(0);
@@ -182,7 +182,7 @@ The `styles.ts` file uses the modular import from `elit/style`:
 
 ```typescript
 // src/styles.ts
-import styles from 'elit/style';
+import styles from '@elitjs/style';
 
 // Global styles
 styles.addTag('*', {
@@ -219,7 +219,7 @@ export default styles;
 ```
 
 **Key Points:**
-- Default import: `import styles from 'elit/style'`
+- Default import: `import styles from '@elitjs/style'`
 - No need to instantiate with `new CreateStyle()` anymore
 - Call `styles.inject('id')` to inject into DOM
 - Supports `addTag`, `addClass`, `addPseudoClass` methods
@@ -353,7 +353,7 @@ WebSocket-based HMR with instant feedback:
 
 ```typescript
 // src/server.ts
-import { ServerRouter } from 'elit/server';
+import { ServerRouter } from '@elitjs/server';
 
 export const router = new ServerRouter();
 
@@ -443,8 +443,8 @@ Visit:
 
 ```typescript
 // src/components/counter.ts
-import { div, button } from 'elit/el';
-import { createState, reactive } from 'elit/state';
+import { div, button } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
 
 export function Counter() {
   const count = createState(0);
@@ -463,8 +463,8 @@ export function Counter() {
 
 ```typescript
 // src/main.ts
-import { div } from 'elit/el';
-import { render } from 'elit/dom';
+import { div } from '@elitjs/el';
+import { render } from '@elitjs/dom';
 import { Counter } from './components/counter.ts';
 import './styles.ts';
 
@@ -480,7 +480,7 @@ render('root', app);
 
 ```typescript
 // src/theme.ts
-import styles from 'elit/style';
+import styles from '@elitjs/style';
 
 export function applyTheme(isDark: boolean) {
   styles.addTag('body', {
@@ -513,11 +513,11 @@ const appName = import.meta.env.VITE_APP_NAME;
 
 ```typescript
 // Modular imports
-import { div, button } from 'elit/el';
-import { createState } from 'elit/state';
-import { render } from 'elit/dom';
-import styles from 'elit/style';
-import { ServerRouter } from 'elit/server';
+import { div, button } from '@elitjs/el';
+import { createState } from '@elitjs/state';
+import { render } from '@elitjs/dom';
+import styles from '@elitjs/style';
+import { ServerRouter } from '@elitjs/server';
 
 // TypeScript imports with .ts extension
 import './styles.ts';
@@ -536,10 +536,10 @@ import { client } from './src/client';
 
 ```typescript
 // Importing from main package
-import { div, button, createState, render } from 'elit';
+import { div, button, createState, render } from '@elitjs/router';
 
 // Old CreateStyle instantiation
-import { CreateStyle } from 'elit';
+import { CreateStyle } from '@elitjs/router';
 const styles = new CreateStyle();
 
 // Importing without .ts extension
@@ -563,6 +563,6 @@ const server = require('./src/server');
 - ✅ Modular imports (`elit/el`, `elit/state`, `elit/dom`, `elit/server`, `elit/style`)
 - ✅ TypeScript config files (`elit.config.ts`)
 - ✅ TypeScript imports with `.ts` extensions
-- ✅ `import styles from 'elit/style'` (not `new CreateStyle()`)
+- ✅ `import styles from '@elitjs/style'` (not `new CreateStyle()`)
 - ✅ SSR templates with `ssr: () => client`
 - ✅ Client-specific API routes with `api: server`
