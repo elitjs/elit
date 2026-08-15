@@ -1,6 +1,6 @@
 # ELIT_PROJECT_NAME
 
-A fullstack todo starter for Elit with file-backed persistence powered by `elit/database`.
+A fullstack todo starter for Elit with file-backed persistence powered by `elit/function-store`.
 
 ## What is included
 
@@ -21,7 +21,7 @@ Open http://localhost:3003 and start adding tasks. Every create, update, complet
 ## Project structure
 
 - `src/pages/TodoPage.ts` - main todo experience
-- `src/server.ts` - CRUD API powered by `elit/database`
+- `src/server.ts` - CRUD API powered by `elit/function-store`
 - `databases/todo.ts` - starter data file that acts as your local database
 - `src/mobile.ts` - native preview entry for mobile mode
 

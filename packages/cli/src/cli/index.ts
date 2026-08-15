@@ -4,6 +4,7 @@ import { runDev, runPreview } from './dev-preview';
 import { printHelp, printVersion } from './help';
 import { COMMANDS, VERSION_FLAGS, type Command } from './shared';
 import { runTest } from './test';
+import { runE2E } from './e2e';
 
 export { parseBuildArgs, parseBuildDevArgs, parseBuildPreviewArgs, runBuild, runBuildDev, runBuildPreview } from './build';
 export { runDesktop, runMobile, runNative, runPm, runWapk } from './commands';
@@ -12,6 +13,7 @@ export { printHelp, printVersion } from './help';
 export { COMMANDS, VERSION_FLAGS } from './shared';
 export type { Command } from './shared';
 export { runTest } from './test';
+export { runE2E } from './e2e';
 
 export async function main(): Promise<void> {
     const args = process.argv.slice(2);
@@ -40,7 +42,15 @@ export async function main(): Promise<void> {
             await runPreview(args.slice(1));
             break;
         case 'test':
-            await runTest(args.slice(1));
+            // `elit test --e2e` routes to the e2e command for convenience.
+            if (args.includes('--e2e')) {
+                await runE2E(args.slice(1).filter((arg) => arg !== '--e2e'));
+            } else {
+                await runTest(args.slice(1));
+            }
+            break;
+        case 'e2e':
+            await runE2E(args.slice(1));
             break;
         case 'desktop':
             await runDesktop(args.slice(1));

@@ -12,7 +12,7 @@ The `auth-fullstack-example` template works as a *showcase* but puts all server 
 ├── package.json
 ├── tsconfig.json
 ├── src/                  # application source
-├── databases/            # elit/database schemas (one file per collection)
+├── databases/            # elit/function-store schemas (one file per collection)
 ├── public/               # static assets
 └── tests/                # optional — test files (or co-located)
 ```
@@ -97,7 +97,7 @@ server/
     ├── bearer.ts                # parseBearerToken(request)
     ├── response-helpers.ts      # ok(), error(), created(), noContent()
     ├── db-helpers.ts            # extractFirst(result), extractRows(result)
-    ├── db.ts                    # Database singleton (db instance)
+    ├── db.ts                    # FunctionStore singleton (db instance)
     └── serialization.ts         # toPublicUser(user) — strips password
 ```
 
@@ -123,7 +123,7 @@ registerProfileRoutes(router);
 ```
 
 **`_shared/` rules:**
-- Lower bar than `shared/`: server-only utilities. Can import `elit/server`, `elit/database`.
+- Lower bar than `shared/`: server-only utilities. Can import `elit/server`, `elit/function-store`.
 - Hoist a helper here on **second reuse**, not third. Don't pre-extract.
 - Keep files small (≤150 lines). Split further if a helper grows.
 
@@ -230,7 +230,7 @@ See `shared-code.md` for runtime boundary rules.
 | Server route importing from a page file | Server and client don't share code except via `shared/`. |
 | Page importing `elit/server` | Pages are client-only. Data fetching goes through `fetch()` or the client wrapper. |
 | `databases/` schema file with logic | Schemas are data shapes only. Logic belongs in `server/<domain>/repository.ts`. |
-| In-memory `Map` for state that needs to persist | Use `elit/database`. The in-memory map won't survive a restart. |
+| In-memory `Map` for state that needs to persist | Use `elit/function-store`. The in-memory map won't survive a restart. |
 | Module-scope `createState` in a component | Declare inside the component function — module-scope state leaks across renders. |
 | Cross-domain route handler import | Domains communicate via the router, not direct imports. |
 

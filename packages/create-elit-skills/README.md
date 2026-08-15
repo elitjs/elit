@@ -54,7 +54,7 @@ Each reference skill documents every exported function, class, and type for the 
 | `elit-ref-router` | `@elitjs/router` (`createRouter`, `createRouterView`, `routerLink`, route types) |
 | `elit-ref-server` | `@elitjs/server` (`ServerRouter`, `createDevServer`, response helpers, middleware, proxy, shared state, full options types) |
 | `elit-ref-style` | `@elitjs/style` (`CreateStyle` class — variables, classes, pseudo, keyframes, media, container, layer, native resolution) |
-| `elit-ref-database` | `@elitjs/database` (`Database` class, standalone ops, `@db/<name>` VM flow) |
+| `elit-ref-function-store` | `@elitjs/function-store` (`FunctionStore` class, standalone ops, `@db/<name>` VM flow) |
 | `elit-ref-fs-path` | `@elitjs/fs` (sync/async/promises) + `@elitjs/path` (default + `posix`/`win32`) |
 | `elit-ref-native-desktop` | `@elitjs/native` (`renderNativeTree`, `renderAndroidCompose`, `renderSwiftUI`, `materializeNativeTree`) + `@elitjs/desktop` (`createWindow`, `windowEval`, `onMessage`, window control) |
 | `elit-ref-net` | `@elitjs/http`, `@elitjs/https`, `@elitjs/ws`, `@elitjs/wss`, `@elitjs/smtp-server`, `@elitjs/mime-types` |

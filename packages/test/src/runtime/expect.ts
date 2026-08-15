@@ -1,4 +1,5 @@
 import { runtimeState } from './state';
+import { checkSnapshot } from './snapshot';
 import { resolveAssertionContext } from './assertion-context';
 import type { TestMatchers } from './types';
 
@@ -244,6 +245,14 @@ class Expect implements TestMatchers<any> {
             this.assertCondition(pattern.test(text), `Expected "${text}" to match ${pattern}`);
         } else {
             this.assertCondition(text.includes(pattern), `Expected "${text}" to contain "${pattern}"`);
+        }
+    }
+
+    toMatchSnapshot(name?: string) {
+        this.expected = 'snapshot';
+        const check = checkSnapshot(name, this.actual);
+        if (!check.pass) {
+            throw new Error(check.message);
         }
     }
 

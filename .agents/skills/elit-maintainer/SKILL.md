@@ -19,7 +19,7 @@ Use this skill when the task is inside the Elit repository itself rather than in
 ## Runtime Map
 
 - Browser/client: `src/client/`, surfaced by `src/dom.ts`, `src/el.ts`, `src/state.ts`, `src/style.ts`, `src/router.ts`, and `src/render-context.ts`.
-- Server/backend: `src/server/`, surfaced by `src/server.ts`, `src/http.ts`, `src/https.ts`, `src/ws.ts`, `src/wss.ts`, `src/database.ts`, and `src/smtp-server.ts`.
+- Server/backend: `src/server/`, surfaced by `src/server.ts`, `src/http.ts`, `src/https.ts`, `src/ws.ts`, `src/wss.ts`, `packages/function-store`, and `src/smtp-server.ts`.
 - Native generation: `src/native/`, surfaced by `src/native.ts`.
 - Desktop runtime glue: `src/desktop/` plus the Rust host in `desktop/`.
 - CLI/build: `src/cli/`, `src/build/`, `scripts/`, and the `tsup*.config.ts` files.

@@ -11,7 +11,6 @@ import type { PmProxyConfig } from '@elitjs/config';
  *   0.0.0.0/8       – "this network" (often used for SSRF)
  *   10.0.0.0/8      – RFC 1918 private
  *   100.64.0.0/10   – carrier-grade NAT
- *   127.0.0.0/8     – loopback
  *   169.254.0.0/16  – link-local
  *   172.16.0.0/12   – RFC 1918 private
  *   192.0.2.0/24    – documentation
@@ -22,6 +21,9 @@ import type { PmProxyConfig } from '@elitjs/config';
  *   203.0.113.0/24  – documentation
  *   224.0.0.0/4     – multicast
  *   240.0.0.0/4     – reserved
+ *
+ * Loopback (127.0.0.0/8, ::1) is intentionally allowed: the PM proxy's primary
+ * job is forwarding to the local instances the process manager itself spawned.
  */
 const BLOCKED_IPV4_PREFIXES: readonly string[] = [
     '0.', '10.', '100.64.', '100.65.', '100.66.', '100.67.', '100.68.', '100.69.',
@@ -34,7 +36,6 @@ const BLOCKED_IPV4_PREFIXES: readonly string[] = [
     '100.112.', '100.113.', '100.114.', '100.115.', '100.116.', '100.117.', '100.118.',
     '100.119.', '100.120.', '100.121.', '100.122.', '100.123.', '100.124.', '100.125.',
     '100.126.', '100.127.',
-    '127.',
     '169.254.',
     '172.16.', '172.17.', '172.18.', '172.19.', '172.20.', '172.21.', '172.22.',
     '172.23.', '172.24.', '172.25.', '172.26.', '172.27.', '172.28.', '172.29.',
@@ -62,12 +63,13 @@ function isBlockedIpv4(hostname: string): boolean {
 }
 
 /**
- * Returns true when `hostname` is an IPv6 address that resolves to loopback or
- * is the IPv4-mapped form of a blocked address.
+ * Returns true when `hostname` is an IPv6 address that is unspecified or the
+ * IPv4-mapped form of a blocked address. Loopback (::1) is allowed — the PM
+ * proxy forwards to locally spawned instances.
  */
 function isBlockedIpv6(hostname: string): boolean {
     const lower = hostname.toLowerCase();
-    if (lower === '::1' || lower === '::' || lower === '0:0:0:0:0:0:0:1' || lower === '0:0:0:0:0:0:0:0') {
+    if (lower === '::' || lower === '0:0:0:0:0:0:0:0') {
         return true;
     }
 

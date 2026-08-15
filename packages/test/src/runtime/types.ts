@@ -39,6 +39,7 @@ export interface TestMatchers<T> {
     toHaveLength(length: number): void;
     toThrow(error?: any): void;
     toMatch(pattern: RegExp | string): void;
+    toMatchSnapshot(name?: string): void;
     toBeInstanceOf(classType: any): void;
     toHaveProperty(path: string | string[], value?: any): void;
     toBeCalled(): void;
@@ -57,6 +58,10 @@ export interface TestSuite {
     parent?: TestSuite;
     skip: boolean;
     only: boolean;
+    beforeAllHooks: HookFunction[];
+    afterAllHooks: HookFunction[];
+    beforeEachHooks: HookFunction[];
+    afterEachHooks: HookFunction[];
 }
 
 export interface Test {

@@ -236,7 +236,7 @@ describe('Client Component', () => {
       const bodyElement = findChildByTagName(client, 'body');
       const scripts = findChildrenByTagName(bodyElement!, 'script');
       const moduleScript = scripts.find(script => script.props?.type === 'module');
-      expect(moduleScript?.props?.src).toBe('/src/main.js');
+      expect(moduleScript?.props?.src).toBe('/main.js');
     });
   });
 

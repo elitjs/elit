@@ -19,9 +19,9 @@ const fixtures: EntrypointFixture[] = [
     },
     {
         label: 'create-elit template',
-        publicIndexPath: 'packages/create-elit/src/templates/public/index.html',
-        mainPath: 'packages/create-elit/src/templates/src/main.ts',
-        clientPath: 'packages/create-elit/src/templates/src/client.ts',
+        publicIndexPath: 'packages/create-elit/src/templates/basic-example/public/index.html',
+        mainPath: 'packages/create-elit/src/templates/basic-example/src/main.ts',
+        clientPath: 'packages/create-elit/src/templates/basic-example/src/client.ts',
     },
 ];
 

@@ -11,12 +11,21 @@ type StripTypeScriptTypes = (
 
 type NodeTransformLoader = 'ts' | 'tsx';
 
+type NodeEsbuildTransformOptions = {
+  loader: NodeTransformLoader | 'js';
+  format: 'esm';
+  target: 'es2020';
+  sourcemap: false | 'inline';
+  minify?: boolean;
+  charset?: 'utf8';
+};
+
 const stripTypeScriptTypes = typeof (nodeModule as { stripTypeScriptTypes?: unknown }).stripTypeScriptTypes === 'function'
   ? ((nodeModule as { stripTypeScriptTypes: StripTypeScriptTypes }).stripTypeScriptTypes)
   : undefined;
 
 let cachedNodeEsbuildTransformSync:
-  | ((code: string, options: { loader: NodeTransformLoader; format: 'esm'; target: 'es2020'; sourcemap: false | 'inline' }) => { code: string })
+  | ((code: string, options: NodeEsbuildTransformOptions) => { code: string })
   | null
   | undefined;
 
@@ -52,7 +61,7 @@ async function getNodeEsbuildTransformSync() {
 
   try {
     const esbuildModule = await import('esbuild') as {
-      transformSync?: (code: string, options: { loader: NodeTransformLoader; format: 'esm'; target: 'es2020'; sourcemap: false | 'inline' }) => { code: string };
+      transformSync?: (code: string, options: NodeEsbuildTransformOptions) => { code: string };
     };
 
     cachedNodeEsbuildTransformSync = typeof esbuildModule.transformSync === 'function'
@@ -65,6 +74,24 @@ async function getNodeEsbuildTransformSync() {
   return cachedNodeEsbuildTransformSync;
 }
 
+async function minifyPreviewModule(code: string): Promise<string> {
+  const esbuildTransformSync = await getNodeEsbuildTransformSync();
+
+  // esbuild is optional at runtime; preview still serves readable JS without it
+  if (!esbuildTransformSync) {
+    return code;
+  }
+
+  return esbuildTransformSync(code, {
+    loader: 'js',
+    format: 'esm',
+    target: 'es2020',
+    sourcemap: false,
+    minify: true,
+    charset: 'utf8',
+  }).code;
+}
+
 export async function transpileNodeBrowserModule(source: string, options: { filename: string; loader: NodeTransformLoader; mode: 'dev' | 'preview' }): Promise<string> {
   const compileWithEsbuild = async () => {
     const esbuildTransformSync = await getNodeEsbuildTransformSync();
@@ -75,18 +102,14 @@ export async function transpileNodeBrowserModule(source: string, options: { file
     }
 
     if (options.mode === 'preview') {
-      const { default: JavaScriptObfuscator } = await import('javascript-obfuscator');
-      const tsResult = esbuildTransformSync(source, {
+      return esbuildTransformSync(source, {
         loader: options.loader,
         format: 'esm',
         target: 'es2020',
         sourcemap: false,
-      });
-
-      return JavaScriptObfuscator.obfuscate(tsResult.code, {
-        compact: true,
-        renameGlobals: false,
-      }).getObfuscatedCode();
+        minify: true,
+        charset: 'utf8',
+      }).code;
     }
 
     return esbuildTransformSync(source, {
@@ -102,11 +125,7 @@ export async function transpileNodeBrowserModule(source: string, options: { file
       const stripped = stripBrowserTypeScriptSource(source, options.filename);
 
       if (options.mode === 'preview') {
-        const { default: JavaScriptObfuscator } = await import('javascript-obfuscator');
-        return JavaScriptObfuscator.obfuscate(stripped, {
-          compact: true,
-          renameGlobals: false,
-        }).getObfuscatedCode();
+        return minifyPreviewModule(stripped);
       }
 
       return stripped;

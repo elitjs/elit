@@ -2,7 +2,7 @@
 
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
 import {
     getDefaultDesktopMode,
@@ -134,7 +134,7 @@ describe('desktop cargo target directory resolution', () => {
         expect(resolveDesktopCargoTargetBaseDir('C:/package', 'C:/app', {
             ELIT_DESKTOP_CARGO_TARGET_DIR: 'D:/elit-cache/desktop',
             LOCALAPPDATA: 'C:/Users/tester/AppData/Local',
-        }, 'win32')).toBe('D:/elit-cache/desktop');
+        }, 'win32')).toBe(resolve('D:/elit-cache/desktop'));
     });
 });
 
@@ -142,18 +142,18 @@ describe('desktop runtime binary override resolution', () => {
     it('prefers env-configured desktop binary overrides', () => {
         expect(resolveDesktopBinaryOverridePath('./runtime/elit-desktop.exe', 'ELIT_DESKTOP_BINARY_PATH', 'C:/app', {
             ELIT_DESKTOP_BINARY_PATH: 'D:/approved/elit-desktop.exe',
-        })).toBe('D:/approved/elit-desktop.exe');
+        })).toBe(resolve('D:/approved/elit-desktop.exe'));
     });
 
     it('falls back to config-configured desktop binary overrides', () => {
         expect(resolveDesktopBinaryOverridePath('./runtime/elit-desktop.exe', 'ELIT_DESKTOP_BINARY_PATH', 'C:/app', {})).toBe(
-            'C:/app/runtime/elit-desktop.exe',
+            resolve('C:/app', './runtime/elit-desktop.exe'),
         );
     });
 
     it('supports native desktop binary overrides', () => {
         expect(resolveDesktopBinaryOverridePath('./runtime/elit-desktop-native.exe', 'ELIT_DESKTOP_NATIVE_BINARY_PATH', 'C:/app', {})).toBe(
-            'C:/app/runtime/elit-desktop-native.exe',
+            resolve('C:/app', './runtime/elit-desktop-native.exe'),
         );
     });
 });

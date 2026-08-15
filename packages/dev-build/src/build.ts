@@ -45,7 +45,7 @@ export async function buildStandaloneDevServer(options: StandaloneDevBuildOption
         mainFields: ['module', 'main'],
         platform: 'node',
         plugins: [workspacePackagePlugin],
-        external: ['esbuild', 'javascript-obfuscator', 'open'],
+        external: ['esbuild', 'open'],
         sourcemap: false,
         target: 'es2020',
         logLevel: options.logging === false ? 'silent' : 'info',

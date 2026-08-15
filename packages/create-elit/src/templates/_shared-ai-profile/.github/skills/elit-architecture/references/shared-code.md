@@ -18,7 +18,7 @@ The test: **does both the client and the server import this?** If yes, it belong
 
 Code in `shared/` MUST NOT:
 
-- Import from `elit/server`, `elit/database` — these are server-only.
+- Import from `elit/server`, `elit/function-store` — these are server-only.
 - Import from `elit/desktop`, `elit/native` — these are runtime-injected only.
 - Use `document.*`, `window.*`, `process.env.*` directly.
 - Use Node.js built-ins (`fs`, `path`, `crypto`) — these don't exist in browsers.

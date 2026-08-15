@@ -35,7 +35,7 @@ For native desktop mode, install Cargo.
 | `@elitjs/server` | `ServerRouter`, `createDevServer`, `cors`, `logger`, `rateLimit`, `StateManager` |
 | `@elitjs/build` | Programmatic bundling (`build`) |
 | `@elitjs/desktop` | Native desktop window APIs |
-| `@elitjs/database` | VM-backed file database |
+| `@elitjs/function-store` | File-backed TypeScript function store with sandboxed execution |
 | `@elitjs/test` | Test runner |
 
 Lower-level adapters: `@elitjs/http`, `@elitjs/https`, `@elitjs/ws`, `@elitjs/wss`, `@elitjs/fs`, `@elitjs/path`, `@elitjs/mime-types`, `@elitjs/chokidar`, `@elitjs/runtime`.

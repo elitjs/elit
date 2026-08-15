@@ -1,7 +1,15 @@
 import { createRequire } from 'node:module';
 import { runtime } from '@elitjs/runtime';
 
-const require = createRequire(import.meta.url);
+const require = (() => {
+  // The test runner evaluates this source as CJS where __filename is injected and
+  // import.meta.url is undefined; real ESM builds are the reverse.
+  try {
+    return createRequire(__filename);
+  } catch {
+    return createRequire(import.meta.url);
+  }
+})();
 
 import type { WatchOptions } from './types';
 import { setupFsWatch } from './native-watch';

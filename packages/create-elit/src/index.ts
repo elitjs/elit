@@ -27,7 +27,7 @@ const templates: TemplateDefinition[] = [
   {
     id: 'todo-fullstack-example',
     aliases: ['todo', 'todo-fullstack-example'],
-    description: 'Database-backed todo workspace starter'
+    description: 'Function-store-backed todo workspace starter'
   },
   {
     id: 'basic-example',

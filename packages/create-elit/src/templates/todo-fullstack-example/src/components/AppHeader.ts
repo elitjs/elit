@@ -16,7 +16,7 @@ export function AppHeader(router: Router) {
       ),
       div({ className: 'header-pill' },
         span({ className: 'header-pill-label' }, 'Storage'),
-        span({ className: 'header-pill-value' }, 'elit/database')
+        span({ className: 'header-pill-value' }, 'elit/function-store')
       )
     )
   );

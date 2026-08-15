@@ -1,6 +1,6 @@
 ---
 name: elit-server-cli
-description: 'Work on Elit server, HTTP or WebSocket modules, CLI commands, build wiring, process manager, database, or exported runtime entrypoints. Use when editing `src/server`, `src/cli.ts`, `src/build`, `src/database.ts`, `src/smtp-server.ts`, or package export behavior.'
+description: 'Work on Elit server, HTTP or WebSocket modules, CLI commands, build wiring, process manager, function store, or exported runtime entrypoints. Use when editing `src/server`, `src/cli.ts`, `src/build`, `packages/function-store`, `src/smtp-server.ts`, or package export behavior.'
 argument-hint: 'Describe the server module, CLI command, or build behavior to change.'
 user-invocable: true
 ---

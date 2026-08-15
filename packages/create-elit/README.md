@@ -34,7 +34,7 @@ deno run -A npm:create-elit my-app --template todo
 ## Templates
 
 - `basic` - lightweight single-page starter with a reactive counter and no API setup
-- `todo` (default) - fullstack todo workspace with persistence in `databases/todo.ts` via `elit/database`
+- `todo` (default) - fullstack todo workspace with persistence in `databases/todo.ts` via `elit/function-store`
 - `auth` - auth and chat starter with profile and messaging flows
 
 You can also use the full folder names:

@@ -4,7 +4,7 @@ export function AppFooter() {
   return footer({ className: 'app-footer' },
     div({ className: 'app-footer-inner' },
       p({ className: 'footer-copy' },
-        'Built with Elit. Persisted with elit/database. Ready for your own workflows, rules, and team-specific polish.'
+        'Built with Elit. Persisted with elit/function-store. Ready for your own workflows, rules, and team-specific polish.'
       ),
       div({ className: 'footer-links' },
         a({ href: 'https://elitjs.github.io/elit/#/docs', target: '_blank', className: 'footer-link' }, 'Documentation'),

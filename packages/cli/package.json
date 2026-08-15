@@ -42,6 +42,7 @@
     "@elitjs/config": "file:../config",
     "@elitjs/core": "file:../core",
     "@elitjs/dev-build": "file:../dev-build",
+    "@elitjs/e2e": "file:../e2e",
     "@elitjs/native": "file:../native",
     "@elitjs/pm": "file:../pm",
     "@elitjs/preview-build": "file:../preview-build",
@@ -49,7 +50,8 @@
     "@elitjs/server": "file:../server",
     "@elitjs/test": "file:../test",
     "@elitjs/wapk": "file:../wapk",
-    "@elitjs/workspace-package": "file:../workspace-package"
+    "@elitjs/workspace-package": "file:../workspace-package",
+    "open": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",

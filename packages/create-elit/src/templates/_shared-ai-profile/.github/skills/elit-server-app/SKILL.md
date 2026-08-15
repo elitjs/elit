@@ -1,6 +1,6 @@
 ---
 name: elit-server-app
-description: 'Work on server behavior in this Elit app — API routes, middleware, ServerRouter handlers, auth, SSE/WebSocket endpoints, or `elit/database` schemas and queries. Use when editing `src/server.ts`, `src/server/`, `databases/`, or any `/api/...` route.'
+description: 'Work on server behavior in this Elit app — API routes, middleware, ServerRouter handlers, auth, SSE/WebSocket endpoints, or `elit/function-store` schemas and queries. Use when editing `src/server.ts`, `src/server/`, `databases/`, or any `/api/...` route.'
 argument-hint: 'Describe the endpoint, handler, middleware, or database change.'
 user-invocable: true
 ---
@@ -12,14 +12,14 @@ Use this skill when the task belongs to the backend: HTTP route handlers, middle
 ## Route The Task First
 
 1. Routes & middleware → `src/server.ts` (single-file) or `src/server/` (split)
-2. Database schemas → `databases/<name>.ts`
+2. Function store schemas → `databases/<name>.ts`
 3. Server config wiring → `elit.config.ts` (`dev.api`, `dev.clients[].api`, `preview.api`, `dev.ws`, `dev.smtp`)
 4. Multi-client API → `dev.clients[].api` (each client's routes are prefixed by its `basePath`)
 
 ## Public API Surface
 
 - `elit/server` — `ServerRouter`, `ElitRequest`, `ElitResponse`, plus `elit/http`, `elit/https`, `elit/ws`, `elit/wss`, `elit/smtp-server` for transport-specific entrypoints.
-- `elit/database` — `Database` class for code-stored collections.
+- `elit/function-store` — `FunctionStore` class for code-stored collections.
 
 Do NOT import from `elit/el`, `elit/state`, or other browser surfaces in server files — they pull browser-only code into the server bundle.
 
@@ -28,12 +28,12 @@ Do NOT import from `elit/el`, `elit/state`, or other browser surfaces in server 
 ```ts
 // src/server.ts
 import { ElitRequest, ElitResponse, ServerRouter } from '@elitjs/server';
-import { Database } from '@elitjs/database';
+import { FunctionStore } from '@elitjs/function-store';
 import { resolve } from 'path';
 
 export const router = new ServerRouter();
 
-const db = new Database({
+const db = new FunctionStore({
   dir: resolve(process.cwd(), 'databases'),
   language: 'ts'
 });
@@ -105,26 +105,26 @@ async function verifyPassword(storedHash: string, suppliedPassword: string): Pro
 - Salt is per-user, stored alongside the hash.
 - Sessions: pick in-memory (single-instance) or DB-backed (multi-instance). The framework does not prescribe a session store.
 
-## Database (`elit/database`)
+## Function Store (`elit/function-store`)
 
 ```ts
 // databases/users.ts — schema lives here
-// The Database class loads *.ts files under dir, each defining a collection.
+// The FunctionStore class loads *.ts files under dir, each defining a collection.
 ```
 
 ```ts
 // src/server.ts
-const db = new Database({
+const db = new FunctionStore({
   dir: resolve(process.cwd(), 'databases'),
   language: 'ts'
 });
 
 // Insert / query via db.execute(...)
-// See elit/database docs for the full query syntax
+// See elit/function-store docs for the full query syntax
 ```
 
 - Schemas go under `databases/` — one `.ts` file per collection.
-- Initialize `Database` once per process, not per request.
+- Initialize `FunctionStore` once per process, not per request.
 - Resolve `dir` against `process.cwd()` so dev and built server agree.
 
 ## SSE (Server-Sent Events)
@@ -190,7 +190,7 @@ router.use((req, res, next) => {
 
 - **Forgetting `return res...` in async handlers** — request hangs.
 - **`===` comparison for password hashes** — timing attack. Use `timingSafeEqual`.
-- **Database initialized per-request** — connection leak / perf cliff.
+- **FunctionStore initialized per-request** — connection leak / perf cliff.
 - **SSE without `req.on('close')` cleanup** — client set grows forever.
 - **Mutating `req.body` directly across handlers** — surprising downstream behavior. Clone if you need to alter.
 - **Importing browser modules (`elit/el`, `elit/state`) in server files** — build fails or runtime crashes.
@@ -224,7 +224,7 @@ router.use((req, res, next) => {
 
 **Detailed API references (next to this skill file):**
 - `references/server.md` — `ServerRouter` (`get`/`post`/`put`/`patch`/`delete`/`use`/`all`), `ElitRequest`/`ElitResponse`, built-in middleware (`cors`, `logger`, `rateLimit`, `bodyLimit`, `compress`, `security`, `errorHandler`), SSE pattern, scrypt auth code
-- `references/database.md` — `Database` class (`dir`, `language`, `registerModules`), `db.execute(code)`, `db.create/read/save/update/remove/rename/register`, collection file pattern, injection-safe JSON-encoded arguments
+- `references/function-store.md` — `FunctionStore` class (`dir`, `language`, `registerModules`), `db.execute(code)`, `db.create/read/save/update/remove/rename/register`, collection file pattern, injection-safe JSON-encoded arguments
 - `references/http.md` — `createServer`, `IncomingMessage`/`ServerResponse`, `get`/`request` client helpers, cross-runtime support
 - `references/ws.md` — `WebSocket` client, `WebSocketServer`, `createWebSocketServer`, `ReadyState`, `CLOSE_CODES`, `dev.ws[]` integration, auto-reconnect pattern
 - `references/smtp-server.md` — `createSmtpServer`, `startSmtpServer`, `ElitSMTPServerConfig`, auth handlers (`PLAIN`/`LOGIN`), `onData` body handler, `dev.smtp` integration
@@ -232,14 +232,14 @@ router.use((req, res, next) => {
 Read these before writing code in unfamiliar areas — they have signatures, examples, and gotchas for every public API.
 
 **In this project (concrete examples to copy from):**
-- `src/server.ts` — `new ServerRouter()`, route definitions, middleware order, `Database` init
+- `src/server.ts` — `new ServerRouter()`, route definitions, middleware order, `FunctionStore` init
 - `databases/users.ts` — single-collection schema pattern (one `.ts` per collection under `databases/`)
 - `elit.config.ts` — search `dev.api` / `dev.clients[].api` to see how the router is wired; search `dev.ws` for WebSocket endpoint config; search `dev.smtp` for SMTP listeners
 - `.env` — only readable in server code via `process.env.X`; never in browser code
 
 **Installed type definitions (ground-truth API when docs are ambiguous):**
 - `node_modules/elit/dist/server.d.ts` — `ServerRouter`, `ElitRequest`, `ElitResponse`, middleware signatures
-- `node_modules/elit/dist/database.d.ts` — `Database` constructor and query methods
+- `node_modules/elit/dist/function-store.d.ts` — `FunctionStore` constructor and query methods
 - `node_modules/elit/dist/http.d.ts`, `https.d.ts`, `ws.d.ts`, `wss.d.ts`, `smtp-server.d.ts` — transport-specific entrypoints
 - `node_modules/elit/dist/index.d.ts` — umbrella re-exports
 

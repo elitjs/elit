@@ -1,5 +1,5 @@
 import { ElitRequest, ElitResponse, ServerRouter } from '@elitjs/server';
-import { Database } from '@elitjs/database';
+import { FunctionStore } from '@elitjs/function-store';
 import { resolve } from 'path';
 import { scrypt, randomBytes, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
@@ -26,8 +26,8 @@ function broadcastToRoom(roomId: string, data: any) {
   }
 }
 
-// Initialize database with configuration
-const db = new Database({
+// Initialize function store with configuration
+const db = new FunctionStore({
   dir: resolve(process.cwd(), 'databases'),
   language: 'ts'
 });
@@ -47,7 +47,7 @@ async function verifyPassword(storedHash: string, suppliedPassword: string): Pro
   return timingSafeEqual(derivedKey, keyBuffer);
 }
 
-// Helper to execute database code
+// Helper to execute function store code
 // async function executeDb(code: string): Promise<any> {
 //   const result = await db.execute(code);
 //   return result.namespace;

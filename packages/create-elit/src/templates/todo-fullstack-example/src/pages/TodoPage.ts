@@ -259,7 +259,7 @@ export function TodoPage() {
         ),
         div({ className: 'todo-hero-actions' },
           button({ className: 'btn btn-primary', type: 'button', onclick: () => { void loadTodos(); } }, 'Refresh board'),
-          span({ className: 'storage-tag' }, 'Powered by elit/database')
+          span({ className: 'storage-tag' }, 'Powered by elit/function-store')
         )
       ),
       reactive(summary, (stats) =>

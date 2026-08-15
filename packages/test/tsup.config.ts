@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.ts', 'src/contracts.ts'],
+  entry: ['src/index.ts', 'src/contracts.ts', 'src/test/parallel-worker.ts'],
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,

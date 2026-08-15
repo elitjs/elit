@@ -140,7 +140,7 @@ export default {
 
 - Spawning a separate HTTP server with `node:http` when `createDevServer` already provides one. Compose via `ServerRouter` and middleware instead.
 - Polling for state sync. Use `createSharedState` over the built-in WS channel.
-- Importing server-side modules into client bundles. Keep `@elitjs/server`, `@elitjs/database`, `@elitjs/fs` out of `src/main.ts` and friends.
+- Importing server-side modules into client bundles. Keep `@elitjs/server`, `@elitjs/function-store`, `@elitjs/fs` out of `src/main.ts` and friends.
 
 ## Validation
 

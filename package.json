@@ -96,10 +96,10 @@
       "import": "./shims/wss.js",
       "require": "./shims/wss.cjs"
     },
-    "./database": {
-      "types": "./shims/database.d.ts",
-      "import": "./shims/database.js",
-      "require": "./shims/database.cjs"
+    "./function-store": {
+      "types": "./shims/function-store.d.ts",
+      "import": "./shims/function-store.js",
+      "require": "./shims/function-store.cjs"
     },
     "./smtp-server": {
       "types": "./shims/smtp-server.d.ts",
@@ -155,6 +155,11 @@
       "types": "./shims/test.d.ts",
       "import": "./shims/test.js",
       "require": "./shims/test.cjs"
+    },
+    "./e2e": {
+      "types": "./shims/e2e.d.ts",
+      "import": "./shims/e2e.js",
+      "require": "./shims/e2e.cjs"
     },
     "./test/contracts": {
       "types": "./shims/test/contracts.d.ts",
@@ -265,14 +270,15 @@
     "@elitjs/cli": "file:packages/cli",
     "@elitjs/config": "file:packages/config",
     "@elitjs/core": "file:packages/core",
-    "@elitjs/database": "file:packages/database",
     "@elitjs/desktop": "file:packages/desktop",
     "@elitjs/desktop-auto-render": "file:packages/desktop-auto-render",
     "@elitjs/dev-build": "file:packages/dev-build",
-    "@elitjs/dom": "file:packages/dom",
-    "@elitjs/el": "file:packages/el",
     "@elitjs/devtools": "file:packages/devtools",
+    "@elitjs/dom": "file:packages/dom",
+    "@elitjs/e2e": "file:packages/e2e",
+    "@elitjs/el": "file:packages/el",
     "@elitjs/fs": "file:packages/fs",
+    "@elitjs/function-store": "file:packages/function-store",
     "@elitjs/hmr": "file:packages/hmr",
     "@elitjs/http": "file:packages/http",
     "@elitjs/https": "file:packages/https",
@@ -296,7 +302,6 @@
     "@elitjs/wss": "file:packages/wss",
     "acorn": "^8.14.0",
     "esbuild": "^0.28.1",
-    "javascript-obfuscator": "^4.2.2",
     "magic-string": "^0.30.17",
     "open": "^11.0.0",
     "selfsigned": "^2.4.1",

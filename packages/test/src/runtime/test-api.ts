@@ -68,6 +68,10 @@ export function createDescribeFunction(): DescribeFunction {
             parent,
             skip: parent.skip,
             only: parent.only,
+            beforeAllHooks: [],
+            afterAllHooks: [],
+            beforeEachHooks: [],
+            afterEachHooks: [],
         };
         parent.suites.push(suite);
         runtimeState.currentSuite = suite;
@@ -84,6 +88,10 @@ export function createDescribeFunction(): DescribeFunction {
             parent,
             skip: true,
             only: false,
+            beforeAllHooks: [],
+            afterAllHooks: [],
+            beforeEachHooks: [],
+            afterEachHooks: [],
         };
         parent.suites.push(suite);
         runtimeState.currentSuite = suite;
@@ -101,6 +109,10 @@ export function createDescribeFunction(): DescribeFunction {
             parent,
             skip: false,
             only: true,
+            beforeAllHooks: [],
+            afterAllHooks: [],
+            beforeEachHooks: [],
+            afterEachHooks: [],
         };
         parent.suites.push(suite);
         runtimeState.currentSuite = suite;
