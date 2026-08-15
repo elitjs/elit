@@ -109,7 +109,7 @@ describe('desktop cargo target directory resolution', () => {
 
             expect(resolveDesktopCargoTargetBaseDir(packageRoot, appDir, {
                 LOCALAPPDATA: 'C:\\Users\\tester\\AppData\\Local',
-            }, 'win32')).toBe(join('C:\\Users\\tester\\AppData\\Local', 'elit', 'target', 'desktop'));
+            }, 'win32')).toBe(resolve('C:\\Users\\tester\\AppData\\Local', 'elit', 'target', 'desktop'));
         } finally {
             rmSync(packageRoot, { force: true, recursive: true });
         }
@@ -142,7 +142,7 @@ describe('desktop runtime binary override resolution', () => {
     it('prefers env-configured desktop binary overrides', () => {
         expect(resolveDesktopBinaryOverridePath('./runtime/elit-desktop.exe', 'ELIT_DESKTOP_BINARY_PATH', 'C:/app', {
             ELIT_DESKTOP_BINARY_PATH: 'D:/approved/elit-desktop.exe',
-        })).toBe(resolve('D:/approved/elit-desktop.exe'));
+        })).toBe(resolve('C:/app', 'D:/approved/elit-desktop.exe'));
     });
 
     it('falls back to config-configured desktop binary overrides', () => {

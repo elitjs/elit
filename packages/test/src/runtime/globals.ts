@@ -56,6 +56,7 @@ const PROCESS_GLOBAL_KEYS = [
 ] as const;
 
 let processGlobalsSnapshot: Map<string, { exists: boolean; value: unknown }> | undefined;
+let tempEnvSnapshot: Map<string, { exists: boolean; value: string | undefined }> | undefined;
 
 /**
  * Test files can mock browser globals (`document`, `fetch`, timers, ...) at module
@@ -64,11 +65,21 @@ let processGlobalsSnapshot: Map<string, { exists: boolean; value: unknown }> | u
  * mocks cannot leak across files (a leaked partial `document` breaks tsup's
  * import.meta.url CJS shim with "Invalid URL", and a never-firing mocked
  * `setTimeout` hangs every later suite that waits on a timer).
+ *
+ * The temp-dir environment variables (TMPDIR/TMP/TEMP) are restored too — a
+ * leaked relative TMPDIR makes `os.tmpdir()` relative and every later temp
+ * directory is created under the wrong root.
  */
 export function isolateProcessGlobals(): void {
     if (!processGlobalsSnapshot) {
         processGlobalsSnapshot = new Map(
             PROCESS_GLOBAL_KEYS.map((key) => [key, { exists: key in global, value: (global as any)[key] }]),
+        );
+        tempEnvSnapshot = new Map(
+            ['TMPDIR', 'TMP', 'TEMP'].map((key) => [
+                key,
+                { exists: key in process.env, value: process.env[key] },
+            ]),
         );
         return;
     }
@@ -78,6 +89,14 @@ export function isolateProcessGlobals(): void {
             (global as any)[key] = entry.value;
         } else {
             delete (global as any)[key];
+        }
+    }
+
+    for (const [key, entry] of tempEnvSnapshot) {
+        if (entry.exists) {
+            process.env[key] = entry.value;
+        } else {
+            delete process.env[key];
         }
     }
 }

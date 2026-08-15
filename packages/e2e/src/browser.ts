@@ -1,7 +1,7 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { delimiter, join } from 'node:path';
 
 import type { E2EApp } from './types';
 import { matcherSource, parseSelector, type E2ESelectorQuery } from './selectors';
@@ -9,6 +9,20 @@ import { extractVp8Frame, muxWebM, type E2EVideoFrame } from './video';
 import type { E2ETrace, E2ETraceStep } from './trace';
 
 const BROWSER_ENV = 'ELIT_E2E_BROWSER';
+
+function isExecutableOnPath(command: string): boolean {
+    const extensions = process.platform === 'win32' ? ['.exe', '.cmd', '.bat'] : [''];
+
+    for (const dir of (process.env.PATH ?? '').split(delimiter).filter(Boolean)) {
+        for (const extension of extensions) {
+            if (existsSync(join(dir, command + extension))) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
 
 function findBrowserExecutable(): string | undefined {
   const custom = process.env[BROWSER_ENV];
@@ -32,7 +46,7 @@ function findBrowserExecutable(): string | undefined {
     candidates.push('google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'microsoft-edge');
   }
 
-  return candidates.find((candidate) => existsSync(candidate));
+  return candidates.find((candidate) => existsSync(candidate) || isExecutableOnPath(candidate));
 }
 
 /** Minimal CDP session over the platform's global WebSocket. */

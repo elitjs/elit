@@ -32,7 +32,13 @@ export async function startWebServer(config: NonNullable<TestOptions['webServer'
         return { stop: async () => undefined };
     }
 
-    const child = spawn(config.command, { shell: true, stdio: 'ignore' });
+    const child = spawn(config.command, {
+        shell: true,
+        stdio: 'ignore',
+        // On Unix the shell wraps the real server, so run it in its own process
+        // group — stop() can then take the whole tree down at once.
+        detached: process.platform !== 'win32',
+    });
     const timeout = config.timeout ?? 30000;
     const start = Date.now();
 
@@ -64,7 +70,13 @@ async function terminate(child: ChildProcess): Promise<void> {
             await promisify(exec)(`taskkill /PID ${child.pid} /T /F`).catch(() => undefined);
         }
     } else {
-        child.kill('SIGTERM');
+        try {
+            // Kill the shell's whole process group: killing the bare shell would
+            // orphan the actual server and leave the port open.
+            if (child.pid) process.kill(-child.pid, 'SIGTERM');
+        } catch {
+            child.kill('SIGTERM');
+        }
     }
     await new Promise<void>((resolvePromise) => {
         child.once('exit', () => resolvePromise());
