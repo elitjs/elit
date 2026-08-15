@@ -3,13 +3,13 @@
 Demonstrates two things added in Elit `3.7.1`:
 
 1. **`dev.blockFiles` / `preview.blockFiles`** — glob patterns for files that must never be served over HTTP. Default patterns block `.env`, `*.key`, `*.pem`, `.git/**`, etc. Requests matching a blocked pattern get `403 Forbidden`.
-2. **`elit/config` subpath export** — `import { defineConfig } from 'elit/config'` now resolves via the package exports map.
+2. **`elit/config` subpath export** — `import { defineConfig } from '@elitjs/config'` now resolves via the package exports map.
 
 ## Files in this example
 
 ```
 block-files-example/
-├── elit.config.ts            # uses defineConfig from 'elit/config', sets blockFiles
+├── elit.config.ts            # uses defineConfig from '@elitjs/config', sets blockFiles
 ├── index.html                # served at /         (200 OK)
 ├── src/main.ts               # client UI
 ├── public-notes.txt          # served at /public-notes.txt  (200 OK — not blocked)
@@ -28,7 +28,7 @@ block-files-example/
 
 ```ts
 // elit.config.ts
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 
 const DEFAULT_BLOCK_FILES = [
   '.env', '.env.*', '*.pem', '*.key', '*.p12', '*.pfx',

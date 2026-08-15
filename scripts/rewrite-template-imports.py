@@ -11,7 +11,7 @@ MAPPING = [
     (rb"from 'elit/dom'", rb"from '@elitjs/dom'"),
     (rb"from 'elit/router'", rb"from '@elitjs/router'"),
     (rb"from 'elit/server'", rb"from '@elitjs/server'"),
-    (rb"from 'elit/database'", rb"from '@elitjs/database'"),
+    (rb"from 'elit/function-store'", rb"from '@elitjs/function-store'"),
     (rb"from 'elit/style'", rb"from '@elitjs/style'"),
     (rb"from 'elit/native'", rb"from '@elitjs/native'"),
     (rb"from 'elit/desktop'", rb"from '@elitjs/desktop'"),

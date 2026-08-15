@@ -6,7 +6,7 @@
  */
 
 import { Footer } from './Footer';
-import type { VNode } from 'elit/types';
+import type { VNode } from '@elitjs/core';
 
 // Type guard to check if a child is a VNode
 function isVNode(child: any): child is VNode {

@@ -27,7 +27,7 @@ Use this skill when the task belongs to the browser side of the application: ren
 - `elit/router` — `createRouter`, `createRouterView`, `routerLink`, `type Router`, `type RouteParams`
 - `elit` (umbrella) — re-exports the above for convenience
 
-Do NOT import from `elit/server`, `elit/database`, or other backend surfaces inside these files. The browser bundle will fail to build if server-only code leaks in.
+Do NOT import from `elit/server`, `elit/function-store`, or other backend surfaces inside these files. The browser bundle will fail to build if server-only code leaks in.
 
 ## Page Pattern
 
@@ -160,7 +160,7 @@ export const client = () =>
 
 - **Forgetting `reactive(router.currentRoute, ...)` around `RouterView()`** — silent navigation bug.
 - **`client.ts` returning a different tree than `main.ts`** — hydration mismatch / flicker.
-- **Importing `elit/server` or `elit/database` from a browser file** — build fails.
+- **Importing `elit/server` or `elit/function-store` from a browser file** — build fails.
 - **Using `process.env.X` in browser code** — undefined. Only `VITE_`-prefixed vars are injected.
 - **Mutating reactive state from inside a `reactive(...)` callback** — infinite loop.
 - **Calling `styles.inject()` more than once** — duplicate `<style>` tags.

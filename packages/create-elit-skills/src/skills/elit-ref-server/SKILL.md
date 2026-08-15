@@ -377,7 +377,7 @@ export default {
 
 - Spawning a separate `node:http` server when `createDevServer` already provides one. Compose via `ServerRouter` and middleware instead.
 - Polling for state sync. Use `createSharedState` (client) + `server.state.create` (server) over the built-in WS channel.
-- Importing server-side modules into client bundles. Keep `@elitjs/server`, `@elitjs/database`, `@elitjs/fs`, `node:*` out of `src/main.ts`, `src/web.ts`, and anything under `src/pages/` or `src/components/`.
+- Importing server-side modules into client bundles. Keep `@elitjs/server`, `@elitjs/function-store`, `@elitjs/fs`, `node:*` out of `src/main.ts`, `src/web.ts`, and anything under `src/pages/` or `src/components/`.
 - Calling `next()` zero times in middleware — the request hangs. Always call `next()` (or end the response) exactly once.
 - Mutating `ctx.body`. It's the parsed body — write changes to your database, not back to the request.
 

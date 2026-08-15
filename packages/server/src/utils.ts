@@ -170,8 +170,8 @@ export const defaultOptions: Omit<Required<DevServerOptions>, 'api' | 'clients' 
 
 export const ELIT_INTERNAL_WS_PATH = '/__elit_ws';
 
-export const createHMRScript = (port: number): string =>
-  `<script>(function(){let ws;let retries=0;let maxRetries=5;const protocol=window.location.protocol==='https:'?'wss://':'ws://';function connect(){ws=new WebSocket(protocol+window.location.hostname+':${port}${ELIT_INTERNAL_WS_PATH}');ws.onopen=()=>{console.log('[Elit HMR] Connected');retries=0};ws.onmessage=(e)=>{const d=JSON.parse(e.data);if(d.type==='update'){console.log('[Elit HMR] File updated:',d.path);window.location.reload()}else if(d.type==='reload'){console.log('[Elit HMR] Reloading...');window.location.reload()}else if(d.type==='error')console.error('[Elit HMR] Error:',d.error)};ws.onclose=()=>{if(retries<maxRetries){retries++;setTimeout(connect,1000*retries)}else if(retries===maxRetries){console.log('[Elit HMR] Connection closed. Start dev server to reconnect.')}};ws.onerror=()=>{ws.close()}}connect()})();</script>`;
+export const createHMRScript = (): string =>
+  `<script>(function(){let ws;let retries=0;let maxRetries=5;const protocol=window.location.protocol==='https:'?'wss://':'ws://';function connect(){ws=new WebSocket(protocol+window.location.host+'${ELIT_INTERNAL_WS_PATH}');ws.onopen=()=>{console.log('[Elit HMR] Connected');retries=0};ws.onmessage=(e)=>{const d=JSON.parse(e.data);if(d.type==='update'){console.log('[Elit HMR] File updated:',d.path);window.location.reload()}else if(d.type==='reload'){console.log('[Elit HMR] Reloading...');window.location.reload()}else if(d.type==='error')console.error('[Elit HMR] Error:',d.error)};ws.onclose=()=>{if(retries<maxRetries){retries++;setTimeout(connect,1000*retries)}else if(retries===maxRetries){console.log('[Elit HMR] Connection closed. Start dev server to reconnect.')}};ws.onerror=()=>{ws.close()}}connect()})();</script>`;
 
 export const rewriteRelativePaths = (html: string, basePath: string): string => {
   if (!basePath) return html;
@@ -258,15 +258,27 @@ export function requestAcceptsGzip(acceptEncoding: string | string[] | undefined
 }
 
 export async function findSpecialDir(startDir: string, targetDir: string): Promise<string | null> {
+  const dirs = await findSpecialDirs(startDir, targetDir);
+  return dirs.length > 0 ? dirs[0] : null;
+}
+
+/**
+ * Collects every ancestor directory that contains `targetDir`, nearest first.
+ * This mirrors Node's module resolution walk so transitive dependencies
+ * installed in a parent workspace (e.g. a monorepo root `node_modules`) can
+ * still be resolved from a nested project.
+ */
+export async function findSpecialDirs(startDir: string, targetDir: string): Promise<string[]> {
   let currentDir = startDir;
   const maxLevels = 5;
+  const found: string[] = [];
 
   for (let index = 0; index < maxLevels; index++) {
     const targetPath = resolve(currentDir, targetDir);
     try {
       const stats = await stat(targetPath);
       if (stats.isDirectory()) {
-        return currentDir;
+        found.push(currentDir);
       }
     } catch {
       // Directory doesn't exist, try parent.
@@ -280,7 +292,7 @@ export async function findSpecialDir(startDir: string, targetDir: string): Promi
     currentDir = parentDir;
   }
 
-  return null;
+  return found;
 }
 
 export function createSmtpBindingKey(config: Pick<ResolvedElitSMTPServerConfig, 'host' | 'port'>): string {
@@ -409,11 +421,24 @@ export async function getClientBaseDirs(
 
     try {
       const resolvedRoot = await realpath(resolve(candidateRoot));
+
+      if (isNodeModulesRequest) {
+        // Collect every ancestor node_modules (nearest first) so transitive
+        // dependencies hoisted to a parent workspace still resolve.
+        const foundDirs = await findSpecialDirs(candidateRoot, 'node_modules');
+        for (const foundDir of foundDirs) {
+          const baseDir = await realpath(foundDir);
+          if (!baseDirs.includes(baseDir)) {
+            baseDirs.push(baseDir);
+          }
+        }
+        continue;
+      }
+
       let baseDir = resolvedRoot;
 
-      if (isDistRequest || isNodeModulesRequest) {
-        const targetDir = isDistRequest ? 'dist' : 'node_modules';
-        const foundDir = await findSpecialDir(candidateRoot, targetDir);
+      if (isDistRequest) {
+        const foundDir = await findSpecialDir(candidateRoot, 'dist');
         baseDir = foundDir ? await realpath(foundDir) : resolvedRoot;
       }
 

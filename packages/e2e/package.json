@@ -1,0 +1,45 @@
+{
+  "name": "@elitjs/e2e",
+  "version": "4.0.4",
+  "description": "End-to-end test helpers for Elit — real HTTP servers and clients for @elitjs/test suites",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elitjs/elit.git",
+    "directory": "packages/e2e"
+  },
+  "bugs": {
+    "url": "https://github.com/elitjs/elit/issues"
+  },
+  "homepage": "https://elitjs.github.io/elit/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@elitjs/server": "file:../server"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}

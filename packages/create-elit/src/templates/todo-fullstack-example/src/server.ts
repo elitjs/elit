@@ -1,4 +1,4 @@
-import { Database } from '@elitjs/database';
+import { FunctionStore } from '@elitjs/function-store';
 import { ServerRouter, json, type ServerRouteContext } from '@elitjs/server';
 import { resolve } from 'path';
 import type { TodoItem, TodoPriority, TodoSummary } from './todo-types';
@@ -11,7 +11,7 @@ const priorityWeight: Record<TodoPriority, number> = {
 
 export const router = new ServerRouter();
 
-const db = new Database({
+const db = new FunctionStore({
 	dir: resolve(process.cwd(), 'databases'),
 	language: 'ts'
 });
@@ -93,7 +93,7 @@ function sendTodoPayload(ctx: ServerRouteContext, todos: TodoItem[], status = 20
 router.get('/api/health', async (ctx: ServerRouteContext) => {
 	json(ctx.res, {
 		ok: true,
-		storage: 'elit/database',
+		storage: 'elit/function-store',
 		file: 'databases/todo.ts'
 	});
 });

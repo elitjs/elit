@@ -112,7 +112,7 @@ src/
     └── utils/
         ├── validation.ts      # isEmail, isStrongPassword
         └── format.ts          # formatDate, initials
-databases/                     # elit/database schemas
+databases/                     # elit/function-store schemas
 └── users.ts
 public/
 └── index.html
@@ -131,7 +131,7 @@ See `references/project-layout.md` for the rationale behind each folder.
 - **Domain folders without a `_shared/`** — when two domains need the same helper, it ends up duplicated in each. Hoist to `_shared/` on first reuse, not third.
 - **Page files that mix data fetching, rendering, and styles** — extract data hooks (`useXxx`) and styles out of the page.
 - **Re-declaring types on each side of the wire** — leads to drift. Define once in `shared/types/`.
-- **In-memory Maps for state that should be in `elit/database`** — fine for ephemeral cache, but they don't survive a restart and aren't shared across instances.
+- **In-memory Maps for state that should be in `elit/function-store`** — fine for ephemeral cache, but they don't survive a restart and aren't shared across instances.
 
 ## Validation
 

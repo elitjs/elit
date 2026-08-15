@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { ELIT_CONFIG_FILES, loadConfig, loadEnv, mergeConfig, resolveConfigPath, type ElitConfig } from '@elitjs/config';
 import { type ResolveConfig } from '@elitjs/build';
 import { createDevServer } from '@elitjs/server';
-import type { DevServerOptions, PreviewOptions } from '@elitjs/server';
+import type { DevServerOptions, HttpsCertConfig, PreviewOptions } from '@elitjs/server';
 
 import { buildServerDependencyGraph, discoverServerEntries } from './server-deps';
 import { createServerWatcher, type ServerWatcher } from './server-watcher';
@@ -16,6 +16,9 @@ type PreviewCliOptions = {
     basePath: string;
     open: boolean;
     logging: boolean;
+    https?: boolean | HttpsCertConfig;
+    cert?: string;
+    key?: string;
 };
 
 function mergeResolve(
@@ -248,8 +251,8 @@ export async function runPreview(args: string[]): Promise<void> {
 }
 
 function parseDevArgs(args: string[]): Partial<DevServerOptions> {
-    const options: Partial<DevServerOptions> = {};
-    const handlers: Record<string, ArgHandler<Partial<DevServerOptions>>> = {
+    const options: Partial<DevServerOptions> & { cert?: string; key?: string } = {};
+    const handlers: Record<string, ArgHandler<Partial<DevServerOptions> & { cert?: string; key?: string }>> = {
         '-p': (current, value, index) => {
             current.port = Number.parseInt(value ?? '', 10);
             index.current++;
@@ -283,9 +286,28 @@ function parseDevArgs(args: string[]): Partial<DevServerOptions> {
         '--no-server-watch': (current) => {
             current.serverWatch = false;
         },
+        '--https': (current) => {
+            current.https = true;
+        },
+        '--cert': (current, value, index) => {
+            current.cert = value;
+            index.current++;
+        },
+        '--key': (current, value, index) => {
+            current.key = value;
+            index.current++;
+        },
     };
 
-    return parseArgs(args, handlers, options);
+    parseArgs(args, handlers, options);
+
+    if (options.cert && options.key) {
+        options.https = { cert: options.cert, key: options.key };
+    }
+    delete options.cert;
+    delete options.key;
+
+    return options;
 }
 
 function parsePreviewArgs(args: string[]): Partial<PreviewCliOptions> {
@@ -329,7 +351,26 @@ function parsePreviewArgs(args: string[]): Partial<PreviewCliOptions> {
         '--silent': (current) => {
             current.logging = false;
         },
+        '--https': (current) => {
+            current.https = true;
+        },
+        '--cert': (current, value, index) => {
+            current.cert = value;
+            index.current++;
+        },
+        '--key': (current, value, index) => {
+            current.key = value;
+            index.current++;
+        },
     };
 
-    return parseArgs(args, handlers, options);
+    parseArgs(args, handlers, options);
+
+    if (options.cert && options.key) {
+        options.https = { cert: options.cert, key: options.key };
+    }
+    delete options.cert;
+    delete options.key;
+
+    return options;
 }

@@ -8,6 +8,9 @@
     "preview": "elit preview"
   },
   "dependencies": {
-    "elit": "file:../.."
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/dom": "file:../../packages/dom",
+    "@elitjs/el": "file:../../packages/el",
+    "@elitjs/http": "file:../../packages/http"
   }
 }

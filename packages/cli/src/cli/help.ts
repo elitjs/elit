@@ -33,6 +33,9 @@ Dev Options:
   -r, --root <path>      Root directory to serve
   --no-open              Don't open browser automatically
   --silent               Disable logging
+  --https                Serve over HTTPS with an auto-generated self-signed cert
+  --cert <path>          TLS cert file (PEM); pair with --key for a real cert
+  --key <path>           TLS key file (PEM); pair with --cert
 
 Build Options:
   -e, --entry <file>     Entry file to build (required)
@@ -120,6 +123,9 @@ Preview Options:
   -b, --base-path <path>   Base path for the application
   --no-open                Don't open browser automatically
   --silent                 Disable logging
+  --https                  Serve over HTTPS with an auto-generated self-signed cert
+  --cert <path>            TLS cert file (PEM); pair with --key for a real cert
+  --key <path>             TLS key file (PEM); pair with --cert
 
 Note: Preview mode has full feature parity with dev mode:
       - Single root and multi-client configurations (use clients[] in config)
@@ -140,6 +146,27 @@ Test Options:
 Note: Test command behaviors:
       - elit test                     Run all tests once (default)
       - elit test --run               Run all tests once (same as default)
+      - elit e2e                      Run end-to-end tests (*.e2e.test.ts, e2e/ dirs)
+                                     Supports the same flags as elit test
+      - elit e2e screenshot <url> <file> [--full-page]
+      - elit e2e pdf <url> <file>    One-shot page capture via CDP
+      - elit e2e open <url>          Open the page in a visible browser
+      - elit e2e codegen <url> [--output test.ts]
+                                     Record clicks/fills in a headed browser
+                                     and emit a runnable @elitjs/e2e test
+      - elit e2e show-report         Open the HTML report (elit test --reporter html)
+      - elit test --list             List matching tests without running them
+      - elit test --shard 1/3        Run one CI shard of the file list
+      - elit test --repeat-each N    Run every test N times
+      - elit test --grep-invert P    Exclude tests whose name matches P
+      - elit test --reporter junit|html
+      - elit e2e --video [dir]      Record a .webm screencast of every page
+                                     (default dir: e2e-videos/)
+      - elit e2e --trace            Dump a step-by-step trace (action + screenshot)
+                                     into e2e-traces/ when a test fails
+      - elit e2e show-trace <file>  Open a failed test's trace viewer
+      - elit e2e --ui [port]       Interactive UI mode — run/re-run tests from
+                                     the browser with live pass/fail status
       - elit test -f ./test.ts        Run specific file(s) once
       - elit test -d "Footer"         Run only tests in describe blocks matching "Footer"
       - elit test -t "should create"  Run only tests matching "should create"

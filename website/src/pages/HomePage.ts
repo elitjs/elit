@@ -45,8 +45,8 @@ export const HomePage = (): VNode => ({
                     props: { class: 'hero-eyebrow' },
                     children: [
                         { tagName: 'span', props: { class: 'dot' }, children: [] },
-                        'v4.0.3 — ',
-                        { tagName: 'strong', props: {}, children: ['36 scoped @elitjs/* packages'] },
+                        'v4.0.4 — ',
+                        { tagName: 'strong', props: {}, children: ['38 scoped @elitjs/* packages'] },
                     ],
                 },
                 {
@@ -76,7 +76,7 @@ export const HomePage = (): VNode => ({
                     props: { class: 'hero-stats' },
                     children: [
                         { tagName: 'div', props: { class: 'hero-stat' }, children: [
-                            { tagName: 'div', props: { class: 'hero-stat-num' }, children: ['36'] },
+                            { tagName: 'div', props: { class: 'hero-stat-num' }, children: ['38'] },
                             { tagName: 'div', props: { class: 'hero-stat-label' }, children: ['Packages'] },
                         ]},
                         { tagName: 'div', props: { class: 'hero-stat' }, children: [
@@ -264,7 +264,7 @@ export const HomePage = (): VNode => ({
                     props: { class: 'section-head' },
                     children: [
                         { tagName: 'div', props: { class: 'section-label' }, children: ['Ecosystem'] },
-                        { tagName: 'h2', props: {}, children: ['36 scoped packages'] },
+                        { tagName: 'h2', props: {}, children: ['38 scoped packages'] },
                         {
                             tagName: 'p',
                             props: { class: 'section-subtitle' },

@@ -20,6 +20,7 @@ import type { RequestListener, ServerListenOptions, ServerOptions } from './type
 export class Server extends EventEmitter {
   private nativeServer?: any;
   private requestListener?: RequestListener;
+  private _bunWebSocketServers: Set<any> = new Set();
   public _listening: boolean = false;
   private options: ServerOptions;
 
@@ -27,6 +28,14 @@ export class Server extends EventEmitter {
     super();
     this.options = options;
     this.requestListener = requestListener;
+  }
+
+  registerWebSocketServer(wsServer: any): void {
+    this._bunWebSocketServers.add(wsServer);
+  }
+
+  unregisterWebSocketServer(wsServer: any): void {
+    this._bunWebSocketServers.delete(wsServer);
   }
 
   private resolvePmInheritedFd(explicitPort?: number, explicitFd?: number): number | undefined {
@@ -111,6 +120,10 @@ export class Server extends EventEmitter {
         });
       }
 
+      this.nativeServer.on('upgrade', (req: any, socket: any, head: any) => {
+        self.emit('upgrade', req, socket, head);
+      });
+
       this.nativeServer.on('error', (err: Error) => this.emit('error', err));
       this.nativeServer.on('close', () => {
         this._listening = false;
@@ -121,7 +134,53 @@ export class Server extends EventEmitter {
       const tlsOptions: any = {
         port,
         hostname,
+        websocket: {
+          open: (ws: any) => {
+            ws.data?.wsServer?._handleBunOpen(ws, ws.data?.request);
+          },
+          message: (ws: any, message: any) => {
+            ws.data?.wsServer?._handleBunMessage(ws, message);
+          },
+          close: (ws: any, code: number, reason: any) => {
+            ws.data?.wsServer?._handleBunClose(ws, code, reason);
+          },
+        },
         fetch: (req: Request) => {
+          const urlObj = new URL(req.url);
+          const upgradeHeader = req.headers.get('upgrade');
+          if (upgradeHeader && upgradeHeader.toLowerCase() === 'websocket') {
+            const matchingWebSocketServer = Array.from(self._bunWebSocketServers).find((wsServer: any) => {
+              return !wsServer.path || wsServer.path === urlObj.pathname;
+            });
+
+            if (!matchingWebSocketServer) {
+              return new Response('WebSocket path not found', { status: 404 });
+            }
+
+            const requestHeaders: Record<string, string> = {};
+            req.headers.forEach((value, key) => {
+              requestHeaders[key] = value;
+            });
+
+            const upgraded = self.nativeServer.upgrade(req, {
+              data: {
+                wsServer: matchingWebSocketServer,
+                request: {
+                  method: req.method,
+                  url: urlObj.pathname + urlObj.search,
+                  headers: requestHeaders,
+                  socket: { remoteAddress: undefined },
+                },
+              },
+            });
+
+            if (upgraded) {
+              return undefined as any;
+            }
+
+            return new Response('WebSocket upgrade failed', { status: 400 });
+          }
+
           return new Promise<Response>((resolve) => {
             const incomingMessage = new IncomingMessage(req);
             const serverResponse = new ServerResponse();

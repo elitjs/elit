@@ -1,4 +1,4 @@
-import { defineConfig } from '../../src/config';
+import { defineConfig } from '@elitjs/config';
 
 const desktopBinaryPath = process.env.ELIT_DESKTOP_BINARY_PATH;
 const desktopNativeBinaryPath = process.env.ELIT_DESKTOP_NATIVE_BINARY_PATH;

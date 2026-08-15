@@ -10,10 +10,10 @@ const shimsDir = resolve(repoRoot, 'shims');
 const SUBPATHS = [
     'config', 'core', 'el', 'dom', 'state', 'router', 'style',
     'render-context', 'universal', 'hmr', 'server', 'http', 'https',
-    'ws', 'wss', 'database', 'smtp-server', 'native', 'desktop',
+    'ws', 'wss', 'function-store', 'smtp-server', 'native', 'desktop',
     'desktop-auto-render', 'wapk', 'build', 'dev-build', 'preview-build',
     'pm', 'devtools', 'chokidar', 'fs', 'path', 'mime-types',
-    'runtime', 'workspace-package', 'cli',
+    'runtime', 'workspace-package', 'cli', 'e2e',
 ];
 
 const NESTED = {

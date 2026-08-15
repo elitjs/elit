@@ -19,7 +19,7 @@ export const SKILLS: SkillInfo[] = [
     { name: 'elit-ref-router', description: '@elitjs/router: createRouter, createRouterView, routerLink.', category: 'reference' },
     { name: 'elit-ref-server', description: '@elitjs/server: ServerRouter, createDevServer, middleware, proxy.', category: 'reference' },
     { name: 'elit-ref-style', description: '@elitjs/style: CreateStyle class — every method.', category: 'reference' },
-    { name: 'elit-ref-database', description: '@elitjs/database: Database class + @db/<name> VM flow.', category: 'reference' },
+    { name: 'elit-ref-function-store', description: '@elitjs/function-store: FunctionStore class + @db/<name> VM flow.', category: 'reference' },
     { name: 'elit-ref-fs-path', description: '@elitjs/fs + @elitjs/path (sync/async/promises, posix/win32).', category: 'reference' },
     { name: 'elit-ref-native-desktop', description: '@elitjs/native + @elitjs/desktop exact signatures.', category: 'reference' },
     { name: 'elit-ref-net', description: '@elitjs/http, https, ws, wss, smtp-server, mime-types.', category: 'reference' },

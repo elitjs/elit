@@ -7,6 +7,7 @@ export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Chi
     let elementRef: HTMLElement | SVGElement | null = null;
     let placeholder: Comment | null = null;
     let isInDOM = true;
+    let missedUpdate = false;
 
     const initialResult = renderFn(state.value);
     const isVNodeResult = initialResult && typeof initialResult === 'object' && 'tagName' in initialResult;
@@ -14,8 +15,10 @@ export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Chi
 
     const updateElement = () => {
         if (!elementRef && !placeholder) {
+            missedUpdate = true;
             return;
         }
+        missedUpdate = false;
 
         const newResult = renderFn(state.value);
         const resultIsNull = newResult == null || newResult === false;
@@ -63,6 +66,14 @@ export const reactive = <T>(state: State<T>, renderFn: (value: T) => VNode | Chi
             el.parentNode.replaceChild(placeholder, el);
             isInDOM = false;
         }
+        // The DOM renderer fires `ref` asynchronously (via setTimeout), so the
+        // first state change can land before `elementRef` is set and be
+        // silently dropped by `updateElement`. Replay any such missed update
+        // now that the element exists, so the rendered output matches the
+        // current state instead of the initial snapshot.
+        if (missedUpdate) {
+            updateElement();
+        }
     };
 
     if (isVNodeResult) {
@@ -86,30 +97,41 @@ export const reactiveAs = <T>(
 ): VNode => {
     let rafId: number | null = null;
     let elementRef: HTMLElement | SVGElement | null = null;
+    let missedUpdate = false;
+
+    const applyUpdate = () => {
+        if (!elementRef) {
+            missedUpdate = true;
+            return;
+        }
+        missedUpdate = false;
+
+        const newResult = renderFn(state.value);
+
+        if (newResult == null || newResult === false) {
+            (elementRef as HTMLElement).style.display = 'none';
+            elementRef.textContent = '';
+        } else {
+            (elementRef as HTMLElement).style.display = '';
+            const newChildren = Array.isArray(newResult) ? newResult : [newResult];
+            reconcileChildren(elementRef, newChildren);
+        }
+
+        dom.getElementCache().set(elementRef, true);
+    };
 
     state.subscribe(() => {
         rafId = scheduleRAFUpdate(rafId, () => {
-            if (elementRef) {
-                const newResult = renderFn(state.value);
-
-                if (newResult == null || newResult === false) {
-                    (elementRef as HTMLElement).style.display = 'none';
-                    elementRef.textContent = '';
-                } else {
-                    (elementRef as HTMLElement).style.display = '';
-                    const newChildren = Array.isArray(newResult) ? newResult : [newResult];
-                    reconcileChildren(elementRef, newChildren);
-                }
-
-                dom.getElementCache().set(elementRef, true);
-            }
-
+            applyUpdate();
             rafId = null;
         });
     });
 
     const refCallback = (el: HTMLElement | SVGElement) => {
         elementRef = el;
+        if (missedUpdate) {
+            applyUpdate();
+        }
     };
 
     const initialResult = renderFn(state.value);

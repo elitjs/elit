@@ -1,5 +1,5 @@
 
-import { ServerRouter, json, text, type ServerRouteContext } from 'elit/server';
+import { ServerRouter, json, text, type ServerRouteContext } from '@elitjs/server';
 
 // Cache bust: timestamp-1736438400000
 export const router = new ServerRouter();

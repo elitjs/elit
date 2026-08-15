@@ -1,6 +1,6 @@
-import { renderToString } from 'elit/dom';
-import { button, code, div, h1, li, p, strong, ul } from 'elit/el';
-import { createWindow, onMessage, windowQuit, windowSetTitle } from 'elit/desktop';
+import { renderToString } from '@elitjs/dom';
+import { button, code, div, h1, li, p, strong, ul } from '@elitjs/el';
+import { createWindow, onMessage, windowQuit, windowSetTitle } from '@elitjs/desktop';
 
 const APP_TITLE = 'Elit Desktop TypeScript Example';
 const shouldAutoClose = typeof process !== 'undefined' && process.env?.ELIT_DESKTOP_AUTO_CLOSE === '1';

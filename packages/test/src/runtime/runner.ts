@@ -4,8 +4,9 @@ import { dirname } from '@elitjs/path';
 import { SourceMapConsumer } from 'source-map';
 
 import { AssertionError } from './expect';
-import { setupGlobals } from './globals';
-import { resetHookState, resetSourceMapState, resetSuiteState, runtimeState } from './state';
+import { isolateProcessGlobals, setupGlobals } from './globals';
+import { resetSnapshotCounters } from './snapshot';
+import { resetSourceMapState, resetSuiteState, runtimeState } from './state';
 import { createTestModuleRequire, createTestTransformOptions, extractInlineSourceMap } from './transpile';
 import type { TestModuleRecord, TestResult, TestSuite } from './types';
 
@@ -43,8 +44,13 @@ export async function runTests(options: {
     files: string[];
     timeout?: number;
     bail?: boolean;
+    /** Failed tests are retried up to N times before reporting as failed. */
+    retries?: number;
     describePattern?: string;
     testPattern?: string;
+    testPatternInvert?: string;
+    repeatEach?: number;
+    listOnly?: boolean;
 }): Promise<{
     passed: number;
     failed: number;
@@ -52,16 +58,19 @@ export async function runTests(options: {
     todo: number;
     results: TestResult[];
 }> {
-    const { files, timeout = 5000, bail = false, describePattern, testPattern } = options;
+    const { files, timeout = 5000, bail = false, retries = 0, describePattern, testPattern } = options;
 
     runtimeState.describePattern = describePattern;
     runtimeState.testPattern = testPattern;
+    runtimeState.testPatternInvert = options.testPatternInvert;
+    runtimeState.repeatEach = Math.max(1, options.repeatEach ?? 1);
+    runtimeState.listOnly = options.listOnly ?? false;
     runtimeState.testResults.length = 0;
 
     for (const file of files) {
         resetSuiteState();
-        resetHookState();
         resetSourceMapState();
+        isolateProcessGlobals();
         runtimeState.currentTestFile = file;
 
         try {
@@ -83,7 +92,7 @@ export async function runTests(options: {
             const requireFn = createTestModuleRequire(file, moduleCache);
             await fn(moduleObject, moduleObject.exports, requireFn, file, testFileDir);
 
-            await executeSuite(runtimeState.currentSuite, timeout, bail);
+            await executeSuite(runtimeState.currentSuite, timeout, bail, false, retries);
         } catch (error) {
             console.error(`Error loading test file ${file}:`, error);
         } finally {
@@ -99,7 +108,13 @@ export async function runTests(options: {
     return { passed, failed, skipped, todo, results: runtimeState.testResults };
 }
 
-async function executeSuite(suite: TestSuite, timeout: number, bail: boolean, parentMatched: boolean = false): Promise<void> {
+async function executeSuite(
+    suite: TestSuite,
+    timeout: number,
+    bail: boolean,
+    parentMatched: boolean = false,
+    retries: number = 0,
+): Promise<void> {
     let directMatch = false;
     if (runtimeState.describePattern) {
         const regex = new RegExp(escapeRegex(runtimeState.describePattern), 'i');
@@ -111,9 +126,13 @@ async function executeSuite(suite: TestSuite, timeout: number, bail: boolean, pa
         return;
     }
 
+    for (const hook of suite.beforeAllHooks) {
+        await hook();
+    }
+
     if (suite.suites.length > 0) {
         for (const childSuite of suite.suites) {
-            await executeSuite(childSuite, timeout, bail, parentMatched || directMatch);
+            await executeSuite(childSuite, timeout, bail, parentMatched || directMatch, retries);
         }
     }
 
@@ -122,9 +141,8 @@ async function executeSuite(suite: TestSuite, timeout: number, bail: boolean, pa
         return;
     }
 
-    for (const hook of runtimeState.beforeAllHooks) {
-        await hook();
-    }
+    const beforeEachHooks = suiteChain(suite).flatMap((ancestor) => ancestor.beforeEachHooks);
+    const afterEachHooks = suiteChain(suite).reverse().flatMap((ancestor) => ancestor.afterEachHooks);
 
     for (const test of suite.tests) {
         if (runtimeState.hasOnly && !test.only && !suite.only) {
@@ -136,8 +154,24 @@ async function executeSuite(suite: TestSuite, timeout: number, bail: boolean, pa
             const regex = new RegExp(escapeRegex(runtimeState.testPattern), 'i');
             testMatches = regex.test(test.name);
         }
+        if (testMatches && runtimeState.testPatternInvert) {
+            const invertRegex = new RegExp(escapeRegex(runtimeState.testPatternInvert), 'i');
+            testMatches = !invertRegex.test(test.name);
+        }
 
         if (!testMatches) {
+            continue;
+        }
+
+        // --list: report matching tests without executing them.
+        if (runtimeState.listOnly) {
+            runtimeState.testResults.push({
+                name: test.name,
+                status: 'todo',
+                duration: 0,
+                suite: suite.name,
+                file: runtimeState.currentTestFile,
+            });
             continue;
         }
 
@@ -163,57 +197,87 @@ async function executeSuite(suite: TestSuite, timeout: number, bail: boolean, pa
             continue;
         }
 
-        for (const hook of runtimeState.beforeEachHooks) {
-            await hook();
+        const repetitions = runtimeState.repeatEach;
+        for (let repetition = 1; repetition <= repetitions; repetition++) {
+        const displayName = repetitions > 1 ? `${test.name} (repeat ${repetition})` : test.name;
+        const startTime = Date.now();
+        runtimeState.currentTestName = displayName;
+        resetSnapshotCounters();
+
+        let attempt = 0;
+        let failure: { error: Error; lineNumber?: number; codeSnippet?: string } | undefined;
+
+        while (attempt <= retries) {
+            for (const hook of beforeEachHooks) {
+                await hook();
+            }
+            resetSnapshotCounters();
+
+            try {
+                await Promise.race([
+                    test.fn(),
+                    new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error(`Test timed out after ${test.timeout}ms`)), test.timeout)
+                    ),
+                ]);
+                failure = undefined;
+                break;
+            } catch (error) {
+                let lineNumber: number | undefined;
+                let codeSnippet: string | undefined;
+
+                if (error instanceof AssertionError) {
+                    lineNumber = error.lineNumber;
+                    codeSnippet = error.codeSnippet;
+                }
+
+                failure = { error: error as Error, lineNumber, codeSnippet };
+                attempt++;
+            } finally {
+                for (const hook of afterEachHooks) {
+                    await hook();
+                }
+            }
         }
 
-        const startTime = Date.now();
-        try {
-            await Promise.race([
-                test.fn(),
-                new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error(`Test timed out after ${test.timeout}ms`)), test.timeout)
-                ),
-            ]);
-
+        if (failure) {
             runtimeState.testResults.push({
-                name: test.name,
+                name: attempt > 1 ? `${displayName} (attempt ${attempt})` : displayName,
+                status: 'fail',
+                duration: Date.now() - startTime,
+                error: failure.error,
+                suite: suite.name,
+                file: runtimeState.currentTestFile,
+                lineNumber: failure.lineNumber,
+                codeSnippet: failure.codeSnippet,
+            });
+
+            if (bail) {
+                throw failure.error;
+            }
+        } else {
+            runtimeState.testResults.push({
+                name: displayName,
                 status: 'pass',
                 duration: Date.now() - startTime,
                 suite: suite.name,
                 file: runtimeState.currentTestFile,
             });
-        } catch (error) {
-            let lineNumber: number | undefined;
-            let codeSnippet: string | undefined;
-
-            if (error instanceof AssertionError) {
-                lineNumber = error.lineNumber;
-                codeSnippet = error.codeSnippet;
-            }
-
-            runtimeState.testResults.push({
-                name: test.name,
-                status: 'fail',
-                duration: Date.now() - startTime,
-                error: error as Error,
-                suite: suite.name,
-                file: runtimeState.currentTestFile,
-                lineNumber,
-                codeSnippet,
-            });
-
-            if (bail) {
-                throw error;
-            }
         }
-
-        for (const hook of runtimeState.afterEachHooks) {
-            await hook();
         }
     }
 
-    for (const hook of runtimeState.afterAllHooks) {
+    for (const hook of suite.afterAllHooks) {
         await hook();
     }
+}
+
+function suiteChain(suite: TestSuite): TestSuite[] {
+    const chain: TestSuite[] = [];
+
+    for (let current: TestSuite | undefined = suite; current; current = current.parent) {
+        chain.unshift(current);
+    }
+
+    return chain;
 }

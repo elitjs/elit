@@ -1,6 +1,6 @@
-import { div, h1, h2, p, input, label, button, form, span } from 'elit/el';
-import { createState, reactive } from 'elit/state';
-import type { Router } from 'elit';
+import { div, h1, h2, p, input, label, button, form, span } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
+import type { Router } from '@elitjs/router';
 
 export function LoginPage(router: Router) {
   // Check if already logged in

@@ -1,5 +1,5 @@
-import { div, h1, p, code, pre } from 'elit/el';
-import { render } from 'elit/dom';
+import { div, h1, p, code, pre } from '@elitjs/el';
+import { render } from '@elitjs/dom';
 
 const app = div(
   h1('blockFiles example'),

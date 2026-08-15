@@ -2,8 +2,17 @@
   "name": "my-elit-app",
   "version": "0.0.0",
   "dependencies": {
-    "@types/node": "^25.0.9",
-    "elit": "file:../../"
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/core": "file:../../packages/core",
+    "@elitjs/function-store": "file:../../packages/function-store",
+    "@elitjs/dom": "file:../../packages/dom",
+    "@elitjs/el": "file:../../packages/el",
+    "@elitjs/router": "file:../../packages/router",
+    "@elitjs/server": "file:../../packages/server",
+    "@elitjs/state": "file:../../packages/state",
+    "@elitjs/style": "file:../../packages/style",
+    "@elitjs/test": "file:../../packages/test",
+    "@types/node": "^25.0.9"
   },
   "scripts": {
     "dev": "elit dev",

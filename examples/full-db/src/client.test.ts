@@ -38,7 +38,7 @@ const mockCancelAnimationFrame = (id: number) => {
 
 // NOW import the component (after mocks are set up)
 import { client } from './client';
-import type { VNode } from 'elit/types';
+import type { VNode } from '@elitjs/core';
 
 // Helper function to render VNode to HTML string
 function renderToString(vNode: VNode | string | number | undefined | null): string {
@@ -236,7 +236,7 @@ describe('Client Component', () => {
       const bodyElement = findChildByTagName(client, 'body');
       const scripts = findChildrenByTagName(bodyElement!, 'script');
       const moduleScript = scripts.find(script => script.props?.type === 'module');
-      expect(moduleScript?.props?.src).toBe('/src/main.js');
+      expect(moduleScript?.props?.src).toBe('/main.js');
     });
   });
 

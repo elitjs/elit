@@ -238,7 +238,7 @@ Default project name is `my-elit-app`. Default template is `basic-example`.
 | ID | Aliases | Description |
 | --- | --- | --- |
 | `basic-example` | `basic`, `basic-example` | Lightweight single-page starter (default) |
-| `todo-fullstack-example` | `todo`, `todo-fullstack-example` | Database-backed todo workspace starter |
+| `todo-fullstack-example` | `todo`, `todo-fullstack-example` | Function-store-backed todo workspace starter |
 | `auth-fullstack-example` | `auth`, `auth-fullstack-example` | Authentication and chat starter |
 
 ### Patterns

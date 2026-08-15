@@ -9,6 +9,10 @@ export function createRootSuite(): TestSuite {
         suites: [],
         skip: false,
         only: false,
+        beforeAllHooks: [],
+        afterAllHooks: [],
+        beforeEachHooks: [],
+        afterEachHooks: [],
     };
 }
 
@@ -19,13 +23,19 @@ export const runtimeState: {
     coveredFiles: Set<string>;
     describePattern: string | undefined;
     testPattern: string | undefined;
+    /** Inverse name filter — matching tests are skipped. */
+    testPatternInvert: string | undefined;
+    /** Run every test N times. */
+    repeatEach: number;
+    /** List matching tests without executing them. */
+    listOnly: boolean;
     currentTestFile: string | undefined;
+    /** Name of the test currently executing — used to key snapshots. */
+    currentTestName: string | undefined;
+    /** When true, toMatchSnapshot writes baselines instead of comparing. */
+    snapshotUpdateMode: boolean;
     currentSourceMapConsumer: SourceMapConsumer | undefined;
     wrapperLineOffset: number;
-    beforeAllHooks: HookFunction[];
-    afterAllHooks: HookFunction[];
-    beforeEachHooks: HookFunction[];
-    afterEachHooks: HookFunction[];
 } = {
     currentSuite: createRootSuite(),
     testResults: [],
@@ -33,25 +43,19 @@ export const runtimeState: {
     coveredFiles: new Set<string>(),
     describePattern: undefined,
     testPattern: undefined,
+    testPatternInvert: undefined,
+    repeatEach: 1,
+    listOnly: false,
     currentTestFile: undefined,
+    currentTestName: undefined,
+    snapshotUpdateMode: false,
     currentSourceMapConsumer: undefined,
     wrapperLineOffset: 0,
-    beforeAllHooks: [],
-    afterAllHooks: [],
-    beforeEachHooks: [],
-    afterEachHooks: [],
 };
 
 export function resetSuiteState(): void {
     runtimeState.currentSuite = createRootSuite();
     runtimeState.hasOnly = false;
-}
-
-export function resetHookState(): void {
-    runtimeState.beforeAllHooks = [];
-    runtimeState.afterAllHooks = [];
-    runtimeState.beforeEachHooks = [];
-    runtimeState.afterEachHooks = [];
 }
 
 export function resetSourceMapState(): void {

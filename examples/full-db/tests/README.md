@@ -90,9 +90,9 @@ test: {
 ### Basic Test Structure
 
 ```typescript
-import { div, button } from 'elit/el';
-import { createState } from 'elit/state';
-import elitTest from 'elit/test';
+import { div, button } from '@elitjs/el';
+import { createState } from '@elitjs/state';
+import elitTest from '@elitjs/test';
 
 describe('My Component', () => {
   beforeEach(() => {

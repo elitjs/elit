@@ -5,7 +5,7 @@
  * then closes itself so it can be used as a smoke test.
  */
 
-import { createWindow, onMessage, windowQuit, windowSetTitle } from '../src/desktop';
+import { createWindow, onMessage, windowQuit, windowSetTitle } from '@elitjs/desktop';
 
 let appDir = '.';
 try { if (typeof __dirname !== 'undefined') appDir = __dirname; } catch { }

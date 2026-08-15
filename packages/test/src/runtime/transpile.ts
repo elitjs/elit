@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module';
 import { transformSync } from 'esbuild';
 import { existsSync, readFile, readFileSync, statSync } from '@elitjs/fs';
 import { dirname } from '@elitjs/path';
@@ -5,6 +6,17 @@ import type { RawSourceMap } from 'source-map';
 
 import { runtimeState } from './state';
 import type { TestModuleRecord } from './types';
+
+// The test runner evaluates transpiled sources as CJS where __filename is injected
+// and import.meta.url is undefined; real ESM builds are the reverse. Resolved via
+// try/catch because esbuild's require shim rewrites static `typeof require` checks
+// into a tautology.
+let nodeRequire: NodeRequire;
+try {
+    nodeRequire = createRequire(__filename);
+} catch {
+    nodeRequire = createRequire(import.meta.url);
+}
 
 const TEST_MODULE_EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs', '.json'] as const;
 
@@ -40,7 +52,7 @@ export function extractInlineSourceMap(code: string): RawSourceMap | undefined {
 }
 
 function resolveExistingTestModulePath(basePath: string): string {
-    const nodePath = require('path') as typeof import('node:path');
+    const nodePath = nodeRequire('path') as typeof import('node:path');
 
     if (existsSync(basePath) && statSync(basePath).isFile()) {
         return basePath;
@@ -89,7 +101,7 @@ function resolveTestModulePath(fromFilePath: string, specifier: string): string 
         return specifier;
     }
 
-    const nodePath = require('path') as typeof import('node:path');
+    const nodePath = nodeRequire('path') as typeof import('node:path');
     const basePath = specifier.startsWith('.')
         ? nodePath.resolve(dirname(fromFilePath), specifier)
         : specifier;
@@ -104,20 +116,20 @@ function shouldTranspileTestModule(filePath: string): boolean {
 export function createTestModuleRequire(fromFilePath: string, moduleCache: Map<string, TestModuleRecord>) {
     return (specifier: string) => {
         if (specifier.startsWith('elit/') || specifier === 'elit') {
-            return require(specifier);
+            return nodeRequire(specifier);
         }
 
         const resolvedPath = resolveTestModulePath(fromFilePath, specifier);
         if (resolvedPath === specifier) {
-            return require(specifier);
+            return nodeRequire(specifier);
         }
 
         if (!existsSync(resolvedPath) || !statSync(resolvedPath).isFile()) {
-            return require(resolvedPath);
+            return nodeRequire(resolvedPath);
         }
 
         if (!shouldTranspileTestModule(resolvedPath)) {
-            return require(resolvedPath);
+            return nodeRequire(resolvedPath);
         }
 
         return loadTranspiledTestModule(resolvedPath, moduleCache);

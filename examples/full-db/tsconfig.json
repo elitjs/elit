@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "types": ["node", "elit/test-globals"]
+    "types": ["node", "@elitjs/test/globals"]
   },
   "include": [
     "src/**/*.ts",

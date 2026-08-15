@@ -120,7 +120,7 @@ export const DocsPage = (): VNode => ({
                     children: [
                         'See the full list on the ',
                         { tagName: 'a', props: { href: '#/' }, children: ['homepage'] },
-                        '. All 34 packages are independently versioned and ship TypeScript types.',
+                        '. All 36 packages are independently versioned and ship TypeScript types.',
                     ],
                 },
             ],

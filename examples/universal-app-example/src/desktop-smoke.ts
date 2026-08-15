@@ -1,4 +1,4 @@
-import { setDesktopRenderOptions } from '../../../src/render-context';
+import { setDesktopRenderOptions } from '@elitjs/render-context';
 
 import './web-main';
 

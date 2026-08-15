@@ -221,7 +221,7 @@ router.post('/api/chat/send', async (req, res) => {
 
 ```ts
 // src/server/_shared/db-helpers.ts
-import type { Database } from '@elitjs/database';
+import type { FunctionStore } from '@elitjs/function-store';
 
 export const extractRows = <T>(result: unknown): T[] => {
   const rows = (result as any)?.logs?.[0]?.args?.[0];
@@ -234,7 +234,7 @@ export const extractFirst = <T>(result: unknown): T | null => {
 };
 
 export const findByField = async <T>(
-  db: Database, collection: string, field: string, value: unknown
+  db: FunctionStore, collection: string, field: string, value: unknown
 ): Promise<T | null> => {
   const result = await db.execute(
     `db.${collection}.find({ ${field}: ${JSON.stringify(value)} }).toArray()`

@@ -28,6 +28,7 @@ export type {
   DevServer,
   DevServerOptions,
   HMRMessage,
+  HttpsCertConfig,
   PreviewOptions,
   ProxyConfig,
   ResolveConfig,

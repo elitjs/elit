@@ -1,0 +1,20 @@
+{
+  "name": "elit-e2e-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/core": "file:../../packages/core",
+    "@elitjs/e2e": "file:../../packages/e2e",
+    "@elitjs/server": "file:../../packages/server",
+    "@elitjs/test": "file:../../packages/test",
+    "@types/node": "^25.0.9"
+  },
+  "scripts": {
+    "dev": "elit dev",
+    "test": "elit test",
+    "test:run": "elit test --run",
+    "test:watch": "elit test --watch"
+  }
+}

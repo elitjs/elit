@@ -47,6 +47,7 @@ export function matchesAnyPattern(path: string, patterns: string[]): boolean {
  */
 export function getBaseDirectory(pattern: string): string {
   const normalizedPattern = normalizePath(pattern);
+  const isPosixAbsolute = normalizedPattern.startsWith('/');
 
   const parts = normalizedPattern.split(/[\\/]/);
   let baseDir = '';
@@ -60,8 +61,14 @@ export function getBaseDirectory(pattern: string): string {
     baseDir = baseDir ? `${baseDir}/${part}` : part;
   }
 
+  // Splitting an absolute POSIX path drops its leading '/', which would turn the
+  // watch base into a cwd-relative path and break fs.watch on Linux/macOS.
+  if (isPosixAbsolute && baseDir) {
+    baseDir = `/${baseDir}`;
+  }
+
   if (sawGlob) {
-    return baseDir || '.';
+    return baseDir || (isPosixAbsolute ? '/' : '.');
   }
 
   if (normalizedPattern && existsSync(normalizedPattern)) {

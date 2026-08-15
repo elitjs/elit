@@ -61,6 +61,17 @@ export interface WorkerConfig {
     type?: 'module' | 'classic';
 }
 
+/**
+ * User-supplied TLS material for `dev.https` / `preview.https`.
+ * `cert`/`key`/`ca` accept either inline PEM content or a file path.
+ */
+export interface HttpsCertConfig {
+    cert: string;
+    key: string;
+    ca?: string;
+    passphrase?: string;
+}
+
 export interface DevServerOptions {
     port?: number;
     host?: string;
@@ -70,7 +81,7 @@ export interface DevServerOptions {
     basePath?: string;
     index?: string;
     clients?: ClientConfig[];
-    https?: boolean;
+    https?: boolean | HttpsCertConfig;
     open?: boolean;
     watch?: string[];
     ignore?: string[];
@@ -123,7 +134,7 @@ export interface PreviewOptions {
     basePath?: string;
     index?: string;
     clients?: ClientConfig[];
-    https?: boolean;
+    https?: boolean | HttpsCertConfig;
     open?: boolean;
     logging?: boolean;
     /** Glob patterns for files that must never be served (e.g. ".env", ".env.*", "*.key"). Default blocks .env, .env.*, .git/**, and common secret files. */

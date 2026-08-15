@@ -8,6 +8,12 @@
     "preview": "elit preview"
   },
   "dependencies": {
-    "elit": "file:../.."
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/dom": "file:../../packages/dom",
+    "@elitjs/el": "file:../../packages/el",
+    "@elitjs/server": "file:../../packages/server",
+    "@elitjs/smtp-server": "file:../../packages/smtp-server",
+    "@elitjs/state": "file:../../packages/state",
+    "@elitjs/style": "file:../../packages/style"
   }
 }

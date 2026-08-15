@@ -2,7 +2,7 @@
 
 import fs from 'node:fs';
 import os from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
 import { createStandaloneDevEntrySource, resolveStandaloneDevBuildPlan, standaloneDevNeedsEsbuildRuntime } from '../../packages/dev-build/src';
 import type { DevServerOptions } from '@elitjs/server';
@@ -18,7 +18,7 @@ describe('standalone dev build planning', () => {
             devConfig,
         });
 
-        expect(plan.outputPath.replace(/\\/g, '/')).toBe('C:/demo/dev-dist/index.js');
+        expect(plan.outputPath.replace(/\\/g, '/')).toBe(resolve('C:/demo', 'dev-dist', 'index.js').replace(/\\/g, '/'));
         expect(plan.rootRelativePath).toBe('../app');
         expect(plan.usesClientArray).toBe(false);
     });

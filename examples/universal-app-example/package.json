@@ -22,6 +22,13 @@
     "test:sh": "bash ./test-universal.sh"
   },
   "dependencies": {
-    "elit": "^3.7.1"
+    "@elitjs/cli": "file:../../packages/cli",
+    "@elitjs/core": "file:../../packages/core",
+    "@elitjs/dom": "file:../../packages/dom",
+    "@elitjs/el": "file:../../packages/el",
+    "@elitjs/render-context": "file:../../packages/render-context",
+    "@elitjs/state": "file:../../packages/state",
+    "@elitjs/style": "file:../../packages/style",
+    "@elitjs/universal": "file:../../packages/universal"
   }
 }

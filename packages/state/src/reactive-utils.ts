@@ -4,6 +4,17 @@ import { dom, prevPropsMap, snapshotProps } from '@elitjs/dom';
 export const scheduleRAFUpdate = (rafId: number | null, updateFn: () => void): number => {
     if (rafId) {
         cancelAnimationFrame(rafId);
+        clearTimeout(rafId);
+    }
+
+    // requestAnimationFrame is paused while the document is hidden, so without
+    // a fallback state-driven updates would stall until the tab is visible
+    // again. Use a timer when hidden so realtime updates keep flowing.
+    // clearTimeout/cancelAnimationFrame are both no-ops for ids of the other
+    // kind, so cancelling the previous handle works regardless of which path
+    // scheduled it.
+    if (typeof document !== 'undefined' && document.hidden) {
+        return setTimeout(updateFn, 0) as unknown as number;
     }
 
     return requestAnimationFrame(() => {

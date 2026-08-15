@@ -1,0 +1,181 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger เมื่อมีการสร้าง tag เช่น v1.0.0
+
+permissions:
+  contents: read
+
+jobs:
+  # ตรวจสอบให้แน่ใจว่าโค้ดของเวอร์ชันนี้ build และ test ผ่านก่อน publish
+  verify:
+    runs-on: ubuntu-latest
+    if: github.repository == 'elitjs/elit' && startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get tag version
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          VERSION_NO_V="${TAG_VERSION#v}"
+          VERSION_NO_BUILD="${VERSION_NO_V%%+*}"
+          if [[ "$VERSION_NO_BUILD" == *"-"* ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+          echo "VERSION_NO_V=$VERSION_NO_V" >> $GITHUB_ENV
+
+      - name: Verify version matches CHANGELOG
+        run: |
+          if ! grep -q "^## \[$VERSION_NO_V\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md ไม่มีหัวข้อ ## [$VERSION_NO_V] สำหรับ tag $TAG_VERSION"
+            exit 1
+          fi
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm run install:ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test:run
+
+  # สร้าง matrix จากโฟลเดอร์ packages/ จริง ๆ (ไม่ต้องดูแลรายชื่อใน config แยก)
+  generate-matrix:
+    needs: verify
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set matrix from packages directory
+        id: set-matrix
+        run: |
+          libs=$(find packages -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort \
+            | jq -R -s -c 'split("\n") | map(select(length > 0) | {lib: .})')
+          echo "matrix=$libs" >> $GITHUB_OUTPUT
+
+  # Publish ทุก package ไป npm (ใช้ tag ตามชนิดของเวอร์ชัน เช่น v1.0.0-beta.1 -> beta)
+  publish:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # จำเป็นสำหรับ --provenance (ดึง OIDC token จาก GitHub)
+
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+      fail-fast: false
+      max-parallel: 5
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get tag version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'  # เขียน NODE_AUTH_TOKEN ลง .npmrc ให้ publish ได้
+
+      - name: Install dependencies
+        run: npm run install:ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish ${{ matrix.lib }}@${{ env.TAG_VERSION }}
+        run: |
+          OWNER=${GITHUB_REPOSITORY%/*}
+          PACKAGE_NAME=${{ matrix.lib }}
+          PACKAGE_VERSION=${{ env.TAG_VERSION }}
+
+          # ดึง dist-tag จาก prerelease เช่น v1.0.0-beta -> beta, v1.0.0 -> latest
+          VERSION_NO_V="${PACKAGE_VERSION#v}"
+          VERSION_NO_BUILD="${VERSION_NO_V%%+*}"
+          if [[ "$VERSION_NO_BUILD" == *"-"* ]]; then
+            PRERELEASE="${VERSION_NO_BUILD#*-}"
+            DIST_TAG="${PRERELEASE%%.*}"
+          else
+            DIST_TAG="latest"
+          fi
+
+          echo "Publishing $PACKAGE_NAME@$PACKAGE_VERSION (tag: $DIST_TAG)"
+
+          npm version $PACKAGE_VERSION --prefix ./packages/$PACKAGE_NAME --no-git-tag-version --allow-same-version
+          node scripts/normalize-deps.mjs "$PACKAGE_VERSION" ./packages/$PACKAGE_NAME/package.json
+          npm publish ./packages/$PACKAGE_NAME --provenance --access public --tag "$DIST_TAG"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # สร้าง GitHub Release พร้อม notes จาก CHANGELOG.md
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get tag version
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          VERSION_NO_V="${TAG_VERSION#v}"
+          if [[ "${VERSION_NO_V%%+*}" == *"-"* ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+          echo "VERSION_NO_V=$VERSION_NO_V" >> $GITHUB_ENV
+
+      - name: Extract release notes from CHANGELOG
+        run: |
+          # ดึงเฉพาะ section ของเวอร์ชันนี้ (ตั้งแต่ ## [x.y.z] จนถึง ## ถัดไป)
+          awk -v ver="$VERSION_NO_V" '
+            index($0, "## [" ver "]") == 1 { found=1; next }
+            found && /^## / { exit }
+            found { print }
+          ' CHANGELOG.md > release_notes.md
+
+          if [ ! -s release_notes.md ]; then
+            echo "::error::ไม่พบเนื้อหา release notes สำหรับ $VERSION_NO_V ใน CHANGELOG.md"
+            exit 1
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_VERSION }}
+          name: ${{ env.TAG_VERSION }}
+          body_path: release_notes.md
+          generate_release_notes: true  # แนบรายการ commits และ contributors เพิ่มท้าย notes
+          prerelease: ${{ env.IS_PRERELEASE }}

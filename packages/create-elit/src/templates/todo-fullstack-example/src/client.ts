@@ -6,7 +6,7 @@ export const client = html(
     link({ rel: 'icon', type: 'image/svg+xml', href: 'public/favicon.svg' }),
     meta({ charset: 'UTF-8' }),
     meta({ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
-    meta({ name: 'description', content: 'Database-backed todo starter built with Elit and elit/database.' })
+    meta({ name: 'description', content: 'Function-store-backed todo starter built with Elit and elit/function-store.' })
   ),
   body(
     div({ id: 'app' }),

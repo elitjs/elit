@@ -3,6 +3,7 @@
 import { a, div, textarea } from '../../packages/el/src';
 import { render, renderToString, snapshotProps, prevPropsMap } from '../../packages/dom/src';
 import { createState } from '../../packages/state/src';
+import domPackageJson from '../../packages/dom/package.json';
 
 class FakeTextNode {
     constructor(public textContent: string) {}
@@ -153,7 +154,7 @@ describe('dom renderer elit-version', () => {
 
         render(root as any, div('Hello'));
 
-        expect(root.getAttribute('elit-version')).toBe('4.0.0');
+        expect(root.getAttribute('elit-version')).toBe(domPackageJson.version);
     });
 });
 

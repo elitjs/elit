@@ -9,7 +9,7 @@ This repository is an **application built with Elit**. It is not the Elit framew
 Use only the public package exports:
 
 - Browser: `elit`, `elit/dom`, `elit/el`, `elit/state`, `elit/style`, `elit/router`
-- Server: `elit/server`, `elit/database`
+- Server: `elit/server`, `elit/function-store`
 - Native: `elit/native`
 - Desktop: `elit/desktop`
 - Build/config helpers: `elit/config`, `elit/build`, `elit/test`
@@ -30,7 +30,7 @@ Never import from framework source paths such as `src/...` from the Elit reposit
 │   ├── native-screen.ts  # native entry for iOS/Android targets (optional)
 │   ├── components/       # shared UI components (Header, Footer, etc.)
 │   └── pages/            # one file per route
-├── databases/            # elit/database schemas (*.ts files exporting collections)
+├── databases/            # elit/function-store schemas (*.ts files exporting collections)
 ├── public/               # static assets copied into build output
 └── package.json
 ```
@@ -41,7 +41,7 @@ Treat `elit.config.ts` as the source of truth — dev server options, build entr
 
 - **Browser UI** → `elit`, `elit/dom`, `elit/el`, `elit/state`, `elit/style`, `elit/router`. Lives under `src/`, especially `src/main.ts`, `src/router.ts`, `src/pages/`, `src/components/`, `src/styles.ts`.
 - **Server routes, middleware, API logic** → `elit/server`. Lives in `src/server.ts` (or split under `src/server/`).
-- **Persistence** → `elit/database`. Schemas in `databases/`. Never import server-only DB code from a browser entry.
+- **Persistence** → `elit/function-store`. Schemas in `databases/`. Never import server-only DB code from a browser entry.
 - **Desktop-only code** → `elit/desktop`. These APIs are runtime-injected and are not normal browser globals — do not assume `window`-style access.
 - **Native generation** → `elit/native`. Output is IR, not DOM; keep it serializable.
 
@@ -68,7 +68,7 @@ CRITICAL: `createRouterView(router, options)` returns a **function**. Render it 
 ```ts
 // src/server.ts
 import { ElitRequest, ElitResponse, ServerRouter } from '@elitjs/server';
-import { Database } from '@elitjs/database';
+import { FunctionStore } from '@elitjs/function-store';
 
 export const router = new ServerRouter();
 
@@ -125,7 +125,7 @@ Run the smallest useful validation for the changed surface:
 Six skills guide AI work in this project. Each skill is scoped to a runtime surface and lists the concrete files, patterns, and validation steps to use.
 
 - `elit-client-app` — browser UI, reactive state, styles, routing, SSR shell, pages, and components.
-- `elit-server-app` — server routes, middleware, auth, SSE/WebSocket endpoints, and `elit/database` handlers.
+- `elit-server-app` — server routes, middleware, auth, SSE/WebSocket endpoints, and `elit/function-store` handlers.
 - `elit-runtime-app` — `elit.config.ts`, multi-client setup, build matrix, preview, mobile, desktop, native, and WAPK wiring.
 - `elit-desktop-app` — desktop shell surface: window control (`createWindow`, `windowMinimize`, `windowQuit`, …), IPC (`onMessage`, `createWindowServer`), runtime-target detection, and auto-render pipeline.
 - `elit-native-app` — native code generation: `renderNativeTree`, `renderAndroidCompose`, `renderSwiftUI`, CSS-subset styling, state bindings, and the screen entry (`src/native-screen.ts`).
@@ -142,7 +142,7 @@ When the skills don't cover a question in depth, these are the canonical sources
 - `package.json` → `scripts` — the exact CLI invocations CI and local dev use
 - `src/main.ts`, `src/client.ts`, `src/router.ts`, `src/server.ts`, `src/styles.ts` — the five files that define app shape
 - `src/native-screen.ts` — native screen entry (referenced by `mobile.native.entry` / `desktop.native.entry`)
-- `databases/*.ts` — one file per `elit/database` collection
+- `databases/*.ts` — one file per `elit/function-store` collection
 
 **Installed type definitions (ground-truth API):**
 - `node_modules/elit/dist/index.d.ts` — umbrella exports

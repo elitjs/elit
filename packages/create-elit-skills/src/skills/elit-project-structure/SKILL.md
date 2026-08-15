@@ -29,7 +29,7 @@ my-app/
 ├── public/
 │   ├── index.html          # static shell used by build.copy
 │   └── favicon.svg
-├── databases/              # @elitjs/database files (fullstack only)
+├── databases/              # @elitjs/function-store files (fullstack only)
 │   └── todo.ts             # exports const todo = [...]
 └── src/
     ├── main.ts             # entry: injectStyles(); dom.render('#app', App())
@@ -146,13 +146,13 @@ Initialize `router` with empty `routes: []`, then define `routes` and pass them 
 ### Server — `src/server.ts` (fullstack only)
 
 ```ts
-import { Database } from '@elitjs/database';
+import { FunctionStore } from '@elitjs/function-store';
 import { ServerRouter, json, type ServerRouteContext } from '@elitjs/server';
 import { resolve } from 'path';
 
 export const router = new ServerRouter();
 
-const db = new Database({
+const db = new FunctionStore({
   dir: resolve(process.cwd(), 'databases'),
   language: 'ts'
 });
@@ -178,7 +178,7 @@ router.post('/api/items', async (ctx: ServerRouteContext) => {
 export const server = router;
 ```
 
-`@db/<name>` is the import alias the `Database` runtime injects for files under `databases/<name>.ts`. Use `console.log(JSON.stringify(...))` to surface data through `result.logs`.
+`@db/<name>` is the import alias the `FunctionStore` runtime injects for files under `databases/<name>.ts`. Use `console.log(JSON.stringify(...))` to surface data through `result.logs`.
 
 ### Styles — `src/styles.ts`
 
@@ -403,7 +403,7 @@ A `components/index.ts` barrel is optional — use it when many components get r
 - The router imports pages, so pages must not import the router module at the top level (or you get a cycle). Pass `router` as a function argument instead: `() => HomePage(router)`.
 - Server code (`server.ts`, `databases/*`) must never be imported into client bundles. The build splits them; respect the boundary.
 - One styles singleton per app. Don't `new CreateStyle()` — use `import styles from '@elitjs/style'` everywhere.
-- `databases/<name>.ts` files `export const <name> = [...]`. The `Database` runtime exposes them via `@db/<name>` inside `db.execute(...)` only.
+- `databases/<name>.ts` files `export const <name> = [...]`. The `FunctionStore` runtime exposes them via `@db/<name>` inside `db.execute(...)` only.
 - The `<script src="/src/main.js">` URL in `client.ts` is intentional — the dev server serves the TS source transpiled at that path. Don't change it to `main.ts`.
 
 ## Anti-Patterns
@@ -412,7 +412,7 @@ A `components/index.ts` barrel is optional — use it when many components get r
 - Defining routes inline in `createRouter({ routes: [...] })`. The router is created with empty routes and `createRouterView` receives them — this avoids circular imports with page modules.
 - Calling `styles.inject()` more than once with different IDs in the same app. Pick one ID and call it from `injectStyles()` only.
 - Mixing `createState` calls inside `reactive(...)` — they reset on every re-run. Hoist state creation to the page-factory scope.
-- Importing `@elitjs/server`, `@elitjs/database`, or `node:fs` from `src/web.ts`, `src/main.ts`, or any file under `src/pages/` or `src/components/`.
+- Importing `@elitjs/server`, `@elitjs/function-store`, or `node:fs` from `src/web.ts`, `src/main.ts`, or any file under `src/pages/` or `src/components/`.
 
 ## Validation
 

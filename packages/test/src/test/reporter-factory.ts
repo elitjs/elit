@@ -1,5 +1,5 @@
 import type { TestResult } from '../runtime';
-import { DotReporter, JsonReporter, TestReporter, VerboseReporter } from '../reporter';
+import { DotReporter, HtmlReporter, JsonReporter, JUnitReporter, TestReporter, VerboseReporter } from '../reporter';
 
 import type { TestOptions } from './types';
 
@@ -17,6 +17,10 @@ export function createTestReporter(reporter: TestOptions['reporter'] = 'default'
             return new JsonReporter();
         case 'verbose':
             return new VerboseReporter();
+        case 'junit':
+            return new JUnitReporter();
+        case 'html':
+            return new HtmlReporter();
         default:
             return new TestReporter({ colors: true });
     }

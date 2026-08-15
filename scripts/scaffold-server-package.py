@@ -33,7 +33,7 @@ def scaffold(name, description, deps):
         (b"from '../ws'", b"from '@elitjs/ws'"),
         (b"from '../wss'", b"from '@elitjs/wss'"),
         (b"from '../chokidar'", b"from '@elitjs/chokidar'"),
-        (b"from '../database'", b"from '@elitjs/database'"),
+        (b"from '../function-store'", b"from '@elitjs/function-store'"),
         (b"from '../smtp-server'", b"from '@elitjs/smtp-server'"),
     ]
     for dp, dn, fn in os.walk(src_dst):

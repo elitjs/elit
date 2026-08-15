@@ -1,4 +1,4 @@
-import { body, div, h1, h2, head, html, meta, p, pre, script, span, style, title } from 'elit/el';
+import { body, div, h1, h2, head, html, meta, p, pre, script, span, style, title } from '@elitjs/el';
 
 const inlineStyle = style(`
 body { font-family: sans-serif; padding: 2rem; max-width: 860px; margin: 0 auto; }

@@ -17,9 +17,9 @@ import {
   span,
   strong,
   textarea,
-} from 'elit/el';
-import { render } from 'elit/dom';
-import { bindValue, createState, reactive } from 'elit/state';
+} from '@elitjs/el';
+import { render } from '@elitjs/dom';
+import { bindValue, createState, reactive } from '@elitjs/state';
 
 import type {
   WebmailAccount,

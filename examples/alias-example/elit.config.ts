@@ -1,7 +1,7 @@
 // Demonstrates top-level resolve.alias (added in 3.7.1 → 3.7.1).
 // `@` becomes an alias for ./src, so `import { x } from '@/utils/math'`
 // resolves to ./src/utils/math.ts in both dev and build.
-import { defineConfig } from 'elit/config';
+import { defineConfig } from '@elitjs/config';
 
 export default defineConfig({
   resolve: {

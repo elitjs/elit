@@ -21,7 +21,7 @@ DESCRIPTIONS = {
     'config': 'Configuration loading and validation for Elit projects.',
     'core': 'Shared types and primitives used across all @elitjs/* packages.',
     'create-elit': 'Project scaffolder for new Elit apps (basic, fullstack, native).',
-    'database': 'Database integration helpers for Elit apps.',
+    'function-store': 'File-backed TypeScript function store with sandboxed execution for Elit apps.',
     'desktop': 'Desktop runtime and host integration for Elit.',
     'desktop-auto-render': 'Automatic render bootstrap for Elit desktop targets.',
     'dev-build': 'Development-mode build pipeline with HMR for Elit.',

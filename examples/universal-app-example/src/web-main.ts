@@ -1,6 +1,6 @@
-import { render } from '../../../src/dom';
-import { detectRenderRuntimeTarget, setDesktopRenderOptions, type RenderRuntimeTarget } from '../../../src/render-context';
-import { bindChecked, bindValue } from '../../../src/state';
+import { render } from '@elitjs/dom';
+import { detectRenderRuntimeTarget, setDesktopRenderOptions, type RenderRuntimeTarget } from '@elitjs/render-context';
+import { bindChecked, bindValue } from '@elitjs/state';
 
 import {
     APP_NAME,

@@ -50,6 +50,7 @@ export function readPmRecord(filePath: string): PmRecord {
 }
 
 export function writePmRecord(filePath: string, record: PmRecord): void {
+    mkdirSync(dirname(filePath), { recursive: true });
     writeFileSync(filePath, JSON.stringify(record, null, 2));
 }
 

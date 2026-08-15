@@ -1,4 +1,4 @@
-import { a, button, div, h1, h2, img, input, li, p, span, textarea, ul } from '../../../src/client/el';
+import { a, button, div, h1, h2, img, input, li, p, span, textarea, ul } from '@elitjs/el';
 
 export const screen = () => div(
     { style: { padding: '24px' } },

@@ -1,6 +1,6 @@
-import { a, article, button, div, h1, h2, img, input, li, main, p, section, span, textarea, ul } from '../../../src/el';
-import { createUniversalBridgeProps, createUniversalLinkProps, mergeUniversalProps, type UniversalBridgeOptions } from 'elit/universal';
-import type { Child, Props, VNode } from '../../../src/types';
+import { a, article, button, div, h1, h2, img, input, li, main, p, section, span, textarea, ul } from '@elitjs/el';
+import { createUniversalBridgeProps, createUniversalLinkProps, mergeUniversalProps, type UniversalBridgeOptions } from '@elitjs/universal';
+import type { Child, Props, VNode } from '@elitjs/core';
 
 import { APP_NAME, APP_TAGLINE, PLATFORM_SURFACES, SHARED_CHECKLIST, VALIDATION_STEPS } from './shared';
 import './web-styles';

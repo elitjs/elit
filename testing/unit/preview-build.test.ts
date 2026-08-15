@@ -2,7 +2,7 @@
 
 import fs from 'node:fs';
 import os from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
 import { createStandalonePreviewEntrySource, resolveStandalonePreviewBuildPlan, writeStandalonePackageJson } from '../../packages/preview-build/src';
 import type { BuildOptions } from '@elitjs/build';
@@ -29,7 +29,7 @@ describe('standalone preview build planning', () => {
             previewConfig,
         });
 
-        expect(plan.outputPath.replace(/\\/g, '/')).toBe('C:/demo/dist/index.js');
+        expect(plan.outputPath.replace(/\\/g, '/')).toBe(resolve('C:/demo', 'dist', 'index.js').replace(/\\/g, '/'));
         expect(plan.rootRelativePath).toBe('.');
         expect(plan.usesClientArray).toBe(false);
     });

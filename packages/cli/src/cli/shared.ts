@@ -1,4 +1,5 @@
-export const COMMANDS = ['dev', 'build', 'build-dev', 'build-preview', 'preview', 'test', 'desktop', 'mobile', 'native', 'pm', 'wapk', 'help', 'version'] as const;
+export const COMMANDS = ['dev', 'build', 'build-dev', 'build-preview', 'preview', 'test',
+    'e2e', 'desktop', 'mobile', 'native', 'pm', 'wapk', 'help', 'version'] as const;
 
 export type Command = typeof COMMANDS[number];
 export type ArgHandler<T> = (options: T, value: string | undefined, index: { current: number }) => void;

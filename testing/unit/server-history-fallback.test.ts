@@ -30,6 +30,7 @@ function setupSpaRoot(tempDir: string): string {
     return root;
 }
 
+
 describe('dev server SPA history fallback', () => {
     it('serves index.html for a navigation request to a missing path', async () => {
         const tempDir = fs.mkdtempSync(join(os.tmpdir(), 'elit-history-'));

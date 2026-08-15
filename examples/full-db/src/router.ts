@@ -1,4 +1,4 @@
-import { createRouter, createRouterView, type RouteParams, type Router } from 'elit';
+import { createRouter, createRouterView, type RouteParams, type Router } from '@elitjs/router';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';

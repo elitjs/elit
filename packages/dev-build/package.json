@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/dev-build",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Standalone dev server build for Elit",
   "type": "module",
   "main": "dist/index.cjs",
@@ -43,7 +43,6 @@
   "devDependencies": {
     "@types/node": "^25.0.10",
     "esbuild": "^0.28.1",
-    "javascript-obfuscator": "^5.5.0",
     "open": "^11.0.0",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0"

@@ -1,5 +1,5 @@
-import { button, div, h2 } from 'elit/el';
-import { createState, reactive } from 'elit/state';
+import { button, div, h2 } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
 // Importing through the alias from a nested module:
 import { add } from '@/utils/math';
 

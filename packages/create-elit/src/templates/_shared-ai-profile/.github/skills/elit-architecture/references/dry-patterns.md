@@ -80,7 +80,7 @@ router.get('/api/profile', async (req, res) => {
 
 ## Pattern: DB result extraction
 
-`Database.execute()` returns a result with `logs` — the actual rows are in `logs[0].args[0]`. This pattern repeats across every repository.
+`FunctionStore.execute()` returns a result with `logs` — the actual rows are in `logs[0].args[0]`. This pattern repeats across every repository.
 
 **Duplicated form:**
 
@@ -110,7 +110,7 @@ export const extractCount = (result: unknown): number => {
 
 // Safe wrapper for db.execute with logging
 export const query = async <T>(
-  db: Database, code: string, mapper: (rows: unknown[]) => T[] = (rows) => rows as T[]
+  db: FunctionStore, code: string, mapper: (rows: unknown[]) => T[] = (rows) => rows as T[]
 ): Promise<T[]> => {
   const result = await db.execute(code);
   return mapper(extractRows<unknown>(result));

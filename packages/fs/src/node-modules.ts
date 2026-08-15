@@ -6,7 +6,13 @@ let fs: any;
 let fsPromises: any;
 
 if (isNode || isBun) {
-  const require = createRequire(import.meta.url);
+  const require = (() => {
+    try {
+      return createRequire(__filename);
+    } catch {
+      return createRequire(import.meta.url);
+    }
+  })();
   fs = require('fs');
   fsPromises = require('fs/promises');
 }

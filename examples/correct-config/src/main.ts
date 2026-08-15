@@ -1,6 +1,6 @@
-import { div, h1, h2, button, p } from 'elit/el';
-import { createState, reactive } from 'elit/state';
-import { render } from 'elit/dom';
+import { div, h1, h2, button, p } from '@elitjs/el';
+import { createState, reactive } from '@elitjs/state';
+import { render } from '@elitjs/dom';
 import { compact } from 'lodash-es';
 import './styles.ts';
 

@@ -5,7 +5,7 @@
  *   npx elit desktop ./examples/desktop-simple-example.ts
  */
 
-import { createWindow, onMessage, windowQuit, windowSetTitle } from 'elit/desktop';
+import { createWindow, onMessage, windowQuit, windowSetTitle } from '@elitjs/desktop';
 
 const WINDOW_TITLE = 'Elit Desktop Simple';
 

@@ -1,7 +1,7 @@
-import { join, resolve } from '@elitjs/path';
+import { join } from '@elitjs/path';
 import { readFile, readdir } from '@elitjs/fs';
 
-import { findSpecialDir, type ImportMapEntry } from './utils';
+import { findSpecialDirs, type ImportMapEntry } from './utils';
 
 interface PackageExports {
   [key: string]: string | PackageExports;
@@ -40,14 +40,15 @@ async function generateExternalImportMaps(rootDir: string, basePath: string = ''
 
 async function scanNodeModules(rootDir: string, basePath: string): Promise<ImportMapEntry> {
   const importMap: ImportMapEntry = {};
-  const nodeModulesPath = await findNodeModules(rootDir);
+  const nodeModulesPaths = await findNodeModulesDirs(rootDir);
 
-  if (!nodeModulesPath) {
-    return importMap;
-  }
-
-  try {
-    const packages = await readdir(nodeModulesPath);
+  for (const nodeModulesPath of nodeModulesPaths) {
+    let packages;
+    try {
+      packages = await readdir(nodeModulesPath);
+    } catch {
+      continue;
+    }
 
     for (const pkgEntry of packages) {
       const pkg = typeof pkgEntry === 'string' ? pkgEntry : pkgEntry.name;
@@ -68,16 +69,14 @@ async function scanNodeModules(rootDir: string, basePath: string): Promise<Impor
         await processPackage(nodeModulesPath, pkg, importMap, basePath);
       }
     }
-  } catch (error) {
-    console.error('[Import Maps] Error scanning node_modules:', error);
   }
 
   return importMap;
 }
 
-async function findNodeModules(startDir: string): Promise<string | null> {
-  const foundDir = await findSpecialDir(startDir, 'node_modules');
-  return foundDir ? join(foundDir, 'node_modules') : null;
+async function findNodeModulesDirs(startDir: string): Promise<string[]> {
+  const dirs = await findSpecialDirs(startDir, 'node_modules');
+  return dirs.map((dir) => join(dir, 'node_modules'));
 }
 
 function isBrowserCompatible(pkgName: string, pkgJson: PackageJson): boolean {
@@ -154,6 +153,11 @@ async function processPackage(
   importMap: ImportMapEntry,
   basePath: string,
 ): Promise<void> {
+  // Nearest node_modules wins, matching Node's resolution order.
+  if (importMap[pkgName] !== undefined) {
+    return;
+  }
+
   const pkgPath = join(nodeModulesPath, pkgName);
   const pkgJsonPath = join(pkgPath, 'package.json');
 

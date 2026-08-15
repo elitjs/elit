@@ -1,6 +1,6 @@
 {
   "name": "@elitjs/server",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Dev server, router, and WebSocket orchestration for Elit",
   "type": "module",
   "main": "dist/index.cjs",
@@ -46,12 +46,12 @@
     "@elitjs/smtp-server": "file:../smtp-server",
     "@elitjs/ws": "file:../ws",
     "@elitjs/wss": "file:../wss",
-    "open": "^11.0.0"
+    "open": "^11.0.0",
+    "selfsigned": "^2.4.1"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",
     "@types/ws": "^8.5.13",
-    "javascript-obfuscator": "^5.5.0",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0",
     "ws": "^8.21.1"

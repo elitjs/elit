@@ -40,6 +40,10 @@ export class SharedState<T = any> {
     private ws: WebSocket | null = null;
     private pendingUpdates: T[] = [];
     private previousValue: T;
+    private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+    private reconnectAttempts = 0;
+    private readonly maxReconnectAttempts = 10;
+    private stopped = false;
 
     constructor(
         public readonly key: string,
@@ -78,7 +82,7 @@ export class SharedState<T = any> {
     }
 
     private connect(): void {
-        if (typeof window === 'undefined') {
+        if (typeof window === 'undefined' || this.stopped) {
             return;
         }
 
@@ -86,6 +90,7 @@ export class SharedState<T = any> {
         this.ws = new WebSocket(url);
 
         this.ws.addEventListener('open', () => {
+            this.reconnectAttempts = 0;
             this.subscribe();
 
             while (this.pendingUpdates.length > 0) {
@@ -99,12 +104,31 @@ export class SharedState<T = any> {
         });
 
         this.ws.addEventListener('close', () => {
-            setTimeout(() => this.connect(), 1000);
+            this.scheduleReconnect();
         });
 
-        this.ws.addEventListener('error', (error) => {
-            console.error('[SharedState] WebSocket error:', error);
+        // Browsers fire `error` immediately before `close` on every failed
+        // attempt. Logging here would spam the console when no server is
+        // reachable; reconnection (and the eventual give-up notice) is handled
+        // by `scheduleReconnect` via the `close` event above.
+        this.ws.addEventListener('error', () => {
+            /* intentionally quiet */
         });
+    }
+
+    private scheduleReconnect(): void {
+        if (this.stopped) {
+            return;
+        }
+
+        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+            console.warn('[SharedState] WebSocket unavailable — real-time state sync disabled until the page is reloaded.');
+            return;
+        }
+
+        this.reconnectAttempts += 1;
+        const delay = Math.min(1000 * 2 ** (this.reconnectAttempts - 1), 30000);
+        this.reconnectTimer = setTimeout(() => this.connect(), delay);
     }
 
     private subscribe(): void {
@@ -152,6 +176,13 @@ export class SharedState<T = any> {
     }
 
     disconnect(): void {
+        this.stopped = true;
+
+        if (this.reconnectTimer) {
+            clearTimeout(this.reconnectTimer);
+            this.reconnectTimer = null;
+        }
+
         if (this.ws) {
             this.ws.close();
             this.ws = null;

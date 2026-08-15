@@ -1,4 +1,4 @@
-import styles from 'elit/style';
+import styles from '@elitjs/style';
 
 // Global styles
 styles.addTag('*', {

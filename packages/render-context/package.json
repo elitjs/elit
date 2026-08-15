@@ -1,16 +1,16 @@
 {
   "name": "@elitjs/render-context",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Render context detection and VNode capture for Elit desktop/mobile targets",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
-  "browser": "dist/index.iife.js",
+  "browser": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "browser": "./dist/index.iife.js",
+      "browser": "./dist/index.mjs",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
