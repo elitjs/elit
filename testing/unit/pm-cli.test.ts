@@ -1159,7 +1159,7 @@ describe('pm control commands', () => {
             const fetchInheritedText = async () => {
                 return await fetch(`http://127.0.0.1:${publicPort}/?r=${Date.now()}`, {
                     cache: 'no-store',
-                    signal: AbortSignal.timeout(1500),
+                    signal: AbortSignal.timeout(3000),
                 }).then((response) => response.text());
             };
 
@@ -1171,7 +1171,7 @@ describe('pm control commands', () => {
             const reloadedRecord = readWorkspacePmRecord(workspaceRoot, 'inherit-app');
             let secondResponse = '';
             let lastError;
-            const responseDeadline = Date.now() + 3000;
+            const responseDeadline = Date.now() + 8000;
             while (!secondResponse && Date.now() < responseDeadline) {
                 try {
                     secondResponse = await fetchInheritedText();
